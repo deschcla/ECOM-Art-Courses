@@ -12,7 +12,6 @@ import com.ecom.art_courses.security.AuthoritiesConstants;
 import com.ecom.art_courses.service.UserService;
 import com.ecom.art_courses.service.dto.AdminUserDTO;
 import com.ecom.art_courses.service.dto.PasswordChangeDTO;
-import com.ecom.art_courses.service.dto.UserDTO;
 import com.ecom.art_courses.web.rest.vm.KeyAndPasswordVM;
 import com.ecom.art_courses.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

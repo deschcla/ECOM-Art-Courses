@@ -44,7 +44,7 @@ spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/ECOM-Art-Courses
     username: ECOM-Art-Courses
-    password:
+    password: root
   thymeleaf:
     cache: false
 

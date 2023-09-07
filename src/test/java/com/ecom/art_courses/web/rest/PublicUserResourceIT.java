@@ -3,7 +3,6 @@ package com.ecom.art_courses.web.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ecom.art_courses.IntegrationTest;
-import com.ecom.art_courses.config.Constants;
 import com.ecom.art_courses.domain.User;
 import com.ecom.art_courses.repository.EntityManager;
 import com.ecom.art_courses.repository.UserRepository;

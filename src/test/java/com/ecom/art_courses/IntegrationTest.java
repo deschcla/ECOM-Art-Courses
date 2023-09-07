@@ -1,6 +1,5 @@
 package com.ecom.art_courses;
 
-import com.ecom.art_courses.EcomArtCoursesApp;
 import com.ecom.art_courses.config.AsyncSyncConfiguration;
 import com.ecom.art_courses.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;
