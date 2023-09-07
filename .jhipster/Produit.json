@@ -1,0 +1,82 @@
+{
+  "applications": "*",
+  "entityTableName": "produit",
+  "fields": [
+    {
+      "fieldName": "idProduit",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "nomProduit",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "desc",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tarifUnit",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "quantiteDispo",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "lienImg",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateDebut",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "dateFin",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "horaire",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "quantiteTotale",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "difficulte",
+      "fieldType": "Difficulte",
+      "fieldValues": "Beginner,Intermediate,Advanced"
+    }
+  ],
+  "name": "Produit",
+  "relationships": [
+    {
+      "otherEntityName": "sousCategorie",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "souscategorie",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "prof",
+      "relationshipName": "prof",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "participant",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "participant",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "ligneCommande",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "lignecommande",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}

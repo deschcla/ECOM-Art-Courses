@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "entityTableName": "carte_bancaire",
+  "fields": [
+    {
+      "fieldName": "refCarte",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "CarteBancaire",
+  "relationships": [
+    {
+      "otherEntityName": "releveFacture",
+      "relationshipName": "relevefacture",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ]
+}

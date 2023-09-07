@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "entityTableName": "sous_categorie",
+  "fields": [
+    {
+      "fieldName": "idSousCategorie",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "typeSousCategorie",
+      "fieldType": "String"
+    }
+  ],
+  "name": "SousCategorie",
+  "relationships": [
+    {
+      "otherEntityName": "categorie",
+      "relationshipName": "categorie",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "produit",
+      "otherEntityRelationshipName": "souscategorie",
+      "relationshipName": "produit",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "entityTableName": "ligne_commande",
+  "fields": [
+    {
+      "fieldName": "idLigneCommande",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "quantite",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Float"
+    }
+  ],
+  "name": "LigneCommande",
+  "relationships": [
+    {
+      "otherEntityField": "idProduit",
+      "otherEntityName": "produit",
+      "otherEntityRelationshipName": "lignecommande",
+      "relationshipName": "produit",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "lignecommande",
+      "relationshipName": "commande",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}
