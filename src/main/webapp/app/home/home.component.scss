@@ -6,8 +6,64 @@ Main page styles
   display: inline-block;
   width: 347px;
   height: 497px;
-  background: url('/content/images/jhipster_family_member_3.svg') no-repeat center top;
+  background: url('/content/images/jhipster images/jhipster_family_member_3.svg') no-repeat center top;
   background-size: contain;
+}
+
+.quantity {
+  font-size: small;
+  text-align: right;
+  margin-bottom: 3px;
+}
+
+.price-div {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.progress,
+.progress-stacked {
+  --bs-progress-height: 10px !important;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexible {
+  flex: 1;
+}
+
+.promoStrikeout {
+  text-decoration: line-through;
+  font-size: smaller;
+  font-weight: lighter;
+}
+
+.moreInfo {
+  font-size: smaller;
+}
+.red {
+  color: red;
+}
+.promo {
+  margin-left: 5px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
@@ -17,7 +73,7 @@ Main page styles
   only screen and (min-resolution: 192dpi),
   only screen and (min-resolution: 2dppx) {
   .hipster {
-    background: url('/content/images/jhipster_family_member_3.svg') no-repeat center top;
+    background: url('/content/images/jhipster images/jhipster_family_member_3.svg') no-repeat center top;
     background-size: contain;
   }
 }

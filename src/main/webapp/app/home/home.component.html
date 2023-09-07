@@ -1,14 +1,48 @@
 <div class="row">
-  <div class="col-md-3">
-    <span class="hipster img-fluid rounded"></span>
+  <div class="col-md-2">
+    <!-- <span class="hipster img-fluid rounded"></span> -->
+    <!-- PUT FILTER HERE -->
   </div>
 
-  <div class="col-md-9">
-    <h1 class="display-4"><span jhiTranslate="home.title">Welcome, Java Hipster!</span> (ECOM Art Courses)</h1>
+  <div class="col-md-10">
+    <div class="row">
+      <div *ngFor="let course of courses" class="col-md-auto">
+        <div class="card" style="width: 18rem">
+          <img class="card-img-top" src="{{ course.lienImg }}" alt="{{ course.nomProduit }} img" />
+          <div class="card-body">
+            <h5 class="card-title">{{ course.nomProduit }}</h5>
+            <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo < 10 }">
+              {{ course.quantiteDispo }} places left
+            </p>
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                [ngStyle]="{ width: ((course.quantiteTotale - course.quantiteDispo) / course.quantiteTotale) * 100 + '%' }"
+                [ngClass]="{ 'bg-danger': course.quantiteDispo < 10 }"
+                [attr.aria-valuenow]="course.quantiteTotale - course.quantiteDispo"
+                aria-valuemin="0"
+                [attr.aria-valuenow]="course.quantiteTotale"
+              ></div>
+            </div>
 
-    <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
+            <br />
+            <div class="card-text moreInfo flexible">{{ course.difficulte }} · {{ course.horaire }}</div>
+            <br />
+            <div class="text-center price-div">
+              <span class="card-text price">
+                <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span>
+                <span *ngIf="course.promo" class="promo text-danger"
+                  >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% off)</span
+                >
+              </span>
+              <button type="button" class="btn btn-primary cart" (click)="viewDetails()"><fa-icon [icon]="faCartPlus"></fa-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div [ngSwitch]="account !== null">
+      <!-- <div [ngSwitch]="account !== null">
       <div class="alert alert-success" *ngSwitchCase="true">
         <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }"
           >You are logged in as user "{{ account.login }}".</span
@@ -73,6 +107,7 @@
       <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.github"
         >GitHub</a
       >!
-    </p>
+    </p> -->
+    </div>
   </div>
 </div>
