@@ -1,22 +1,23 @@
+<div class="mt-3 inputs">
+  <fa-icon icon="search" class="searchIcon"></fa-icon>
+  <input type="text" class="form-control" placeholder="Search" />
+</div>
 <div class="row">
-  <div class="col-md-2">
-    <!-- PUT FILTER HERE -->
-  </div>
+  <div class="col-md-2 border filter">PUT FILTER HERE</div>
 
   <div class="col-md-10">
     <div class="row">
-      <div class="input-box">
-        <input type="text" class="form-control" />
-        <button class="btn" type="button"><fa-icon icon="search"></fa-icon></button>
-      </div>
       <div *ngFor="let course of courses" class="col-md-auto">
-        <div class="card" style="width: 18rem">
+        <div class="card">
           <img class="card-img-top" src="{{ course.lienImg }}" alt="{{ course.nomProduit }} img" />
+
           <div class="card-body">
             <h5 class="card-title">{{ course.nomProduit }}</h5>
+
             <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo < 10 }">
               {{ course.quantiteDispo }} places left
             </p>
+
             <div class="progress">
               <div
                 class="progress-bar"
@@ -29,12 +30,11 @@
               ></div>
             </div>
 
-            <!-- <br /> -->
-            <div class="card-text moreInfo flexible">
+            <div class="card-text moreInfo">
               <span>{{ course.dateTime | date : 'shortDate' }}</span> · <span>{{ course.dateTime | date : 'H:mm' }}</span> ·
               <span>{{ course.duree }}h</span>
             </div>
-            <!-- <br /> -->
+
             <div class="text-center price-div">
               <span class="card-text price">
                 <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span>
@@ -47,6 +47,19 @@
           </div>
         </div>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link active" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>
