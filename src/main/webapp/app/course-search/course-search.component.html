@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-2">
+    <!-- PUT FILTER HERE -->
+  </div>
+
+  <div class="col-md-10">
+    <div class="row">
+      <div class="input-box">
+        <input type="text" class="form-control" />
+        <button class="btn" type="button"><fa-icon icon="search"></fa-icon></button>
+      </div>
+      <div *ngFor="let course of courses" class="col-md-auto">
+        <div class="card" style="width: 18rem">
+          <img class="card-img-top" src="{{ course.lienImg }}" alt="{{ course.nomProduit }} img" />
+          <div class="card-body">
+            <h5 class="card-title">{{ course.nomProduit }}</h5>
+            <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo < 10 }">
+              {{ course.quantiteDispo }} places left
+            </p>
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                [ngStyle]="{ width: ((course.quantiteTotale - course.quantiteDispo) / course.quantiteTotale) * 100 + '%' }"
+                [ngClass]="{ 'bg-danger': course.quantiteDispo < 10 }"
+                [attr.aria-valuenow]="course.quantiteTotale - course.quantiteDispo"
+                aria-valuemin="0"
+                [attr.aria-valuenow]="course.quantiteTotale"
+              ></div>
+            </div>
+
+            <!-- <br /> -->
+            <div class="card-text moreInfo flexible">
+              <span>{{ course.dateTime | date : 'shortDate' }}</span> · <span>{{ course.dateTime | date : 'H:mm' }}</span> ·
+              <span>{{ course.duree }}h</span>
+            </div>
+            <!-- <br /> -->
+            <div class="text-center price-div">
+              <span class="card-text price">
+                <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span>
+                <span *ngIf="course.promo" class="promo text-danger"
+                  >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% off)</span
+                >
+              </span>
+              <button type="button" class="btn btn-primary cart" (click)="viewDetails()"><fa-icon icon="cart-plus"></fa-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

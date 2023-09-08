@@ -13,12 +13,10 @@ export class Course {
     public quantiteDispo: number,
     public lienImg: string,
     public idSousCategorie: number,
-    public dateDebut: Date,
-    public dateFin: Date,
-    public horaire: string,
+    public dateTime: Date,
+    public duree: number,
     public promo: number | null,
     public quantiteTotale: number,
-    public difficulte: Difficulty | null,
     public idProf: number
   ) {}
 }

@@ -1,0 +1,87 @@
+.quantity {
+  font-size: small;
+  text-align: right;
+  margin-bottom: 3px;
+}
+
+.price-div {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.progress,
+.progress-stacked {
+  --bs-progress-height: 10px !important;
+}
+
+.card {
+  cursor: pointer;
+  margin: 10px;
+}
+
+.input-box {
+  position: relative;
+}
+
+.input-box fa-icon {
+  position: absolute;
+  right: 25px;
+  top: 15px;
+  color: #2c3e50;
+}
+.form-control {
+  height: 50px;
+}
+
+.form-control:focus {
+  background-color: #eeeeee69;
+  box-shadow: none;
+  border-color: #eee;
+}
+// .searchInput{
+//   padding: 10px;
+//   border-radius: 15px !important;
+// }
+
+// .searchForm{
+//   display: flex;
+//   flex-direction: row-reverse;
+// }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexible {
+  flex: 1;
+}
+
+.promoStrikeout {
+  text-decoration: line-through;
+  font-size: smaller;
+  font-weight: lighter;
+}
+
+.moreInfo {
+  font-size: smaller;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.red {
+  color: red;
+}
+.promo {
+  margin-left: 5px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
