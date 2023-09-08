@@ -14,7 +14,7 @@
 
         <!-- List -->
         <div class="col-md-6 col-lg-6">
-          <p>
+          <p class="text-justify">
             L'introduction du jeu d'échecs à l'École vise à sensibiliser
             un grand nombre d'enseignants aux bienfaits pour les élèves, de la pratique
             de ce jeu qui mobilise logique, stratégie, rigueur et capacité d'abstraction,
@@ -22,14 +22,8 @@
           </p>
           <ul>
             <li>Tarif unitaire:
-              <!--<span [ngClass]="{'text-decoration-line-through': false}">100€</span>
-              <span></span>-->
-              <span [ngClass]="{'text-decoration-line-through fs-6': course.promo}">
-                {{course.tarifUnit}}€
-              </span>
+              <span [ngClass]="{'text-decoration-line-through fs-6': course.promo}">{{course.tarifUnit}}€</span>
               <span *ngIf="course.promo" class="text-danger fs-5 fw-bold">{{course.tarifUnit-((course.tarifUnit * course.promo)/100)}}€ ({{course.promo}}% off)</span>
-
-            </li>
             <li class="text-danger fw-bold">{{ course.quantiteDispo }} / {{ course.quantiteTotale }} places disponibles</li>
           </ul>
 
@@ -50,11 +44,7 @@
             </select>
             <div class="input-group-append">
               <button type="button" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
-                  <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
-                  <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                </svg>
-                Ajouter au panier
+                <fa-icon [icon]="faCartPlus"></fa-icon>
               </button>
             </div>
           </div>
@@ -65,40 +55,39 @@
 
 
       <!-- Author info -->
-      <div class="bg-mode border rounded p-4 my-3">
+      <div class="bg-mode rounded p-4 my-3 box-shadow-base">
 
         <div class="my-3 d-flex justify-content-between">
           <div class="text-center">
             <span>Tuteur/tutrice: Jeanne Marie</span>
           </div>
-          <!--<div class="text-center">
-            <span>Niveau {{course.difficulte}}</span>
-          </div>-->
+
           <div class="text-center">
-            <span>{{ course.date | date:'longDate'}} à 14:00</span>
+            <span>{{ course.date | date:'fullDate'}} à 14:00</span>
           </div>
+
           <div class="text-center">
             <span>4h</span>
           </div>
         </div>
-
-        <!-- Buttons -->
-        <div class="d-flex align-items-center justify-content-between">
-          <!-- Social icons -->
-          <ul class="nav">
-            <li class="nav-item">
-              <a class="nav-link ps-0 pe-2 fs-5" href="#"><i class="bi bi-facebook"></i></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link px-2 fs-5" href="#"><i class="bi bi-twitter"></i></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link px-2 fs-5" href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-            </li>
-          </ul>
-
-        </div>
       </div>
+
+      <!-- Buttons -->
+      <div class="d-flex align-items-center justify-content-between">
+        <!-- Social icons -->
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link ps-0 pe-2 fs-5" href="#"><i class="bi bi-facebook"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2 fs-5" href="#"><i class="bi bi-twitter"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2 fs-5" href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          </li>
+        </ul>
+      </div>
+
 
       <!-- Social links and tags -->
       <div class="d-lg-flex justify-content-lg-between mt-4">
@@ -106,9 +95,25 @@
         <div class="align-items-center mb-3 mb-lg-0">
           <h6 class="d-inline-block mb-2 me-4">Partager sur:</h6>
           <ul class="list-inline hstack flex-wrap gap-3 h6 fw-normal mb-0">
-            <li class="list-inline-item"> <a class="text-facebook" href="#"><i class="fa-brands fa-facebook-square"></i> Facebook</a> </li>
-            <li class="list-inline-item"> <a class="text-instagram-gradient" href="#"><i class="fa-brands fa-instagram-square"></i> Instagram</a> </li>
-            <li class="list-inline-item"> <a class="text-twitter" href="#"><i class="fa-brands fa-twitter-square"></i> Twitter</a> </li>
+
+            <li class="list-inline-item">
+              <a class="text-facebook" href="#">
+                <i class="fa-brands fa-facebook-square"></i> Facebook
+              </a>
+            </li>
+
+            <li class="list-inline-item">
+              <a class="text-instagram-gradient" href="#">
+                <i class="fa-brands fa-instagram-square"></i> Instagram
+              </a>
+            </li>
+
+            <li class="list-inline-item">
+              <a class="text-twitter" href="#">
+                <i class="fa-brands fa-twitter-square"></i> Twitter
+              </a>
+            </li>
+
           </ul>
         </div>
         <!-- Popular tags -->

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Course, Difficulty} from "../core/request/course.model";
 import {DatePipe} from "@angular/common";
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'jhi-course-details',
@@ -9,6 +10,8 @@ import {DatePipe} from "@angular/common";
 })
 export class CourseDetailsComponent {
 
+
+  faCartPlus = faCartPlus
 
 
   course: Course = {
@@ -27,9 +30,6 @@ export class CourseDetailsComponent {
     idProf: 1
   };
 
-  constructor() {
-
-  }
 
 
 

@@ -5,7 +5,7 @@ import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -32,6 +32,7 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
     HttpClientModule,
     MainModule,
     TranslationModule,
+    FontAwesomeModule,
   ],
   providers: [
     Title,
