@@ -24,27 +24,21 @@
             <li>Tarif unitaire:
               <span [ngClass]="{'text-decoration-line-through fs-6': course.promo}">{{course.tarifUnit}}€</span>
               <span *ngIf="course.promo" class="text-danger fs-5 fw-bold">{{course.tarifUnit-((course.tarifUnit * course.promo)/100)}}€ ({{course.promo}}% off)</span>
-            <li class="text-danger fw-bold">{{ course.quantiteDispo }} / {{ course.quantiteTotale }} places disponibles</li>
+            </li>
+            <li class="fw-bold">
+              <span [ngClass]="{'text-danger': course.quantiteDispo < 0.15 * course.quantiteTotale}">{{ course.quantiteDispo }} places disponibles</span>
+            </li>
           </ul>
 
           <div class="input-group">
-            <label for="inputGroupSelect04"></label>
-            <select class="custom-select" id="inputGroupSelect04">
-<!--              <option value="0">Réserver la place</option>-->
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="1">4</option>
-              <option value="2">5</option>
-              <option value="3">6</option>
-              <option value="3">7</option>
-              <option value="1">8</option>
-              <option value="2">9</option>
-              <option value="3">10</option>
+            <select class="custom-select">
+              <option *ngFor="let item of counter(course.quantiteDispo); let i = index">
+                {{i + 1}}
+              </option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary">
-                <fa-icon [icon]="faCartPlus"></fa-icon>
+              <button type="button" class="btn btn-outline-primary" id="btn-cart">
+                <fa-icon icon="cart-plus"></fa-icon>
               </button>
             </div>
           </div>
@@ -63,7 +57,7 @@
           </div>
 
           <div class="text-center">
-            <span>{{ course.date | date:'fullDate'}} à 14:00</span>
+            <span>{{ course.dateTime | date:'EEEE, MMMM d, y à H:mm'}}</span>
           </div>
 
           <div class="text-center">

@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import {Course, Difficulty} from "../core/request/course.model";
-import {DatePipe} from "@angular/common";
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import {Course} from "../core/request/course.model";
 
 @Component({
   selector: 'jhi-course-details',
@@ -10,8 +8,6 @@ import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class CourseDetailsComponent {
 
-
-  faCartPlus = faCartPlus
 
 
   course: Course = {
@@ -22,15 +18,16 @@ export class CourseDetailsComponent {
     quantiteDispo: 3,
     lienImg: "/content/images/course images/piano.jpg",
     idSousCategorie: 1,
-    date: new Date("12-09-2023"),
+    dateTime: new Date('2023-09-12T22:00:00'),
     horaire: "mondays from 4pm till 6pm",
     promo: 20,
     quantiteTotale: 50,
-    difficulte: Difficulty.intermediate,
     idProf: 1
   };
 
-
+  public counter(i: number): any[] {
+    return new Array(i);
+  }
 
 
 }
