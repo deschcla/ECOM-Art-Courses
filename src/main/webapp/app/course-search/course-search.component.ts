@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Course } from 'app/core/request/course.model';
+import { CartService } from 'app/core/util/cart.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -10,10 +11,9 @@ import { Subject } from 'rxjs';
 })
 export class CourseSearchComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
-
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.courses.push(
@@ -123,7 +123,15 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  viewDetails(): void {
-    this.router.navigate(['/course-details']);
+  viewDetails(id: number): void {
+    this.router.navigate(['/course-details/' + id.toString()]);
+  }
+
+  addToCart(course: Course, event: Event): void {
+    // this.notifierService.notify('success', 'You are awesome! I mean it!');
+    this.cartService.addToCart(course, 1);
+    console.log(this.cartService.cart);
+
+    event.stopPropagation();
   }
 }

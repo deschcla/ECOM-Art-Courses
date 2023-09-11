@@ -28,34 +28,6 @@
   width: 18rem;
 }
 
-.inputs {
-  position: relative;
-  margin-bottom: 2%;
-}
-
-.form-control {
-  text-indent: 25px;
-  height: 45px;
-  border-radius: 15px;
-  font-size: large;
-  border: 1px solid #a9b1b9;
-  color: #a9b1b9;
-  // position: fixed;
-}
-
-.form-control:focus,
-.form-control:hover {
-  color: #495057;
-  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.06);
-}
-
-.inputs fa-icon {
-  position: absolute;
-  top: 11px;
-  left: 13px;
-  color: #a9b1b9;
-}
-
 .promoStrikeout {
   text-decoration: line-through;
   font-size: smaller;
