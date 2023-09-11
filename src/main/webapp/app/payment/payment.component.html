@@ -1,0 +1,139 @@
+<div class="container">
+  <div class="row g-5">
+
+    <div class="col-md-6 col-lg-8">
+
+      <h4 class="my-0">Paiement carte bancaire</h4>
+      <p class="fs-6 text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+
+      <ul class="list-group mb-3 shadow-lg mb-5 bg-body rounded" id="list-payment">
+        <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
+          <div class="form-check d-flex align-items-center">
+            <input class="form-check-input" type="radio" disabled>
+            <label class="form-check-label">
+              <img src="https://booking.webestica.com/assets/images/element/paypal.svg" class="h-30px ms-2" alt="" height="35">
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
+          <div class="form-check d-flex align-items-center">
+            <input class="form-check-input" type="radio" disabled>
+            <label class="form-check-label">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Apple_Pay_logo.svg/1200px-Apple_Pay_logo.svg.png" class="h-30px ms-3" alt="" height="25">
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
+          <div class="form-check d-flex align-items-center">
+            <input class="form-check-input" type="radio" disabled>
+            <label class="form-check-label">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" class="h-30px ms-3" alt="" height="25">
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
+          <div class="form-check d-flex align-items-center">
+            <input class="form-check-input" type="radio" disabled>
+            <label class="form-check-label ms-3">
+              Carte de crédit
+            </label>
+          </div>
+          <div class="d-flex align-items-center">
+            <img src="https://booking.webestica.com/assets/images/element/visa.svg" class="h-30px ms-3" alt="" height="35">
+            <img src="https://booking.webestica.com/assets/images/element/mastercard.svg" class="h-30px ms-3" alt="" height="35">
+          </div>
+        </li>
+        <li class="list-group-item d-flex justify-content-center lh-sm pt-5">
+          <img src="https://c.comenity.net/ac/bjs/images/Client/CardArt/CreditCardLarge.png" class="" alt="" width="30%"/>
+        </li>
+        <li class="list-group-item d-flex justify-content-center lh-sm py-5">
+
+          <div class="row gy-3 w-75">
+
+            <div class="col-md-12">
+              <label for="cc-number" class="form-label">Numéro de carte</label>
+
+              <div class="input-group mb-3">
+              <span class="input-group-text">
+                <fa-icon [icon]="faCreditCardAlt"></fa-icon>
+              </span>
+                <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" required="">
+              </div>
+              <div class="invalid-feedback">
+                Numéro de carte est nécessaire
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="cc-expiration" class="form-label">Date d'expiration</label>
+
+              <div class="input-group mb-3">
+              <span class="input-group-text">
+                <fa-icon [icon]="faCalendarAlt"></fa-icon>
+              </span>
+                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" required="">
+              </div>
+              <div class="invalid-feedback">
+                Date d'expiration est nécessaire
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="cc-cvv" class="form-label">Cryptogramme visuel</label>
+              <input type="password" class="form-control" id="cc-cvv" placeholder="000" required="">
+              <div class="invalid-feedback">
+                Cryptogramme visuel est nécessaire
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+    <div class="col-md-6 col-lg-4 order-md-last">
+
+      <h4 class="d-flex justify-content-between align-items-center margin-sommaire">
+        <span class="text-primary">Sommaire</span>
+        <span class="badge bg-primary rounded-pill">{{ commandes.length }}</span>
+      </h4>
+
+      <ul class="list-group mb-3 shadow-lg bg-body rounded">
+
+
+
+        <li *ngFor="let commande of commandes" class="align-items-center list-group-item d-flex justify-content-between lh-sm border-item-bottom py-4">
+          <div class="row align-items-center">
+            <img src="{{commande.produit.lienImg}}" width="25%" class="col-3" alt="">
+
+            <div class="col-6">
+              <h6 class="my-0">{{commande.produit.nomProduit}}</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+          </div>
+          <span class="text-muted">12€</span>
+        </li>
+
+
+        <li class="col align-items-center list-group-item border-item-bottom py-4">
+          <div class="d-flex justify-content-between">
+            <span>Sous-total</span>
+            <strong>{{ calcMontant() }}€</strong>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>TVA</span>
+            <strong>{{ calcMontant() * 0.2 }}€</strong>
+          </div>
+        </li>
+
+        <li class="list-group-item d-flex justify-content-between py-4">
+          <span>Total TTC (EUR)</span>
+          <strong class="h4">{{ calcMontant() * 1.2 }}€</strong>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+

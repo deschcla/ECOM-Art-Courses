@@ -10,6 +10,7 @@ import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { PaymentComponent } from "./payment/payment.component";
 
 @NgModule({
   imports: [
@@ -41,6 +42,11 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'login',
           component: LoginComponent,
           title: 'login.title',
+        },
+        {
+          path: 'payment',
+          component: PaymentComponent,
+          title: 'payment.title',
         },
         {
           path: '',

@@ -1,0 +1,15 @@
+.box-shadow-base{
+  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 0.16);
+}
+
+.list-group{
+  --bs-list-group-border-width: unset!important;
+}
+
+.border-item-bottom{
+  border-bottom: 1px solid #dee2e6;
+}
+
+.margin-sommaire{
+  margin-bottom: calc(1rem + 21px);
+}

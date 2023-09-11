@@ -1,11 +1,11 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
+import {NgOptimizedImage, registerLocaleData} from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -20,18 +20,21 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    // jhipster-needle-angular-add-module JHipster will add new module here
-    AppRoutingModule,
-    // Set this to true to enable service worker (PWA)
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
-    HttpClientModule,
-    MainModule,
-    TranslationModule,
-  ],
+    imports: [
+        BrowserModule,
+        // jhipster-needle-angular-add-module JHipster will add new module here
+        AppRoutingModule,
+        // Set this to true to enable service worker (PWA)
+        ServiceWorkerModule.register('ngsw-worker.js', {enabled: false}),
+        HttpClientModule,
+        MainModule,
+        TranslationModule,
+        NgOptimizedImage,
+        FontAwesomeModule,
+    ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'en' },
@@ -40,6 +43,9 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
+  declarations: [
+    PaymentComponent
+  ],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
