@@ -20,6 +20,8 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CourseSearchComponent } from './course-search/course-search.component';
 
 @NgModule({
   imports: [
@@ -31,6 +33,7 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     HttpClientModule,
     MainModule,
     TranslationModule,
+    FontAwesomeModule,
   ],
   providers: [
     Title,
@@ -40,6 +43,7 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
+  declarations: [CourseSearchComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
