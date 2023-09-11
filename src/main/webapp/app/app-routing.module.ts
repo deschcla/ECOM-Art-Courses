@@ -11,15 +11,21 @@ import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { CourseDetailsComponent } from './course-details/course-details.component';
+import { CourseSearchComponent } from './course-search/course-search.component';
 
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
         {
-          path: '',
+          path: 'home',
           component: HomeComponent,
           title: 'home.title',
+        },
+        {
+          path: 'course-search',
+          component: CourseSearchComponent,
+          title: 'course-search.title',
         },
         {
           path: '',
@@ -43,6 +49,7 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
           component: LoginComponent,
           title: 'login.title',
         },
+        { path: '**', redirectTo: 'course-search' },
         {
           path: 'course-details/:id',
           component: CourseDetailsComponent,

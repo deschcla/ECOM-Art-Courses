@@ -21,6 +21,9 @@ import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { CourseDetailsComponent } from './course-details/course-details.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CourseSearchComponent } from './course-search/course-search.component';
+
 
 @NgModule({
   imports: [
@@ -43,7 +46,8 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
   ],
   bootstrap: [MainComponent],
   declarations: [
-    CourseDetailsComponent
+    CourseDetailsComponent,
+    CourseSearchComponent
   ],
 })
 export class AppModule {
