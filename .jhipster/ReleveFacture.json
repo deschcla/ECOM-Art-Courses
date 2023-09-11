@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "entityTableName": "releve_facture",
+  "fields": [
+    {
+      "fieldName": "numPaiement",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "ReleveFacture",
+  "relationships": [
+    {
+      "otherEntityName": "acheteur",
+      "relationshipName": "acheteur",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ]
+}

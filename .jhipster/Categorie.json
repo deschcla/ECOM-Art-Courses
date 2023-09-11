@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "entityTableName": "categorie",
+  "fields": [
+    {
+      "fieldName": "idCategorie",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "typeCategorie",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Categorie",
+  "relationships": [
+    {
+      "otherEntityName": "sousCategorie",
+      "otherEntityRelationshipName": "categorie",
+      "relationshipName": "sousCategorie",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "entityTableName": "commande",
+  "fields": [
+    {
+      "fieldName": "idCommande",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "montant",
+      "fieldType": "Float"
+    }
+  ],
+  "name": "Commande",
+  "relationships": [
+    {
+      "otherEntityName": "carteBancaire",
+      "relationshipName": "cartebancaire",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "idLigneCommande",
+      "otherEntityName": "ligneCommande",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "lignecommande",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}

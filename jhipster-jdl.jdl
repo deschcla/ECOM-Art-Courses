@@ -1,0 +1,127 @@
+
+
+entity Acheteur {
+	idAcheteur UUID
+    email String
+    nom String
+    prenom String
+    adresse String
+    dateNaiss LocalDate
+    numTel String
+    motDePasse String
+}
+
+
+entity Produit {
+	idProduit UUID
+    nomProduit String
+    desc String
+    tarifUnit Float
+    quantiteDispo Integer
+    lienImg String
+    dateDebut LocalDate
+    dateFin LocalDate
+    horaire ZonedDateTime
+    quantiteTotale Integer
+    difficulte Difficulte
+}
+
+
+entity SousCategorie {
+	idSousCategorie UUID
+	typeSousCategorie String
+}
+
+
+entity Categorie {
+	idCategorie UUID
+	typeCategorie String
+}
+
+
+entity Difficulte {}
+
+
+entity Prof {
+	idProf UUID
+    nom String
+    prenom String
+    bio String
+    competence String
+}
+
+
+entity Participant {
+	idParticipant UUID
+}
+
+
+entity Commande {
+	idCommande UUID
+    montant Float
+}
+
+
+entity LigneCommande {
+	idLigneCommande UUID
+    quantite Integer
+    montant Float
+}
+
+
+entity CarteBancaire {
+	refCarte String
+    montant Float
+    createdAt Instant
+    updateAt Instant
+}
+
+
+entity ReleveFacture {
+	numPaiement String
+    montant Float
+    createdAt Instant
+    updateAt Instant
+}
+
+
+enum Difficulte {
+	Beginner, Intermediate, Advanced
+}
+
+
+// defining multiple oneToOne relationships
+relationship OneToOne {
+	Acheteur{commande} to Commande
+    Commande{cartebancaire} to CarteBancaire
+    CarteBancaire{relevefacture} to ReleveFacture
+}
+
+
+relationship ManyToMany {
+	Acheteur{participant(idParticipant)} to Participant{acheteur}
+    Participant{produit(idProduit)} to Produit{participant}
+    Commande{lignecommande(idLigneCommande)} to LigneCommande{commande}
+    LigneCommande{produit(idProduit)} to Produit{lignecommande}
+}
+
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Acheteur to ReleveFacture{acheteur}
+	Prof to Produit{prof}
+    //SousCategorie to Produit{souscategorie}
+    Categorie to SousCategorie{categorie}
+}
+
+
+relationship ManyToOne {
+	Produit{souscategorie required} to SousCategorie{produit}
+}
+
+
+
+
+
+
+

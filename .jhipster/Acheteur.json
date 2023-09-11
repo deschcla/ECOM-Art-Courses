@@ -1,0 +1,62 @@
+{
+  "applications": "*",
+  "entityTableName": "acheteur",
+  "fields": [
+    {
+      "fieldName": "idAcheteur",
+      "fieldType": "UUID"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "prenom",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "adresse",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateNaiss",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "numTel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "motDePasse",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Acheteur",
+  "relationships": [
+    {
+      "otherEntityName": "commande",
+      "relationshipName": "commande",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "releveFacture",
+      "otherEntityRelationshipName": "acheteur",
+      "relationshipName": "releveFacture",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "idParticipant",
+      "otherEntityName": "participant",
+      "otherEntityRelationshipName": "acheteur",
+      "relationshipName": "participant",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}

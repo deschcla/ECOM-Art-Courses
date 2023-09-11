@@ -17,6 +17,6 @@ export class Course {
     public duree: number,
     public promo: number | null,
     public quantiteTotale: number,
-    public idProf: number
+    public nomProf: string
   ) {}
 }

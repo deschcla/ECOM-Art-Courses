@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "entityTableName": "participant",
+  "fields": [
+    {
+      "fieldName": "idParticipant",
+      "fieldType": "UUID"
+    }
+  ],
+  "name": "Participant",
+  "relationships": [
+    {
+      "otherEntityField": "idProduit",
+      "otherEntityName": "produit",
+      "otherEntityRelationshipName": "participant",
+      "relationshipName": "produit",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "acheteur",
+      "otherEntityRelationshipName": "participant",
+      "relationshipName": "acheteur",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ]
+}
