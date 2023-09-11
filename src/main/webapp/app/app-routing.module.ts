@@ -10,7 +10,7 @@ import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
-import { CourseDetailsComponent } from "./course-details/course-details.component";
+import { CourseDetailsComponent } from './course-details/course-details.component';
 
 @NgModule({
   imports: [
@@ -44,7 +44,7 @@ import { CourseDetailsComponent } from "./course-details/course-details.componen
           title: 'login.title',
         },
         {
-          path: 'course-details',
+          path: 'course-details/:id',
           component: CourseDetailsComponent,
           title: 'course-details.title',
         },

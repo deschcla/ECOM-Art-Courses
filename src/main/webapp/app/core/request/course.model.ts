@@ -1,7 +1,7 @@
 export enum Difficulty {
-  beginner = "Beginner",
-  intermediate = "Intermediate",
-  advanced = "Advanced"
+  beginner = 'Beginner',
+  intermediate = 'Intermediate',
+  advanced = 'Advanced',
 }
 
 export class Course {
@@ -14,9 +14,9 @@ export class Course {
     public lienImg: string,
     public idSousCategorie: number,
     public dateTime: Date,
-    public horaire: string,
+    public duree: number,
     public promo: number | null,
     public quantiteTotale: number,
-    public idProf: number
+    public nomProf: string
   ) {}
 }
