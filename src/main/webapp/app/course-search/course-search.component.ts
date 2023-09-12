@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class CourseSearchComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
   account: Account | null = null;
-  signedOut: boolean = false;
+  display = 'none';
   private readonly destroy$ = new Subject<void>();
 
   constructor(private accountService: AccountService, private router: Router, private cartService: CartService) {}
@@ -138,16 +138,23 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
 
   addToCart(course: Course, event: Event): void {
     if (this.account?.activated) {
-      this.signedOut = false;
-
       // this.notifierService.notify('success', 'You are awesome! I mean it!');
       this.cartService.addToCart(course, 1);
       console.log(this.cartService.cart);
     } else {
-      this.signedOut = true;
+      this.display = 'block';
+
+      // this.signedOut = false;
       // document.getElementById('exampleModalCenter').modal(options)
     }
-    console.log(this.signedOut);
+    event.stopPropagation();
+  }
+  onCloseHandled(event: Event): void {
+    this.display = 'none';
+    event.stopPropagation();
+  }
+  goToLogin(event: Event): void {
+    this.router.navigateByUrl('/login');
     event.stopPropagation();
   }
 }

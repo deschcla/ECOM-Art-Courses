@@ -14,7 +14,9 @@ export class CartService {
   constructor() {}
 
   addToCart(course: Course, num: number): void {
-    this.cart.push(course);
+    for (let i = 0; i < num; i++) {
+      this.cart.push(course);
+    }
     this.counterChange.next((this.counter += num));
   }
 }

@@ -21,7 +21,7 @@
       <div class="mt-3 inputs">
         <fa-icon icon="search" class="searchIcon"></fa-icon>
         <form [formGroup]="searchForm" (ngSubmit)="search()">
-          <input type="text" class="form-control" placeholder="Search" formControlName="search" />
+          <input type="text" class="form-control" placeholder="Rechercher..." formControlName="search" />
         </form>
       </div>
       <ul class="navbar-nav ms-auto" [ngClass]="{ font: account?.authorities }">

@@ -19,7 +19,7 @@
               Tarif unitaire:
               <span [ngClass]="{ 'text-decoration-line-through fs-6': course.promo }">{{ course.tarifUnit }}€</span>
               <span *ngIf="course.promo" class="text-danger fs-5 fw-bold"
-                >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% off)</span
+                >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% de réduction)</span
               >
             </li>
             <li class="fw-bold">
@@ -30,15 +30,15 @@
           </ul>
 
           <div class="input-group">
-            <select class="custom-select">
+            <select class="custom-select" #amount (change)="onSelected(amount.value)">
               <option *ngFor="let item of counter(course.quantiteDispo); let i = index">
                 {{ i + 1 }}
               </option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary fontBig" id="btn-cart">
-                <fa-icon icon="cart-plus"></fa-icon>
-                <span class="addToCart">Ajouter au panier</span>
+              <button type="button" class="btn btn-primary fontBig" id="btn-cart" (click)="addToCart(course, selectedAmount)">
+                <span>Ajouter au panier</span>
+                <fa-icon icon="cart-plus" class="addToCart"></fa-icon>
               </button>
             </div>
           </div>
@@ -47,7 +47,7 @@
 
       <!-- Author info -->
       <div class="bg-mode rounded p-4 my-3 box-shadow-base">
-        <div class="my-3 d-flex justify-content-between">
+        <div class="my-3 d-flex justify-content-between infoDiv">
           <div class="text-center courseInfo">
             <fa-icon icon="person-chalkboard" class="fontBigger"></fa-icon>
             <span class="courseInfoTitle">
@@ -60,7 +60,7 @@
             <fa-icon icon="calendar-alt" class="fontBigger"></fa-icon>
             <span class="courseInfoTitle">
               <span class="title">Date</span>
-              <span class="subtitle">{{ course.dateTime | date : 'MMMM d, y à H:mm' }}</span>
+              <span class="subtitle">{{ course.dateTime | date : 'dd/MM/yy à HH' }}h{{ course.dateTime | date : 'mm' }}</span>
             </span>
           </div>
 
