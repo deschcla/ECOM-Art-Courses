@@ -17,7 +17,7 @@
             <column name="nom_produit" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="jhi_desc" type="varchar(255)">
+            <column name="jhi_desc" type="varchar(1000)">
                 <constraints nullable="true" />
             </column>
             <column name="tarif_unit" type="${floatType}">
