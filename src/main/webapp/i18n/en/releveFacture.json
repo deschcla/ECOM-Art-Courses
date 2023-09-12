@@ -1,0 +1,28 @@
+{
+  "ecomArtCoursesApp": {
+    "releveFacture": {
+      "home": {
+        "title": "Releve Factures",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Releve Facture",
+        "createOrEditLabel": "Create or edit a Releve Facture",
+        "notFound": "No Releve Factures found"
+      },
+      "created": "A new Releve Facture is created with identifier {{ param }}",
+      "updated": "A Releve Facture is updated with identifier {{ param }}",
+      "deleted": "A Releve Facture is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Releve Facture {{ id }}?"
+      },
+      "detail": {
+        "title": "Releve Facture"
+      },
+      "id": "ID",
+      "montant": "Montant",
+      "createdAt": "Created At",
+      "updateAt": "Update At",
+      "commande": "Commande",
+      "acheteur": "Acheteur"
+    }
+  }
+}

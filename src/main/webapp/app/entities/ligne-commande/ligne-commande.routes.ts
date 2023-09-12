@@ -1,0 +1,45 @@
+import { Routes } from '@angular/router';
+
+import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { LigneCommandeComponent } from './list/ligne-commande.component';
+import { LigneCommandeDetailComponent } from './detail/ligne-commande-detail.component';
+import { LigneCommandeUpdateComponent } from './update/ligne-commande-update.component';
+import LigneCommandeResolve from './route/ligne-commande-routing-resolve.service';
+import { ASC } from 'app/config/navigation.constants';
+
+const ligneCommandeRoute: Routes = [
+  {
+    path: '',
+    component: LigneCommandeComponent,
+    data: {
+      defaultSort: 'id,' + ASC,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/view',
+    component: LigneCommandeDetailComponent,
+    resolve: {
+      ligneCommande: LigneCommandeResolve,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'new',
+    component: LigneCommandeUpdateComponent,
+    resolve: {
+      ligneCommande: LigneCommandeResolve,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/edit',
+    component: LigneCommandeUpdateComponent,
+    resolve: {
+      ligneCommande: LigneCommandeResolve,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+];
+
+export default ligneCommandeRoute;

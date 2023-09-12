@@ -1,0 +1,97 @@
+entity Acheteur {
+    adresse String
+    dateNaiss LocalDate
+    numTel String
+    createdAt Instant
+    updateAt Instant
+}
+
+entity Produit {
+    nomProduit String
+    desc String
+    tarifUnit Float
+    date ZonedDateTime
+    duree String
+    lienImg String
+    quantiteTotale Integer
+    quantiteDispo Integer
+    createdAt Instant
+    updateAt Instant
+}
+
+entity Categorie {
+	typeCategorie String
+    createdAt Instant
+    updateAt Instant
+}
+
+entity SousCategorie {
+	typeSousCategorie String
+    createdAt Instant
+    updateAt Instant
+}
+
+entity Commande {
+    montant Float
+    valided Integer
+    createdAt Instant
+    updateAt Instant
+}
+
+
+entity LigneCommande {
+    quantite Integer
+    montant Float
+    valided Integer
+    createdAt Instant
+    updateAt Instant
+}
+
+
+entity CarteBancaire {
+	refCarte String
+    createdAt Instant
+    updateAt Instant
+}
+
+entity ReleveFacture {
+    montant Float
+    createdAt Instant
+    updateAt Instant
+}
+
+relationship ManyToMany {
+    Commande{produit required} to Produit{commande required}
+}
+relationship OneToOne {
+    Acheteur{internalUser required} to User  with builtInEntity
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+    Commande{carteBancaire required} to CarteBancaire{commande required}
+    SousCategorie{produit required} to Produit{souscategorie required}
+    Categorie{sousCategorie required} to SousCategorie{categorie required}
+    //CarteBancaire{releveFacture required} to ReleveFacture{carteBancaire required}
+	//Acheteur{CarteBancaire required} to CarteBancaire{acheteur required}
+    Acheteur{releveFacture required} to ReleveFacture{acheteur required}
+    ReleveFacture{commande required} to Commande{releveFacture required}
+    Acheteur{Commande required} to Commande{acheteur required}
+}
+
+relationship ManyToOne {
+	//Produit{souscategorie required} to SousCategorie{produit required}
+    //SousCategorie{categorie required} to Categorie{sousCategorie required}
+    //AcheteuinternalUser required} to User{acheteur}
+    //ReleveFacture{carteBancaire required} to CarteBancaire{releveFacture}
+	//ReleveFacture{acheteur required} to Acheteur{releveFacture}
+    //CarteBancaire{commande required} to Commande{carteBancaire}
+    LigneCommande{produit required} to Produit{ligneCommande}
+    LigneCommande{commande required} to Commande{ligneCommande}
+}
+
+// Set service options to all except few
+service all with serviceImpl
+
+
+

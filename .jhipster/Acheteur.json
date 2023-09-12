@@ -1,0 +1,56 @@
+{
+  "applications": "*",
+  "changelogDate": "20230912073709",
+  "entityTableName": "acheteur",
+  "fields": [
+    {
+      "fieldName": "adresse",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateNaiss",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "numTel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Acheteur",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "relationshipName": "internalUser",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "releveFacture",
+      "otherEntityRelationshipName": "acheteur",
+      "relationshipName": "releveFacture",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "acheteur",
+      "relationshipName": "commande",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

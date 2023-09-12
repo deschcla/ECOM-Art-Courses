@@ -1,0 +1,67 @@
+{
+  "applications": "*",
+  "changelogDate": "20230912073713",
+  "entityTableName": "commande",
+  "fields": [
+    {
+      "fieldName": "montant",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "valided",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Commande",
+  "relationships": [
+    {
+      "otherEntityName": "carteBancaire",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "carteBancaire",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "produit",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "produit",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "releveFacture",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "releveFacture",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "acheteur",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "acheteur",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "ligneCommande",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "ligneCommande",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

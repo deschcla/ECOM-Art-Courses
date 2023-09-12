@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="commande">
+      <h2 data-cy="commandeDetailsHeading"><span jhiTranslate="ecomArtCoursesApp.commande.detail.title">Commande</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ commande.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.montant">Montant</span></dt>
+        <dd>
+          <span>{{ commande.montant }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.valided">Valided</span></dt>
+        <dd>
+          <span>{{ commande.valided }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ commande.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.updateAt">Update At</span></dt>
+        <dd>
+          <span>{{ commande.updateAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.produit">Produit</span></dt>
+        <dd>
+          <span *ngFor="let produit of commande.produits; let last = last">
+            <a [routerLink]="['/produit', produit.id, 'view']">{{ produit.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.releveFacture">Releve Facture</span></dt>
+        <dd>
+          <div *ngIf="commande.releveFacture">
+            <a [routerLink]="['/releve-facture', commande.releveFacture.id, 'view']">{{ commande.releveFacture.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.commande.acheteur">Acheteur</span></dt>
+        <dd>
+          <div *ngIf="commande.acheteur">
+            <a [routerLink]="['/acheteur', commande.acheteur.id, 'view']">{{ commande.acheteur.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/commande', commande.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

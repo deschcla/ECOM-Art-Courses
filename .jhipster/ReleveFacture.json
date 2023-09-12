@@ -1,0 +1,40 @@
+{
+  "applications": "*",
+  "changelogDate": "20230912073716",
+  "entityTableName": "releve_facture",
+  "fields": [
+    {
+      "fieldName": "montant",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "ReleveFacture",
+  "relationships": [
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "releveFacture",
+      "relationshipName": "commande",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "acheteur",
+      "otherEntityRelationshipName": "releveFacture",
+      "relationshipName": "acheteur",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
