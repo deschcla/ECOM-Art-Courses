@@ -46,55 +46,51 @@
 
         <li class="list-group-item d-flex justify-content-center lh-sm py-5">
 
-          <form [formGroup]="paymentForm" class="needs-validation was-validated row gy-3 w-75" novalidate>
+          <form [formGroup]="paymentForm"
+                [ngClass]="{ 'was-validated': paymentForm.valid }"
+                class="needs-validation row gy-3 w-75"
+                novalidate>
 
             <div class="col-md-12">
               <label for="cc-number" class="form-label">Numéro de carte</label>
 
-              <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" formControlName="card_number">
-
-              <!--<div class="input-group mb-3">
+              <div class="input-group mb-3">
                 <span class="input-group-text">
                   <fa-icon [icon]="faCreditCardAlt"></fa-icon>
                 </span>
-                <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" formControlName="card_number">
-              </div>-->
+                <input type="text" class="form-control" id="cc-number" maxlength="16" placeholder="0000 0000 0000 0000" formControlName="card_number">
+              </div>
 
-              <div class="invalid-feedback">
-                Numéro de carte est nécessaire
+              <div class="msg-invalid" *ngIf="paymentForm.controls['card_number'].invalid && (paymentForm.controls['card_number'].dirty || paymentForm.controls['card_number'].touched)">
+                Numéro de carte bancaire invalide
               </div>
             </div>
 
             <div class="col-md-6">
               <label for="cc-expiration" class="form-label">Date d'expiration</label>
 
-              <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp">
-
-              <!--<div class="input-group mb-3">
+              <div class="input-group mb-3">
                 <span class="input-group-text">
                   <fa-icon [icon]="faCalendarAlt"></fa-icon>
                 </span>
                 <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp">
-              </div>-->
-              <div class="invalid-feedback">
-                Date d'expiration est nécessaire
+              </div>
+              <div class="msg-invalid" *ngIf="paymentForm.controls['date_exp'].invalid && (paymentForm.controls['date_exp'].dirty || paymentForm.controls['date_exp'].touched)">
+                Date d'expiration invalide
               </div>
             </div>
 
             <div class="col-md-6">
               <label for="cc-cvv" class="form-label">Cryptogramme visuel</label>
 
-              <input type="password" class="form-control" id="cc-cvv" placeholder="000" formControlName="ccv">
-
-              <!--<div class="input-group mb-3">
+              <div class="input-group mb-3">
                 <span class="input-group-text">
                   <fa-icon [icon]="faLock"></fa-icon>
                 </span>
                 <input type="password" class="form-control" id="cc-cvv" placeholder="000" formControlName="ccv">
-              </div>-->
-
-              <div class="invalid-feedback">
-                Cryptogramme visuel est nécessaire
+              </div>
+              <div class="msg-invalid" *ngIf="paymentForm.controls['ccv'].invalid && (paymentForm.controls['ccv'].dirty || paymentForm.controls['ccv'].touched)">
+                Cryptogramme visuel invalide
               </div>
             </div>
 
@@ -149,7 +145,7 @@
         </li>
 
         <li class="list-group-item d-flex py-3">
-          <button (click)="validatePayment()" type="submit" class="btn btn-lg btn-primary w-100">Paiement sécurise</button>
+          <button [disabled]="!paymentForm.valid" (click)="validatePayment()" type="submit" class="btn btn-lg btn-primary w-100">Paiement sécurise</button>
         </li>
       </ul>
     </div>
