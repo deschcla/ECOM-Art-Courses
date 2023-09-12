@@ -1,17 +1,17 @@
 <div class="container">
-  <div class="row g-5">
+  <div class="row">
 
     <div class="col-md-6 col-lg-8">
 
       <h4 class="my-0">Paiement carte bancaire</h4>
       <p class="fs-6 text-muted">Afin de finaliser votre commande, veuillez de compléter vos coordonnées de paiement.</p>
 
-      <ul class="list-group mb-3 shadow-lg mb-5 bg-body rounded" id="list-payment">
+      <ul class="list-group mb-0 shadow-lg bg-body rounded h-86" id="list-payment">
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
             <input class="form-check-input" type="radio" disabled>
             <label class="form-check-label">
-              <img src="https://booking.webestica.com/assets/images/element/paypal.svg" class="h-30px ms-2" alt="" height="35">
+              <img src="https://booking.webestica.com/assets/images/element/paypal.svg" class="h-30px ms-2" alt="" height=30>
             </label>
           </div>
         </li>
@@ -19,7 +19,7 @@
           <div class="form-check d-flex align-items-center">
             <input class="form-check-input" type="radio" disabled>
             <label class="form-check-label">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Apple_Pay_logo.svg/1200px-Apple_Pay_logo.svg.png" class="h-30px ms-3" alt="" height="25">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Apple_Pay_logo.svg/1200px-Apple_Pay_logo.svg.png" class="h-30px ms-3" alt="" height="17">
             </label>
           </div>
         </li>
@@ -27,28 +27,28 @@
           <div class="form-check d-flex align-items-center">
             <input class="form-check-input" type="radio" disabled>
             <label class="form-check-label">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" class="h-30px ms-3" alt="" height="25">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" class="h-30px ms-3" alt="" height="20">
             </label>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
-            <input class="form-check-input" type="radio">
+            <input class="form-check-input" type="radio" checked="checked">
             <label class="form-check-label ms-3">
               Carte de crédit
             </label>
           </div>
           <div class="d-flex align-items-center">
-            <img src="https://booking.webestica.com/assets/images/element/visa.svg" class="h-30px ms-3" alt="" height="35">
-            <img src="https://booking.webestica.com/assets/images/element/mastercard.svg" class="h-30px ms-3" alt="" height="35">
+            <img src="https://booking.webestica.com/assets/images/element/visa.svg" class="h-30px ms-3" alt="" height="27">
+            <img src="https://booking.webestica.com/assets/images/element/mastercard.svg" class="h-30px ms-3" alt="" height="27">
           </div>
         </li>
 
-        <li class="list-group-item d-flex justify-content-center lh-sm py-5">
+        <li class="list-group-item d-flex justify-content-center lh-sm py-5 ">
 
           <form [formGroup]="paymentForm"
                 [ngClass]="{ 'was-validated': paymentForm.valid }"
-                class="needs-validation row gy-3 w-75"
+                class="needs-validation row gy-3 w-90"
                 novalidate>
 
             <div class="col-md-12">
@@ -111,9 +111,7 @@
         <span class="badge bg-primary rounded-pill">{{ commandes.length }}</span>
       </h4>
 
-      <ul class="list-group mb-3 shadow-lg bg-body rounded">
-
-
+      <ul class="list-group shadow-lg bg-body" id="list-products">
 
         <li *ngFor="let commande of commandes" class="align-items-center list-group-item d-flex justify-content-between lh-sm border-item-bottom py-4">
           <div class="row align-items-center">
@@ -127,25 +125,27 @@
           <span class="text-muted">{{commande.produit.tarifUnit * commande.quantite}}€</span>
         </li>
 
+      </ul>
 
-        <li class="col align-items-center list-group-item border-item-bottom py-4">
+      <ul class="list-group mb-3 shadow-lg bg-body" id="list-prices">
+        <li class="col align-items-center list-group-item border-item-bottom py-3">
           <div class="d-flex justify-content-between">
             <span class="fw-bold">Sous-total</span>
-            <strong class="fw-bold">{{ calcMontant() }} €</strong>
+            <strong class="fw-bold">{{ (calcMontant()).toFixed(2) }} €</strong>
           </div>
           <div class="d-flex justify-content-between">
             <span class="fw-bold">TVA</span>
-            <strong class="fw-bold">{{ calcMontant() * 0.2 }} €</strong>
+            <strong class="fw-bold">{{ (calcMontant() * 0.2).toFixed(2) }} €</strong>
           </div>
         </li>
 
-        <li class="list-group-item d-flex justify-content-between py-4">
-          <span class="h4 fw-bold">Total TTC (EUR)</span>
-          <strong class="h4 fw-bold text-red">{{ calcMontant() * 1.2 }} €</strong>
+        <li class="list-group-item d-flex justify-content-between py-3">
+          <span class="h5 fw-bold">Total TTC (EUR)</span>
+          <strong class="h5 fw-bold text-red">{{ (calcMontant() * 1.2).toFixed(2) }} €</strong>
         </li>
 
         <li class="list-group-item d-flex py-3">
-          <button [disabled]="!paymentForm.valid" (click)="validatePayment()" type="submit" class="btn btn-lg btn-primary w-100">Paiement sécurise</button>
+          <button [disabled]="!paymentForm.valid" (click)="validatePayment()" type="submit" class="btn btn-primary w-100">Paiement sécurisé</button>
         </li>
       </ul>
     </div>

@@ -71,7 +71,12 @@ export class PaymentComponent{
       idLigneCommande: 2,
       produit: this.produit2,
       quantite: 2
-    }
+    },
+    {
+      idLigneCommande: 3,
+      produit: this.produit1,
+      quantite: 1
+    },
   ];
 
 
