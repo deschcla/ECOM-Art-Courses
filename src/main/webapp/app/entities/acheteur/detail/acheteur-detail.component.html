@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="acheteur">
+      <h2 data-cy="acheteurDetailsHeading"><span jhiTranslate="ecomArtCoursesApp.acheteur.detail.title">Acheteur</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ acheteur.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.acheteur.adresse">Adresse</span></dt>
+        <dd>
+          <span>{{ acheteur.adresse }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.acheteur.dateNaiss">Date Naiss</span></dt>
+        <dd>
+          <span>{{ acheteur.dateNaiss | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.acheteur.numTel">Num Tel</span></dt>
+        <dd>
+          <span>{{ acheteur.numTel }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.acheteur.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ acheteur.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.acheteur.updateAt">Update At</span></dt>
+        <dd>
+          <span>{{ acheteur.updateAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.acheteur.internalUser">Internal User</span></dt>
+        <dd>
+          <span>{{ acheteur.internalUser?.id }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/acheteur', acheteur.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

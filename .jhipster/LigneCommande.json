@@ -1,11 +1,8 @@
 {
   "applications": "*",
+  "changelogDate": "20230912073714",
   "entityTableName": "ligne_commande",
   "fields": [
-    {
-      "fieldName": "idLigneCommande",
-      "fieldType": "UUID"
-    },
     {
       "fieldName": "quantite",
       "fieldType": "Integer"
@@ -13,24 +10,43 @@
     {
       "fieldName": "montant",
       "fieldType": "Float"
+    },
+    {
+      "fieldName": "validated",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "nomParticipant",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
     }
   ],
   "name": "LigneCommande",
   "relationships": [
     {
-      "otherEntityField": "idProduit",
       "otherEntityName": "produit",
-      "otherEntityRelationshipName": "lignecommande",
+      "otherEntityRelationshipName": "ligneCommande",
       "relationshipName": "produit",
       "relationshipSide": "left",
-      "relationshipType": "many-to-many"
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
       "otherEntityName": "commande",
-      "otherEntityRelationshipName": "lignecommande",
+      "otherEntityRelationshipName": "ligneCommande",
       "relationshipName": "commande",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-many"
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
-  ]
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
 }

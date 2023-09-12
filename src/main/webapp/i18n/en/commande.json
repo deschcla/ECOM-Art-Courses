@@ -1,0 +1,32 @@
+{
+  "ecomArtCoursesApp": {
+    "commande": {
+      "home": {
+        "title": "Commandes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Commande",
+        "createOrEditLabel": "Create or edit a Commande",
+        "notFound": "No Commandes found"
+      },
+      "created": "A new Commande is created with identifier {{ param }}",
+      "updated": "A Commande is updated with identifier {{ param }}",
+      "deleted": "A Commande is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Commande {{ id }}?"
+      },
+      "detail": {
+        "title": "Commande"
+      },
+      "id": "ID",
+      "montant": "Montant",
+      "validated": "Validated",
+      "createdAt": "Created At",
+      "updateAt": "Update At",
+      "carteBancaire": "Carte Bancaire",
+      "produit": "Produit",
+      "releveFacture": "Releve Facture",
+      "acheteur": "Acheteur",
+      "ligneCommande": "Ligne Commande"
+    }
+  }
+}
