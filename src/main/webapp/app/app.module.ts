@@ -5,7 +5,7 @@ import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleStrategy } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,9 +21,7 @@ import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { CourseDetailsComponent } from './course-details/course-details.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CourseSearchComponent } from './course-search/course-search.component';
-
 
 @NgModule({
   imports: [
@@ -45,10 +43,7 @@ import { CourseSearchComponent } from './course-search/course-search.component';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
-  declarations: [
-    CourseDetailsComponent,
-    CourseSearchComponent
-  ],
+  declarations: [CourseDetailsComponent, CourseSearchComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

@@ -49,12 +49,12 @@ import { CourseSearchComponent } from './course-search/course-search.component';
           component: LoginComponent,
           title: 'login.title',
         },
-        { path: '**', redirectTo: 'course-search' },
         {
           path: 'course-details/:id',
           component: CourseDetailsComponent,
           title: 'course-details.title',
         },
+        { path: '**', redirectTo: 'course-search' },
         {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),

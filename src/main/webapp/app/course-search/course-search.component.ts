@@ -29,7 +29,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 3,
         promo: null,
         quantiteTotale: 50,
-        idProf: 1,
+        nomProf: 'Jeanne Marie',
       },
       {
         idProduit: 2,
@@ -43,7 +43,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 2,
         promo: 20,
         quantiteTotale: 30,
-        idProf: 2,
+        nomProf: 'Jeanne Marie',
       },
       {
         idProduit: 1,
@@ -57,7 +57,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 3,
         promo: null,
         quantiteTotale: 50,
-        idProf: 1,
+        nomProf: 'Jeanne Marie',
       },
       {
         idProduit: 2,
@@ -71,7 +71,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 2,
         promo: 20,
         quantiteTotale: 30,
-        idProf: 2,
+        nomProf: 'Jeanne Marie',
       },
       {
         idProduit: 1,
@@ -85,7 +85,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 3,
         promo: null,
         quantiteTotale: 50,
-        idProf: 1,
+        nomProf: 'Jeanne Marie',
       },
       {
         idProduit: 2,
@@ -99,7 +99,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 2,
         promo: 20,
         quantiteTotale: 30,
-        idProf: 2,
+        nomProf: 'Jeanne Marie',
       },
       {
         idProduit: 2,
@@ -113,7 +113,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
         duree: 2,
         promo: 20,
         quantiteTotale: 30,
-        idProf: 2,
+        nomProf: 'Jeanne Marie',
       }
     );
   }
