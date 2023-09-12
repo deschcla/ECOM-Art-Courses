@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faCreditCardAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCreditCardAlt, faCalendarAlt, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Produit } from "../core/request/course.model";
 import { LigneCommande } from "../core/request/ligne-commande.model";
 
@@ -11,6 +11,7 @@ import { LigneCommande } from "../core/request/ligne-commande.model";
 export class PaymentComponent {
   faCreditCardAlt = faCreditCardAlt
   faCalendarAlt = faCalendarAlt
+  faLock = faLock
 
   produit1: Produit = {
     idProduit: 1,
@@ -31,7 +32,7 @@ export class PaymentComponent {
     idProduit: 2,
     nomProduit: "Second product" ,
     desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    tarifUnit: 12,
+    tarifUnit: 8,
     quantiteDispo: 3,
     lienImg: "https://images.unsplash.com/photo-1522003374706-1ee629dfab6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1134&q=80",
     idSousCategorie: -1,

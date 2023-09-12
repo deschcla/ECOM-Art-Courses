@@ -13,3 +13,25 @@
 .margin-sommaire{
   margin-bottom: calc(1rem + 21px);
 }
+
+.debit-card {
+  width: 100%;
+  height: 180px;
+  padding: 20px;
+  background-color: #0093E9;
+  background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px #0000001a;
+  transition: all 0.3s ease-in;
+  cursor: pointer;
+}
+
+.text-red{
+  color: #B12704
+}
+
+.img-rounded{
+  border-radius: 20%;
+}
+
