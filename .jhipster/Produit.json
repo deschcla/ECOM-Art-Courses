@@ -1,11 +1,8 @@
 {
   "applications": "*",
+  "changelogDate": "20230912073710",
   "entityTableName": "produit",
   "fields": [
-    {
-      "fieldName": "idProduit",
-      "fieldType": "UUID"
-    },
     {
       "fieldName": "nomProduit",
       "fieldType": "String"
@@ -19,33 +16,32 @@
       "fieldType": "Float"
     },
     {
-      "fieldName": "quantiteDispo",
-      "fieldType": "Integer"
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "duree",
+      "fieldType": "String"
     },
     {
       "fieldName": "lienImg",
       "fieldType": "String"
     },
     {
-      "fieldName": "dateDebut",
-      "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "dateFin",
-      "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "horaire",
-      "fieldType": "ZonedDateTime"
-    },
-    {
       "fieldName": "quantiteTotale",
       "fieldType": "Integer"
     },
     {
-      "fieldName": "difficulte",
-      "fieldType": "Difficulte",
-      "fieldValues": "Beginner,Intermediate,Advanced"
+      "fieldName": "quantiteDispo",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
     }
   ],
   "name": "Produit",
@@ -54,29 +50,26 @@
       "otherEntityName": "sousCategorie",
       "otherEntityRelationshipName": "produit",
       "relationshipName": "souscategorie",
-      "relationshipSide": "left",
+      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
     {
-      "otherEntityName": "prof",
-      "relationshipName": "prof",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "participant",
-      "otherEntityRelationshipName": "produit",
-      "relationshipName": "participant",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-many"
-    },
-    {
       "otherEntityName": "ligneCommande",
       "otherEntityRelationshipName": "produit",
-      "relationshipName": "lignecommande",
+      "relationshipName": "ligneCommande",
       "relationshipSide": "right",
-      "relationshipType": "many-to-many"
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "commande",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
     }
-  ]
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
 }

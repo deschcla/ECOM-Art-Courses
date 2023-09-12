@@ -1,0 +1,31 @@
+{
+  "ecomArtCoursesApp": {
+    "acheteur": {
+      "home": {
+        "title": "Acheteurs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Acheteur",
+        "createOrEditLabel": "Create or edit a Acheteur",
+        "notFound": "No Acheteurs found"
+      },
+      "created": "A new Acheteur is created with identifier {{ param }}",
+      "updated": "A Acheteur is updated with identifier {{ param }}",
+      "deleted": "A Acheteur is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Acheteur {{ id }}?"
+      },
+      "detail": {
+        "title": "Acheteur"
+      },
+      "id": "ID",
+      "adresse": "Adresse",
+      "dateNaiss": "Date Naiss",
+      "numTel": "Num Tel",
+      "createdAt": "Created At",
+      "updateAt": "Update At",
+      "internalUser": "Internal User",
+      "releveFacture": "Releve Facture",
+      "commande": "Commande"
+    }
+  }
+}

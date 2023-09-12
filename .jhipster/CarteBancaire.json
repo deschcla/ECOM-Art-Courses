@@ -1,14 +1,11 @@
 {
   "applications": "*",
+  "changelogDate": "20230912073715",
   "entityTableName": "carte_bancaire",
   "fields": [
     {
       "fieldName": "refCarte",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "montant",
-      "fieldType": "Float"
     },
     {
       "fieldName": "createdAt",
@@ -22,10 +19,14 @@
   "name": "CarteBancaire",
   "relationships": [
     {
-      "otherEntityName": "releveFacture",
-      "relationshipName": "relevefacture",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-one"
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "carteBancaire",
+      "relationshipName": "commande",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
-  ]
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
 }

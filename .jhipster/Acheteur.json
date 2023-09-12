@@ -1,23 +1,8 @@
 {
   "applications": "*",
+  "changelogDate": "20230912073709",
   "entityTableName": "acheteur",
   "fields": [
-    {
-      "fieldName": "idAcheteur",
-      "fieldType": "UUID"
-    },
-    {
-      "fieldName": "email",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "nom",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "prenom",
-      "fieldType": "String"
-    },
     {
       "fieldName": "adresse",
       "fieldType": "String"
@@ -31,32 +16,41 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "motDePasse",
-      "fieldType": "String"
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
     }
   ],
   "name": "Acheteur",
   "relationships": [
     {
-      "otherEntityName": "commande",
-      "relationshipName": "commande",
+      "otherEntityName": "user",
+      "relationshipName": "internalUser",
       "relationshipSide": "left",
-      "relationshipType": "one-to-one"
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
     },
     {
       "otherEntityName": "releveFacture",
       "otherEntityRelationshipName": "acheteur",
       "relationshipName": "releveFacture",
       "relationshipSide": "left",
-      "relationshipType": "one-to-many"
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
     },
     {
-      "otherEntityField": "idParticipant",
-      "otherEntityName": "participant",
+      "otherEntityName": "commande",
       "otherEntityRelationshipName": "acheteur",
-      "relationshipName": "participant",
+      "relationshipName": "commande",
       "relationshipSide": "left",
-      "relationshipType": "many-to-many"
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
     }
-  ]
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
 }

@@ -1,0 +1,28 @@
+{
+  "ecomArtCoursesApp": {
+    "sousCategorie": {
+      "home": {
+        "title": "SousCategories",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Sous Categorie",
+        "createOrEditLabel": "Créer ou éditer un Sous Categorie",
+        "notFound": "Aucun Sous Categorie trouvé"
+      },
+      "created": "Un nouveau Sous Categorie a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Sous Categorie avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Sous Categorie avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Sous Categorie {{ id }} ?"
+      },
+      "detail": {
+        "title": "Sous Categorie"
+      },
+      "id": "ID",
+      "typeSousCategorie": "Type Sous Categorie",
+      "createdAt": "Created At",
+      "updateAt": "Update At",
+      "produit": "Produit",
+      "categorie": "Categorie"
+    }
+  }
+}

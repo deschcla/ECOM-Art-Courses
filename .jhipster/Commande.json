@@ -1,31 +1,67 @@
 {
   "applications": "*",
+  "changelogDate": "20230912073713",
   "entityTableName": "commande",
   "fields": [
     {
-      "fieldName": "idCommande",
-      "fieldType": "UUID"
-    },
-    {
       "fieldName": "montant",
       "fieldType": "Float"
+    },
+    {
+      "fieldName": "validated",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
     }
   ],
   "name": "Commande",
   "relationships": [
     {
       "otherEntityName": "carteBancaire",
-      "relationshipName": "cartebancaire",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "carteBancaire",
       "relationshipSide": "left",
-      "relationshipType": "one-to-one"
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
     },
     {
-      "otherEntityField": "idLigneCommande",
+      "otherEntityName": "produit",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "produit",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "releveFacture",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "releveFacture",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "acheteur",
+      "otherEntityRelationshipName": "commande",
+      "relationshipName": "acheteur",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
       "otherEntityName": "ligneCommande",
       "otherEntityRelationshipName": "commande",
-      "relationshipName": "lignecommande",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-many"
+      "relationshipName": "ligneCommande",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
     }
-  ]
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
 }
