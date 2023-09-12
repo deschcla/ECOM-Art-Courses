@@ -28,7 +28,8 @@ public class LigneCommandeRowMapper implements BiFunction<Row, String, LigneComm
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
         entity.setQuantite(converter.fromRow(row, prefix + "_quantite", Integer.class));
         entity.setMontant(converter.fromRow(row, prefix + "_montant", Float.class));
-        entity.setValided(converter.fromRow(row, prefix + "_valided", Integer.class));
+        entity.setValidated(converter.fromRow(row, prefix + "_validated", Integer.class));
+        entity.setNomParticipant(converter.fromRow(row, prefix + "_nom_participant", String.class));
         entity.setCreatedAt(converter.fromRow(row, prefix + "_created_at", Instant.class));
         entity.setUpdateAt(converter.fromRow(row, prefix + "_update_at", Instant.class));
         entity.setProduitId(converter.fromRow(row, prefix + "_produit_id", Long.class));

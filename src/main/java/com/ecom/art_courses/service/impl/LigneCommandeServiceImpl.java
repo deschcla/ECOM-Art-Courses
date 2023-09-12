@@ -50,8 +50,11 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 if (ligneCommande.getMontant() != null) {
                     existingLigneCommande.setMontant(ligneCommande.getMontant());
                 }
-                if (ligneCommande.getValided() != null) {
-                    existingLigneCommande.setValided(ligneCommande.getValided());
+                if (ligneCommande.getValidated() != null) {
+                    existingLigneCommande.setValidated(ligneCommande.getValidated());
+                }
+                if (ligneCommande.getNomParticipant() != null) {
+                    existingLigneCommande.setNomParticipant(ligneCommande.getNomParticipant());
                 }
                 if (ligneCommande.getCreatedAt() != null) {
                     existingLigneCommande.setCreatedAt(ligneCommande.getCreatedAt());

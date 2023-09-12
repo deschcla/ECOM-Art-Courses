@@ -6,7 +6,8 @@ export interface ILigneCommande {
   id: number;
   quantite?: number | null;
   montant?: number | null;
-  valided?: number | null;
+  validated?: number | null;
+  nomParticipant?: string | null;
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
   produit?: Pick<IProduit, 'id'> | null;

@@ -48,8 +48,8 @@ public class CommandeServiceImpl implements CommandeService {
                 if (commande.getMontant() != null) {
                     existingCommande.setMontant(commande.getMontant());
                 }
-                if (commande.getValided() != null) {
-                    existingCommande.setValided(commande.getValided());
+                if (commande.getValidated() != null) {
+                    existingCommande.setValidated(commande.getValidated());
                 }
                 if (commande.getCreatedAt() != null) {
                     existingCommande.setCreatedAt(commande.getCreatedAt());

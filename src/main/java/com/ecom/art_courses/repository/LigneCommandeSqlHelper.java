@@ -13,7 +13,8 @@ public class LigneCommandeSqlHelper {
         columns.add(Column.aliased("id", table, columnPrefix + "_id"));
         columns.add(Column.aliased("quantite", table, columnPrefix + "_quantite"));
         columns.add(Column.aliased("montant", table, columnPrefix + "_montant"));
-        columns.add(Column.aliased("valided", table, columnPrefix + "_valided"));
+        columns.add(Column.aliased("validated", table, columnPrefix + "_validated"));
+        columns.add(Column.aliased("nom_participant", table, columnPrefix + "_nom_participant"));
         columns.add(Column.aliased("created_at", table, columnPrefix + "_created_at"));
         columns.add(Column.aliased("update_at", table, columnPrefix + "_update_at"));
 

@@ -12,7 +12,7 @@ public class CommandeSqlHelper {
         List<Expression> columns = new ArrayList<>();
         columns.add(Column.aliased("id", table, columnPrefix + "_id"));
         columns.add(Column.aliased("montant", table, columnPrefix + "_montant"));
-        columns.add(Column.aliased("valided", table, columnPrefix + "_valided"));
+        columns.add(Column.aliased("validated", table, columnPrefix + "_validated"));
         columns.add(Column.aliased("created_at", table, columnPrefix + "_created_at"));
         columns.add(Column.aliased("update_at", table, columnPrefix + "_update_at"));
 

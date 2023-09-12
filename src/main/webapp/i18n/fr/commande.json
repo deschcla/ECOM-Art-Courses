@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "montant": "Montant",
-      "valided": "Valided",
+      "validated": "Validated",
       "createdAt": "Created At",
       "updateAt": "Update At",
       "carteBancaire": "Carte Bancaire",

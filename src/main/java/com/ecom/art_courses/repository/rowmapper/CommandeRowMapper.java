@@ -27,7 +27,7 @@ public class CommandeRowMapper implements BiFunction<Row, String, Commande> {
         Commande entity = new Commande();
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
         entity.setMontant(converter.fromRow(row, prefix + "_montant", Float.class));
-        entity.setValided(converter.fromRow(row, prefix + "_valided", Integer.class));
+        entity.setValidated(converter.fromRow(row, prefix + "_validated", Integer.class));
         entity.setCreatedAt(converter.fromRow(row, prefix + "_created_at", Instant.class));
         entity.setUpdateAt(converter.fromRow(row, prefix + "_update_at", Instant.class));
         entity.setReleveFactureId(converter.fromRow(row, prefix + "_releve_facture_id", Long.class));

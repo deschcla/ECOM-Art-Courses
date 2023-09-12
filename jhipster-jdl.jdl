@@ -33,7 +33,7 @@ entity SousCategorie {
 
 entity Commande {
     montant Float
-    valided Integer
+    validated Integer
     createdAt Instant
     updateAt Instant
 }
@@ -42,7 +42,8 @@ entity Commande {
 entity LigneCommande {
     quantite Integer
     montant Float
-    valided Integer
+    validated Integer
+    nomParticipant String
     createdAt Instant
     updateAt Instant
 }

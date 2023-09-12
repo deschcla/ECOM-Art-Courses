@@ -21,7 +21,7 @@ describe('Commande Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             montant: expect.any(Object),
-            valided: expect.any(Object),
+            validated: expect.any(Object),
             createdAt: expect.any(Object),
             updateAt: expect.any(Object),
             produits: expect.any(Object),
@@ -38,7 +38,7 @@ describe('Commande Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             montant: expect.any(Object),
-            valided: expect.any(Object),
+            validated: expect.any(Object),
             createdAt: expect.any(Object),
             updateAt: expect.any(Object),
             produits: expect.any(Object),

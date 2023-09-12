@@ -20,7 +20,10 @@
             <column name="montant" type="${floatType}">
                 <constraints nullable="true" />
             </column>
-            <column name="valided" type="integer">
+            <column name="validated" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="nom_participant" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="created_at" type="${datetimeType}">
@@ -60,7 +63,8 @@
             <column name="id" type="numeric"/>
             <column name="quantite" type="numeric"/>
             <column name="montant" type="numeric"/>
-            <column name="valided" type="numeric"/>
+            <column name="validated" type="numeric"/>
+            <column name="nom_participant" type="string"/>
             <column name="created_at" type="date"/>
             <column name="update_at" type="date"/>
             <column name="produit_id" type="numeric"/>

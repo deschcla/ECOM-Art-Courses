@@ -45,8 +45,8 @@ class CommandeResourceIT {
     private static final Float DEFAULT_MONTANT = 1F;
     private static final Float UPDATED_MONTANT = 2F;
 
-    private static final Integer DEFAULT_VALIDED = 1;
-    private static final Integer UPDATED_VALIDED = 2;
+    private static final Integer DEFAULT_VALIDATED = 1;
+    private static final Integer UPDATED_VALIDATED = 2;
 
     private static final Instant DEFAULT_CREATED_AT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -86,7 +86,7 @@ class CommandeResourceIT {
     public static Commande createEntity(EntityManager em) {
         Commande commande = new Commande()
             .montant(DEFAULT_MONTANT)
-            .valided(DEFAULT_VALIDED)
+            .validated(DEFAULT_VALIDATED)
             .createdAt(DEFAULT_CREATED_AT)
             .updateAt(DEFAULT_UPDATE_AT);
         // Add required entity
@@ -117,7 +117,7 @@ class CommandeResourceIT {
     public static Commande createUpdatedEntity(EntityManager em) {
         Commande commande = new Commande()
             .montant(UPDATED_MONTANT)
-            .valided(UPDATED_VALIDED)
+            .validated(UPDATED_VALIDATED)
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
         // Add required entity
@@ -181,7 +181,7 @@ class CommandeResourceIT {
         assertThat(commandeList).hasSize(databaseSizeBeforeCreate + 1);
         Commande testCommande = commandeList.get(commandeList.size() - 1);
         assertThat(testCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testCommande.getValided()).isEqualTo(DEFAULT_VALIDED);
+        assertThat(testCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
         assertThat(testCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
@@ -232,7 +232,7 @@ class CommandeResourceIT {
         assertThat(commandeList).hasSize(1);
         Commande testCommande = commandeList.get(0);
         assertThat(testCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testCommande.getValided()).isEqualTo(DEFAULT_VALIDED);
+        assertThat(testCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
         assertThat(testCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
@@ -257,8 +257,8 @@ class CommandeResourceIT {
             .value(hasItem(commande.getId().intValue()))
             .jsonPath("$.[*].montant")
             .value(hasItem(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.[*].valided")
-            .value(hasItem(DEFAULT_VALIDED))
+            .jsonPath("$.[*].validated")
+            .value(hasItem(DEFAULT_VALIDATED))
             .jsonPath("$.[*].createdAt")
             .value(hasItem(DEFAULT_CREATED_AT.toString()))
             .jsonPath("$.[*].updateAt")
@@ -302,8 +302,8 @@ class CommandeResourceIT {
             .value(is(commande.getId().intValue()))
             .jsonPath("$.montant")
             .value(is(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.valided")
-            .value(is(DEFAULT_VALIDED))
+            .jsonPath("$.validated")
+            .value(is(DEFAULT_VALIDATED))
             .jsonPath("$.createdAt")
             .value(is(DEFAULT_CREATED_AT.toString()))
             .jsonPath("$.updateAt")
@@ -331,7 +331,7 @@ class CommandeResourceIT {
 
         // Update the commande
         Commande updatedCommande = commandeRepository.findById(commande.getId()).block();
-        updatedCommande.montant(UPDATED_MONTANT).valided(UPDATED_VALIDED).createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
+        updatedCommande.montant(UPDATED_MONTANT).validated(UPDATED_VALIDATED).createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
 
         webTestClient
             .put()
@@ -347,7 +347,7 @@ class CommandeResourceIT {
         assertThat(commandeList).hasSize(databaseSizeBeforeUpdate);
         Commande testCommande = commandeList.get(commandeList.size() - 1);
         assertThat(testCommande.getMontant()).isEqualTo(UPDATED_MONTANT);
-        assertThat(testCommande.getValided()).isEqualTo(UPDATED_VALIDED);
+        assertThat(testCommande.getValidated()).isEqualTo(UPDATED_VALIDATED);
         assertThat(testCommande.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testCommande.getUpdateAt()).isEqualTo(UPDATED_UPDATE_AT);
     }
@@ -439,7 +439,7 @@ class CommandeResourceIT {
         assertThat(commandeList).hasSize(databaseSizeBeforeUpdate);
         Commande testCommande = commandeList.get(commandeList.size() - 1);
         assertThat(testCommande.getMontant()).isEqualTo(UPDATED_MONTANT);
-        assertThat(testCommande.getValided()).isEqualTo(DEFAULT_VALIDED);
+        assertThat(testCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
         assertThat(testCommande.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
@@ -455,7 +455,11 @@ class CommandeResourceIT {
         Commande partialUpdatedCommande = new Commande();
         partialUpdatedCommande.setId(commande.getId());
 
-        partialUpdatedCommande.montant(UPDATED_MONTANT).valided(UPDATED_VALIDED).createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
+        partialUpdatedCommande
+            .montant(UPDATED_MONTANT)
+            .validated(UPDATED_VALIDATED)
+            .createdAt(UPDATED_CREATED_AT)
+            .updateAt(UPDATED_UPDATE_AT);
 
         webTestClient
             .patch()
@@ -471,7 +475,7 @@ class CommandeResourceIT {
         assertThat(commandeList).hasSize(databaseSizeBeforeUpdate);
         Commande testCommande = commandeList.get(commandeList.size() - 1);
         assertThat(testCommande.getMontant()).isEqualTo(UPDATED_MONTANT);
-        assertThat(testCommande.getValided()).isEqualTo(UPDATED_VALIDED);
+        assertThat(testCommande.getValidated()).isEqualTo(UPDATED_VALIDATED);
         assertThat(testCommande.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testCommande.getUpdateAt()).isEqualTo(UPDATED_UPDATE_AT);
     }

@@ -33,7 +33,7 @@ type CommandeFormDefaults = Pick<NewCommande, 'id' | 'createdAt' | 'updateAt' | 
 type CommandeFormGroupContent = {
   id: FormControl<CommandeFormRawValue['id'] | NewCommande['id']>;
   montant: FormControl<CommandeFormRawValue['montant']>;
-  valided: FormControl<CommandeFormRawValue['valided']>;
+  validated: FormControl<CommandeFormRawValue['validated']>;
   createdAt: FormControl<CommandeFormRawValue['createdAt']>;
   updateAt: FormControl<CommandeFormRawValue['updateAt']>;
   produits: FormControl<CommandeFormRawValue['produits']>;
@@ -59,7 +59,7 @@ export class CommandeFormService {
         }
       ),
       montant: new FormControl(commandeRawValue.montant),
-      valided: new FormControl(commandeRawValue.valided),
+      validated: new FormControl(commandeRawValue.validated),
       createdAt: new FormControl(commandeRawValue.createdAt),
       updateAt: new FormControl(commandeRawValue.updateAt),
       produits: new FormControl(commandeRawValue.produits ?? []),

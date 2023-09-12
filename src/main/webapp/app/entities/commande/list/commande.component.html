@@ -44,9 +44,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="valided">
+          <th scope="col" jhiSortBy="validated">
             <div class="d-flex">
-              <span jhiTranslate="ecomArtCoursesApp.commande.valided">Valided</span>
+              <span jhiTranslate="ecomArtCoursesApp.commande.validated">Validated</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -89,7 +89,7 @@
             <a [routerLink]="['/commande', commande.id, 'view']">{{ commande.id }}</a>
           </td>
           <td>{{ commande.montant }}</td>
-          <td>{{ commande.valided }}</td>
+          <td>{{ commande.validated }}</td>
           <td>{{ commande.createdAt | formatMediumDatetime }}</td>
           <td>{{ commande.updateAt | formatMediumDatetime }}</td>
           <td>

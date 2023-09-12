@@ -17,7 +17,7 @@
             <column name="montant" type="${floatType}">
                 <constraints nullable="true" />
             </column>
-            <column name="valided" type="integer">
+            <column name="validated" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="created_at" type="${datetimeType}">
@@ -70,7 +70,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="montant" type="numeric"/>
-            <column name="valided" type="numeric"/>
+            <column name="validated" type="numeric"/>
             <column name="created_at" type="date"/>
             <column name="update_at" type="date"/>
             <column name="releve_facture_id" type="numeric"/>

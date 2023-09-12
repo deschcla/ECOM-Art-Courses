@@ -39,8 +39,11 @@ class LigneCommandeResourceIT {
     private static final Float DEFAULT_MONTANT = 1F;
     private static final Float UPDATED_MONTANT = 2F;
 
-    private static final Integer DEFAULT_VALIDED = 1;
-    private static final Integer UPDATED_VALIDED = 2;
+    private static final Integer DEFAULT_VALIDATED = 1;
+    private static final Integer UPDATED_VALIDATED = 2;
+
+    private static final String DEFAULT_NOM_PARTICIPANT = "AAAAAAAAAA";
+    private static final String UPDATED_NOM_PARTICIPANT = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_CREATED_AT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -75,7 +78,8 @@ class LigneCommandeResourceIT {
         LigneCommande ligneCommande = new LigneCommande()
             .quantite(DEFAULT_QUANTITE)
             .montant(DEFAULT_MONTANT)
-            .valided(DEFAULT_VALIDED)
+            .validated(DEFAULT_VALIDATED)
+            .nomParticipant(DEFAULT_NOM_PARTICIPANT)
             .createdAt(DEFAULT_CREATED_AT)
             .updateAt(DEFAULT_UPDATE_AT);
         // Add required entity
@@ -99,7 +103,8 @@ class LigneCommandeResourceIT {
         LigneCommande ligneCommande = new LigneCommande()
             .quantite(UPDATED_QUANTITE)
             .montant(UPDATED_MONTANT)
-            .valided(UPDATED_VALIDED)
+            .validated(UPDATED_VALIDATED)
+            .nomParticipant(UPDATED_NOM_PARTICIPANT)
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
         // Add required entity
@@ -153,7 +158,8 @@ class LigneCommandeResourceIT {
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(DEFAULT_QUANTITE);
         assertThat(testLigneCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testLigneCommande.getValided()).isEqualTo(DEFAULT_VALIDED);
+        assertThat(testLigneCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
+        assertThat(testLigneCommande.getNomParticipant()).isEqualTo(DEFAULT_NOM_PARTICIPANT);
         assertThat(testLigneCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testLigneCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
@@ -205,7 +211,8 @@ class LigneCommandeResourceIT {
         LigneCommande testLigneCommande = ligneCommandeList.get(0);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(DEFAULT_QUANTITE);
         assertThat(testLigneCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testLigneCommande.getValided()).isEqualTo(DEFAULT_VALIDED);
+        assertThat(testLigneCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
+        assertThat(testLigneCommande.getNomParticipant()).isEqualTo(DEFAULT_NOM_PARTICIPANT);
         assertThat(testLigneCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testLigneCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
@@ -232,8 +239,10 @@ class LigneCommandeResourceIT {
             .value(hasItem(DEFAULT_QUANTITE))
             .jsonPath("$.[*].montant")
             .value(hasItem(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.[*].valided")
-            .value(hasItem(DEFAULT_VALIDED))
+            .jsonPath("$.[*].validated")
+            .value(hasItem(DEFAULT_VALIDATED))
+            .jsonPath("$.[*].nomParticipant")
+            .value(hasItem(DEFAULT_NOM_PARTICIPANT))
             .jsonPath("$.[*].createdAt")
             .value(hasItem(DEFAULT_CREATED_AT.toString()))
             .jsonPath("$.[*].updateAt")
@@ -262,8 +271,10 @@ class LigneCommandeResourceIT {
             .value(is(DEFAULT_QUANTITE))
             .jsonPath("$.montant")
             .value(is(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.valided")
-            .value(is(DEFAULT_VALIDED))
+            .jsonPath("$.validated")
+            .value(is(DEFAULT_VALIDATED))
+            .jsonPath("$.nomParticipant")
+            .value(is(DEFAULT_NOM_PARTICIPANT))
             .jsonPath("$.createdAt")
             .value(is(DEFAULT_CREATED_AT.toString()))
             .jsonPath("$.updateAt")
@@ -294,7 +305,8 @@ class LigneCommandeResourceIT {
         updatedLigneCommande
             .quantite(UPDATED_QUANTITE)
             .montant(UPDATED_MONTANT)
-            .valided(UPDATED_VALIDED)
+            .validated(UPDATED_VALIDATED)
+            .nomParticipant(UPDATED_NOM_PARTICIPANT)
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
 
@@ -313,7 +325,8 @@ class LigneCommandeResourceIT {
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(UPDATED_QUANTITE);
         assertThat(testLigneCommande.getMontant()).isEqualTo(UPDATED_MONTANT);
-        assertThat(testLigneCommande.getValided()).isEqualTo(UPDATED_VALIDED);
+        assertThat(testLigneCommande.getValidated()).isEqualTo(UPDATED_VALIDATED);
+        assertThat(testLigneCommande.getNomParticipant()).isEqualTo(UPDATED_NOM_PARTICIPANT);
         assertThat(testLigneCommande.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testLigneCommande.getUpdateAt()).isEqualTo(UPDATED_UPDATE_AT);
     }
@@ -404,7 +417,8 @@ class LigneCommandeResourceIT {
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(DEFAULT_QUANTITE);
         assertThat(testLigneCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testLigneCommande.getValided()).isEqualTo(DEFAULT_VALIDED);
+        assertThat(testLigneCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
+        assertThat(testLigneCommande.getNomParticipant()).isEqualTo(DEFAULT_NOM_PARTICIPANT);
         assertThat(testLigneCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testLigneCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
@@ -423,7 +437,8 @@ class LigneCommandeResourceIT {
         partialUpdatedLigneCommande
             .quantite(UPDATED_QUANTITE)
             .montant(UPDATED_MONTANT)
-            .valided(UPDATED_VALIDED)
+            .validated(UPDATED_VALIDATED)
+            .nomParticipant(UPDATED_NOM_PARTICIPANT)
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
 
@@ -442,7 +457,8 @@ class LigneCommandeResourceIT {
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(UPDATED_QUANTITE);
         assertThat(testLigneCommande.getMontant()).isEqualTo(UPDATED_MONTANT);
-        assertThat(testLigneCommande.getValided()).isEqualTo(UPDATED_VALIDED);
+        assertThat(testLigneCommande.getValidated()).isEqualTo(UPDATED_VALIDATED);
+        assertThat(testLigneCommande.getNomParticipant()).isEqualTo(UPDATED_NOM_PARTICIPANT);
         assertThat(testLigneCommande.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testLigneCommande.getUpdateAt()).isEqualTo(UPDATED_UPDATE_AT);
     }

@@ -1,4 +1,4 @@
-id;montant;valided;created_at;update_at;releve_facture_id;acheteur_id
+id;montant;validated;created_at;update_at;releve_facture_id;acheteur_id
 1;20337;2716;2023-09-12T06:03:27;2023-09-12T02:33:18;1;1
 2;28184;6187;2023-09-11T22:59:10;2023-09-11T16:14:03;2;2
 3;25230;19440;2023-09-11T22:59:55;2023-09-11T10:56:14;3;1

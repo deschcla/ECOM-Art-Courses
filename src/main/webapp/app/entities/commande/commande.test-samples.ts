@@ -14,7 +14,7 @@ export const sampleWithPartialData: ICommande = {
 export const sampleWithFullData: ICommande = {
   id: 9586,
   montant: 30777,
-  valided: 11954,
+  validated: 11954,
   createdAt: dayjs('2023-09-12T00:46'),
   updateAt: dayjs('2023-09-11T21:28'),
 };

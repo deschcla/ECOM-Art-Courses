@@ -6,7 +6,7 @@ import { IAcheteur } from 'app/entities/acheteur/acheteur.model';
 export interface ICommande {
   id: number;
   montant?: number | null;
-  valided?: number | null;
+  validated?: number | null;
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
   produits?: Pick<IProduit, 'id'>[] | null;

@@ -27,8 +27,8 @@ public class Commande implements Serializable {
     @Column("montant")
     private Float montant;
 
-    @Column("valided")
-    private Integer valided;
+    @Column("validated")
+    private Integer validated;
 
     @Column("created_at")
     private Instant createdAt;
@@ -90,17 +90,17 @@ public class Commande implements Serializable {
         this.montant = montant;
     }
 
-    public Integer getValided() {
-        return this.valided;
+    public Integer getValidated() {
+        return this.validated;
     }
 
-    public Commande valided(Integer valided) {
-        this.setValided(valided);
+    public Commande validated(Integer validated) {
+        this.setValidated(validated);
         return this;
     }
 
-    public void setValided(Integer valided) {
-        this.valided = valided;
+    public void setValidated(Integer validated) {
+        this.validated = validated;
     }
 
     public Instant getCreatedAt() {
@@ -285,7 +285,7 @@ public class Commande implements Serializable {
         return "Commande{" +
             "id=" + getId() +
             ", montant=" + getMontant() +
-            ", valided=" + getValided() +
+            ", validated=" + getValidated() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updateAt='" + getUpdateAt() + "'" +
             "}";

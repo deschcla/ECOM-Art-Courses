@@ -28,8 +28,11 @@ public class LigneCommande implements Serializable {
     @Column("montant")
     private Float montant;
 
-    @Column("valided")
-    private Integer valided;
+    @Column("validated")
+    private Integer validated;
+
+    @Column("nom_participant")
+    private String nomParticipant;
 
     @Column("created_at")
     private Instant createdAt;
@@ -92,17 +95,30 @@ public class LigneCommande implements Serializable {
         this.montant = montant;
     }
 
-    public Integer getValided() {
-        return this.valided;
+    public Integer getValidated() {
+        return this.validated;
     }
 
-    public LigneCommande valided(Integer valided) {
-        this.setValided(valided);
+    public LigneCommande validated(Integer validated) {
+        this.setValidated(validated);
         return this;
     }
 
-    public void setValided(Integer valided) {
-        this.valided = valided;
+    public void setValidated(Integer validated) {
+        this.validated = validated;
+    }
+
+    public String getNomParticipant() {
+        return this.nomParticipant;
+    }
+
+    public LigneCommande nomParticipant(String nomParticipant) {
+        this.setNomParticipant(nomParticipant);
+        return this;
+    }
+
+    public void setNomParticipant(String nomParticipant) {
+        this.nomParticipant = nomParticipant;
     }
 
     public Instant getCreatedAt() {
@@ -201,7 +217,8 @@ public class LigneCommande implements Serializable {
             "id=" + getId() +
             ", quantite=" + getQuantite() +
             ", montant=" + getMontant() +
-            ", valided=" + getValided() +
+            ", validated=" + getValidated() +
+            ", nomParticipant='" + getNomParticipant() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updateAt='" + getUpdateAt() + "'" +
             "}";

@@ -34,7 +34,8 @@ type LigneCommandeFormGroupContent = {
   id: FormControl<LigneCommandeFormRawValue['id'] | NewLigneCommande['id']>;
   quantite: FormControl<LigneCommandeFormRawValue['quantite']>;
   montant: FormControl<LigneCommandeFormRawValue['montant']>;
-  valided: FormControl<LigneCommandeFormRawValue['valided']>;
+  validated: FormControl<LigneCommandeFormRawValue['validated']>;
+  nomParticipant: FormControl<LigneCommandeFormRawValue['nomParticipant']>;
   createdAt: FormControl<LigneCommandeFormRawValue['createdAt']>;
   updateAt: FormControl<LigneCommandeFormRawValue['updateAt']>;
   produit: FormControl<LigneCommandeFormRawValue['produit']>;
@@ -60,7 +61,8 @@ export class LigneCommandeFormService {
       ),
       quantite: new FormControl(ligneCommandeRawValue.quantite),
       montant: new FormControl(ligneCommandeRawValue.montant),
-      valided: new FormControl(ligneCommandeRawValue.valided),
+      validated: new FormControl(ligneCommandeRawValue.validated),
+      nomParticipant: new FormControl(ligneCommandeRawValue.nomParticipant),
       createdAt: new FormControl(ligneCommandeRawValue.createdAt),
       updateAt: new FormControl(ligneCommandeRawValue.updateAt),
       produit: new FormControl(ligneCommandeRawValue.produit, {

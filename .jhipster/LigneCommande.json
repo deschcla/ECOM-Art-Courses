@@ -12,8 +12,12 @@
       "fieldType": "Float"
     },
     {
-      "fieldName": "valided",
+      "fieldName": "validated",
       "fieldType": "Integer"
+    },
+    {
+      "fieldName": "nomParticipant",
+      "fieldType": "String"
     },
     {
       "fieldName": "createdAt",

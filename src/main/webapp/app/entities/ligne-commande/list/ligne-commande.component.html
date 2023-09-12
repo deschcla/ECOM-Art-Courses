@@ -50,9 +50,15 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="valided">
+          <th scope="col" jhiSortBy="validated">
             <div class="d-flex">
-              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.valided">Valided</span>
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.validated">Validated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="nomParticipant">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.nomParticipant">Nom Participant</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -90,7 +96,8 @@
           </td>
           <td>{{ ligneCommande.quantite }}</td>
           <td>{{ ligneCommande.montant }}</td>
-          <td>{{ ligneCommande.valided }}</td>
+          <td>{{ ligneCommande.validated }}</td>
+          <td>{{ ligneCommande.nomParticipant }}</td>
           <td>{{ ligneCommande.createdAt | formatMediumDatetime }}</td>
           <td>{{ ligneCommande.updateAt | formatMediumDatetime }}</td>
           <td>
