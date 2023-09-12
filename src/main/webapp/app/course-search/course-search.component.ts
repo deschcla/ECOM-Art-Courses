@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 import { Course } from 'app/core/request/course.model';
 import { CartService } from 'app/core/util/cart.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'jhi-course-search',
@@ -11,11 +13,18 @@ import { Subject } from 'rxjs';
 })
 export class CourseSearchComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
+  account: Account | null = null;
+  signedOut: boolean = false;
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(private accountService: AccountService, private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
+    this.accountService
+      .getAuthenticationState()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(account => (this.account = account));
+
     this.courses.push(
       {
         idProduit: 1,
@@ -123,15 +132,22 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  viewDetails(id: number): void {
-    this.router.navigate(['/course-details/' + id.toString()]);
+  viewDetails(course: Course): void {
+    this.router.navigateByUrl('/course-details/' + course.idProduit.toString(), { state: course });
   }
 
   addToCart(course: Course, event: Event): void {
-    // this.notifierService.notify('success', 'You are awesome! I mean it!');
-    this.cartService.addToCart(course, 1);
-    console.log(this.cartService.cart);
+    if (this.account?.activated) {
+      this.signedOut = false;
 
+      // this.notifierService.notify('success', 'You are awesome! I mean it!');
+      this.cartService.addToCart(course, 1);
+      console.log(this.cartService.cart);
+    } else {
+      this.signedOut = true;
+      // document.getElementById('exampleModalCenter').modal(options)
+    }
+    console.log(this.signedOut);
     event.stopPropagation();
   }
 }

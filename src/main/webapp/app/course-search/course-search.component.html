@@ -4,7 +4,7 @@
   <div class="col-md-10">
     <div class="row">
       <div *ngFor="let course of courses" class="col-md-auto">
-        <div class="card" (click)="viewDetails(course.idProduit)">
+        <div class="card" (click)="viewDetails(course)">
           <img class="card-img-top" src="{{ course.lienImg }}" alt="{{ course.nomProduit }} img" />
 
           <div class="card-body">
@@ -38,13 +38,20 @@
                   >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% off)</span
                 >
               </span>
-              <button type="button" class="btn btn-primary cart" (click)="addToCart(course, $event)">
+              <button
+                type="button"
+                class="btn btn-primary cart"
+                (click)="addToCart(course, $event)"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
                 <fa-icon icon="cart-plus"></fa-icon>
               </button>
             </div>
           </div>
         </div>
       </div>
+
       <!-- <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
           <li class="page-item disabled">

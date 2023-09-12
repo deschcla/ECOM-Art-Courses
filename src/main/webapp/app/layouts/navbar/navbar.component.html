@@ -24,9 +24,14 @@
           <input type="text" class="form-control" placeholder="Search" formControlName="search" />
         </form>
       </div>
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto" [ngClass]="{ font: account?.authorities }">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
+          <a
+            class="nav-link"
+            routerLink="/"
+            (click)="collapseNavbar()"
+            *ngSwitchCase="account?.authorities?.includes('ROLE_USER') && !account?.authorities?.includes('ROLE_ADMIN')"
+          >
             <span>
               <fa-icon icon="cart-shopping"></fa-icon>
               <span class="badge bg-danger cartCounter">{{ counter }}</span>
@@ -35,8 +40,8 @@
           </a>
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-        <!-- <li
-          *ngSwitchCase="true"
+        <li
+          *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
           class="nav-item dropdown pointer"
           display="dynamic"
@@ -46,14 +51,14 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
             <span>
               <fa-icon icon="th-list"></fa-icon>
-              <span jhiTranslate="global.menu.entities.main">Entities</span>
+              <!-- <span jhiTranslate="global.menu.entities.main">Entities</span> -->
             </span>
           </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu"> -->
-        <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-        <!-- </ul>
-        </li> -->
-        <!-- <li
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+            <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+          </ul>
+        </li>
+        <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
           class="nav-item dropdown pointer"
@@ -64,7 +69,7 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
             <span>
               <fa-icon icon="users-cog"></fa-icon>
-              <span jhiTranslate="global.menu.admin.main">Administration</span>
+              <!-- <span jhiTranslate="global.menu.admin.main">Administration</span> -->
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
@@ -103,10 +108,10 @@
                 <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.admin.apidocs">API</span>
               </a>
-            </li>-->
-        <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here --><!--
+            </li>
+            <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
-        </li> -->
+        </li>
         <!-- <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
