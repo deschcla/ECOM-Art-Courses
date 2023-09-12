@@ -23,7 +23,7 @@ import { CourseSearchComponent } from './course-search/course-search.component';
           title: 'home.title',
         },
         {
-          path: 'course-search',
+          path: '',
           component: CourseSearchComponent,
           title: 'course-search.title',
         },
@@ -54,11 +54,11 @@ import { CourseSearchComponent } from './course-search/course-search.component';
           component: CourseDetailsComponent,
           title: 'course-details.title',
         },
-        { path: '**', redirectTo: 'course-search' },
         {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
         },
+        // { path: '**', redirectTo: 'course-search' },
         ...errorRoute,
       ],
       { enableTracing: DEBUG_INFO_ENABLED, bindToComponentInputs: true }

@@ -10,7 +10,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ course.nomProduit }}</h5>
 
-            <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo < 10 }">
+            <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo! < 0.15 * course.quantiteTotale! }">
               {{ course.quantiteDispo }} places disponibles
             </p>
 
@@ -18,28 +18,34 @@
               <div
                 class="progress-bar"
                 role="progressbar"
-                [ngStyle]="{ width: ((course.quantiteTotale - course.quantiteDispo) / course.quantiteTotale) * 100 + '%' }"
-                [ngClass]="{ 'bg-danger': course.quantiteDispo < 10 }"
-                [attr.aria-valuenow]="course.quantiteTotale - course.quantiteDispo"
+                [ngStyle]="{ width: ((course.quantiteTotale! - course.quantiteDispo!) / course.quantiteTotale!) * 100 + '%' }"
+                [ngClass]="{ 'bg-danger': course.quantiteDispo! < 0.15 * course.quantiteTotale! }"
+                [attr.aria-valuenow]="course.quantiteTotale! - course.quantiteDispo!"
                 aria-valuemin="0"
                 [attr.aria-valuenow]="course.quantiteTotale"
               ></div>
             </div>
 
             <div class="card-text moreInfo">
-              <span>{{ course.dateTime | date : 'dd/MM/yy' }}</span> ·
-              <span>{{ course.dateTime | date : 'HH' }}h{{ course.dateTime | date : 'mm' }}</span> ·
+              <span>{{ course.date!.format('DD/MM/YYYY') }}</span> ·
+              <span>{{ course.date!.format('HH') }}h{{ course.date!.format('mm') }}</span> ·
               <span>{{ course.duree }} heures</span>
             </div>
 
             <div class="text-center price-div">
               <span class="card-text price">
-                <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span>
-                <span *ngIf="course.promo" class="promo text-danger"
+                <span> {{ course.tarifUnit }}€ </span>
+                <!-- <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span> -->
+                <!-- <span *ngIf="course.promo" class="promo text-danger"
                   >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% de réduction)</span
-                >
+                > -->
               </span>
-              <button type="button" class="btn btn-primary cart" (click)="addToCart(course, $event)">
+              <button
+                type="button"
+                class="btn btn-primary cart"
+                (click)="addToCart(course, $event)"
+                [ngClass]="{ disabled: course.quantiteDispo! == 0 }"
+              >
                 <fa-icon icon="cart-plus"></fa-icon>
               </button>
             </div>
