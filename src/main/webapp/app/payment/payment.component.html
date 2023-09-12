@@ -46,17 +46,20 @@
 
         <li class="list-group-item d-flex justify-content-center lh-sm py-5">
 
-          <div class="row gy-3 w-75">
+          <form [formGroup]="paymentForm" class="needs-validation was-validated row gy-3 w-75" novalidate>
 
             <div class="col-md-12">
               <label for="cc-number" class="form-label">Numéro de carte</label>
 
-              <div class="input-group mb-3">
-              <span class="input-group-text">
-                <fa-icon [icon]="faCreditCardAlt"></fa-icon>
-              </span>
-                <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" required="true">
-              </div>
+              <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" formControlName="card_number">
+
+              <!--<div class="input-group mb-3">
+                <span class="input-group-text">
+                  <fa-icon [icon]="faCreditCardAlt"></fa-icon>
+                </span>
+                <input type="text" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" formControlName="card_number">
+              </div>-->
+
               <div class="invalid-feedback">
                 Numéro de carte est nécessaire
               </div>
@@ -65,12 +68,14 @@
             <div class="col-md-6">
               <label for="cc-expiration" class="form-label">Date d'expiration</label>
 
-              <div class="input-group mb-3">
-              <span class="input-group-text">
-                <fa-icon [icon]="faCalendarAlt"></fa-icon>
-              </span>
-                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" required="true">
-              </div>
+              <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp">
+
+              <!--<div class="input-group mb-3">
+                <span class="input-group-text">
+                  <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                </span>
+                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp">
+              </div>-->
               <div class="invalid-feedback">
                 Date d'expiration est nécessaire
               </div>
@@ -79,19 +84,25 @@
             <div class="col-md-6">
               <label for="cc-cvv" class="form-label">Cryptogramme visuel</label>
 
-              <div class="input-group mb-3">
-              <span class="input-group-text">
-                <fa-icon [icon]="faLock"></fa-icon>
-              </span>
-                <input type="password" class="form-control" id="cc-cvv" placeholder="000" required="true">
-              </div>
+              <input type="password" class="form-control" id="cc-cvv" placeholder="000" formControlName="ccv">
+
+              <!--<div class="input-group mb-3">
+                <span class="input-group-text">
+                  <fa-icon [icon]="faLock"></fa-icon>
+                </span>
+                <input type="password" class="form-control" id="cc-cvv" placeholder="000" formControlName="ccv">
+              </div>-->
 
               <div class="invalid-feedback">
                 Cryptogramme visuel est nécessaire
               </div>
             </div>
 
-          </div>
+          </form>
+
+          <!--<p>Form value: {{ paymentForm.value | json }}</p>
+          <p>Form status: {{ paymentForm.status | json }}</p>-->
+
         </li>
 
       </ul>
@@ -138,7 +149,7 @@
         </li>
 
         <li class="list-group-item d-flex py-3">
-          <button type="submit" class="btn btn-lg btn-primary w-100">Paiement sécurise</button>
+          <button (click)="validatePayment()" type="submit" class="btn btn-lg btn-primary w-100">Paiement sécurise</button>
         </li>
       </ul>
     </div>

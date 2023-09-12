@@ -2,16 +2,34 @@ import { Component } from '@angular/core';
 import { faCreditCardAlt, faCalendarAlt, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Produit } from "../core/request/course.model";
 import { LigneCommande } from "../core/request/ligne-commande.model";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'jhi-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })
-export class PaymentComponent {
+export class PaymentComponent{
   faCreditCardAlt = faCreditCardAlt
   faCalendarAlt = faCalendarAlt
   faLock = faLock
+
+
+  paymentForm = new FormGroup({
+    card_number: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11}|62[0-9]{14})$/)
+    ]),
+    date_exp: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)
+    ]),
+    ccv: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^[0-9]{3,4}$/)
+    ])
+  });
+
 
   produit1: Produit = {
     idProduit: 1,
@@ -65,5 +83,8 @@ export class PaymentComponent {
     return montant
   }
 
+  public validatePayment(): void {
+    alert(this.paymentForm.status)
+  }
 
 }

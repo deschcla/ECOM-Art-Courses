@@ -21,6 +21,7 @@ import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { PaymentComponent } from './payment/payment.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { PaymentComponent } from './payment/payment.component';
         TranslationModule,
         NgOptimizedImage,
         FontAwesomeModule,
+        ReactiveFormsModule,
     ],
   providers: [
     Title,
