@@ -114,15 +114,20 @@
       <ul class="list-group shadow-lg bg-body" id="list-products">
 
         <li *ngFor="let commande of commandes" class="align-items-center list-group-item d-flex justify-content-between lh-sm border-item-bottom py-4">
-          <div class="row align-items-center">
-            <img src="{{commande.produit.lienImg}}" width="25%" class="col-4 img-rounded" alt="image d'un produit" />
-
-            <div class="col-6">
-              <h6 class="my-0">{{commande.produit.nomProduit}}</h6>
-              <small class="text-muted">Quantité: {{commande.quantite}}</small>
-            </div>
+          <img src="{{commande.produit.lienImg}}" width="25%" height="60" class="col-4 img-rounded" alt="image d'un produit" />
+          <div class="col-6 ps-3">
+            <h6 class="my-0">{{commande.produit.nomProduit}}</h6>
+            <small class="text-muted">Quantité: {{commande.quantite}}</small>
           </div>
-          <span class="text-muted">{{commande.produit.tarifUnit * commande.quantite}}€</span>
+          <div class="col">
+            <h6 *ngIf="commande.produit.promo" [ngClass]="{ 'text-decoration-line-through': commande.produit.promo }">{{ (commande.produit.tarifUnit * commande.quantite).toFixed(2) }}€</h6>
+            <span *ngIf="commande.produit.promo; else montantWithoutPromo" class="text-danger">
+              {{((commande.produit.tarifUnit - ((commande.produit.tarifUnit * commande.produit.promo) / 100)) * commande.quantite).toFixed(2)}}€
+            </span>
+          </div>
+          <ng-template #montantWithoutPromo>
+            {{(commande.produit.tarifUnit * commande.quantite).toFixed(2)}}€
+          </ng-template>
         </li>
 
       </ul>

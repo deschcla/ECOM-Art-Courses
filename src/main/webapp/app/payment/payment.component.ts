@@ -61,6 +61,21 @@ export class PaymentComponent{
     idProf: -1
   }
 
+  produit3: Produit = {
+    idProduit: 3,
+    nomProduit: "Third product" ,
+    desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+    tarifUnit: 5,
+    quantiteDispo: 3,
+    lienImg: "https://images.unsplash.com/photo-1495791185843-c73f2269f669?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2731&q=80",
+    idSousCategorie: -1,
+    dateTime: new Date(),
+    horaire: "",
+    promo: null,
+    quantiteTotale: 10,
+    idProf: -1
+  }
+
   commandes: LigneCommande[] = [
     {
       idLigneCommande: 1,
@@ -74,7 +89,7 @@ export class PaymentComponent{
     },
     {
       idLigneCommande: 3,
-      produit: this.produit1,
+      produit: this.produit3,
       quantite: 1
     },
   ];
@@ -83,7 +98,11 @@ export class PaymentComponent{
   public calcMontant(): number {
       let montant = 0;
       this.commandes.forEach((commande) => {
-        montant = montant + commande.produit.tarifUnit * commande.quantite
+        if(commande.produit.promo != null){
+          montant +=  (commande.produit.tarifUnit - ((commande.produit.tarifUnit * commande.produit.promo) / 100)) * commande.quantite
+        }else{
+          montant = montant + commande.produit.tarifUnit * commande.quantite
+        }
       })
     return montant
   }
