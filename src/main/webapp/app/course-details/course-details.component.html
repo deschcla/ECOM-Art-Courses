@@ -34,14 +34,19 @@
             <select class="custom-select" #amount (change)="onSelected(amount.value)" [disabled]="course?.quantiteDispo == 0">
               <option *ngIf="course?.quantiteDispo == 0; else dispoPlace">0</option>
               <ng-template #dispoPlace>
-                <option  *ngFor="let item of counter(course?.quantiteDispo!); let i = index">
+                <option *ngFor="let item of counter(course?.quantiteDispo!); let i = index">
                   {{ i + 1 }}
                 </option>
               </ng-template>
-
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary fontBig" id="btn-cart" (click)="addToCart(course!, selectedAmount)" [disabled]="course?.quantiteDispo == 0">
+              <button
+                type="button"
+                class="btn btn-primary fontBig"
+                id="btn-cart"
+                (click)="addToCart(course!, selectedAmount)"
+                [disabled]="course?.quantiteDispo == 0"
+              >
                 <span>Ajouter au panier</span>
                 <fa-icon icon="cart-plus" class="addToCart"></fa-icon>
               </button>

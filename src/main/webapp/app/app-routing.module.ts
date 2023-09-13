@@ -12,6 +12,7 @@ import LoginComponent from './login/login.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { CourseSearchComponent } from './course-search/course-search.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,11 @@ import { CourseSearchComponent } from './course-search/course-search.component';
           path: 'course-details/:id',
           component: CourseDetailsComponent,
           title: 'course-details.title',
+        },
+        {
+          path: 'payment',
+          component: PaymentComponent,
+          title: 'payment.title',
         },
         {
           path: '',

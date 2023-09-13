@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CartService } from 'app/core/util/cart.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
-import {LoginService} from "../login/login.service";
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: 'jhi-course-details',
@@ -39,7 +39,6 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.params.subscribe((params: Params) => {
       this.idProduit = params['id'];
-      // this.course = window.history.state;
       this.produitService.find(this.idProduit).subscribe({
         next: value => (this.course = value.body),
       });

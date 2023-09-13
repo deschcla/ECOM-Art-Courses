@@ -1,6 +1,5 @@
 package com.ecom.art_courses.repository;
 
-
 import com.ecom.art_courses.domain.Produit;
 import com.ecom.art_courses.repository.rowmapper.ProduitRowMapper;
 import com.ecom.art_courses.repository.rowmapper.SousCategorieRowMapper;

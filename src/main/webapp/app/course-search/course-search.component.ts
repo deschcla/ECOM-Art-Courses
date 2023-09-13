@@ -6,7 +6,7 @@ import { CartService } from 'app/core/util/cart.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
-import {LoginService} from "../login/login.service";
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: 'jhi-course-search',
@@ -24,7 +24,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private produitService: ProduitService,
-    private loginService: LoginService,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
 
   viewDetails(course: IProduit): void {
-    this.router.navigateByUrl('/course-details/' + course.id.toString(), { state: course });
+    this.router.navigateByUrl('/course-details/' + course.id.toString());
   }
 
   addToCart(course: IProduit, event: Event): void {

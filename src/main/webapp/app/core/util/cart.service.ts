@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LigneCommandeService } from 'app/entities/ligne-commande/service/ligne-commande.service';
-import { NewLigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
+import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   counter: number = 0;
-  cart: IProduit[] = [];
+  cart: ILigneCommande[] = [];
   // ligneCommande: NewLigneCommande;
 
   counterChange: Subject<number> = new Subject<number>();
@@ -34,13 +34,15 @@ export class CartService {
   // }
 
   addToCart(course: IProduit, num: number): void {
-    for (let i = 0; i < num; i++) {
-      this.cart.push(course);
-    }
+    this.cart.push({
+      id: -1,
+      produit: course,
+      quantite: num,
+    });
     this.counterChange.next((this.counter += num));
   }
 
-  getCartProducts(): IProduit[] {
+  getCartProducts(): ILigneCommande[] {
     return this.cart;
   }
 }
