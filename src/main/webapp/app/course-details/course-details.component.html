@@ -119,13 +119,33 @@
             <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Musique</a> </li>
             <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Peinture</a> </li>
             <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Sculpture</a> </li>-->
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeu d'échec</a></li>
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Culture</a></li>
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeux</a></li>
+            <li class="list-inline-item">
+              <a class="btn btn-light btn-sm mb-xl-0" href="#">{{ course?.souscategorie?.typeSousCategorie }}</a>
+            </li>
+            <!-- <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Culture</a></li>
+            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeux</a></li> -->
           </ul>
         </div>
       </div>
       <!-- Social links and END -->
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{ display: display }">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vous n'êtes pas connecté!</h5>
+        <button type="button" class="close" (click)="onCloseHandled()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Veuillez vous connecter pour ajouter à votre panier.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCloseHandled()">Fermer</button>
+        <button type="button" class="btn btn-primary" (click)="goToLogin()">Se Connecter</button>
+      </div>
     </div>
   </div>
 </div>

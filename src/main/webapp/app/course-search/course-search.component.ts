@@ -48,14 +48,9 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
 
   addToCart(course: IProduit, event: Event): void {
     if (this.account?.activated) {
-      // this.notifierService.notify('success', 'You are awesome! I mean it!');
       this.cartService.addToCart(course, 1);
-      console.log(this.cartService.cart);
     } else {
       this.display = 'block';
-
-      // this.signedOut = false;
-      // document.getElementById('exampleModalCenter').modal(options)
     }
     event.stopPropagation();
   }

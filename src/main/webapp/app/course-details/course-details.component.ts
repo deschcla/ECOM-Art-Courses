@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,6 +17,7 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
   course: IProduit | null = null;
   account: Account | null = null;
   selectedAmount: number = 1;
+  display = 'none';
 
   private readonly destroy$ = new Subject<void>();
 
@@ -24,7 +25,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
     private cartService: CartService,
-    private produitService: ProduitService
+    private produitService: ProduitService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +40,6 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       // this.course = window.history.state;
       this.produitService.find(this.idProduit).subscribe({
         next: value => (this.course = value.body),
-        error: error => console.log(error),
       });
     });
   }
@@ -52,13 +53,21 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     return new Array(i);
   }
 
+  onSelected(value: string): void {
+    this.selectedAmount = +value;
+  }
+
   addToCart(course: IProduit, amount: number): void {
     if (this.account?.activated) {
       this.cartService.addToCart(course, amount);
+    } else {
+      this.display = 'block';
     }
   }
-
-  onSelected(value: string): void {
-    this.selectedAmount = +value;
+  onCloseHandled(): void {
+    this.display = 'none';
+  }
+  goToLogin(): void {
+    this.router.navigateByUrl('/login');
   }
 }
