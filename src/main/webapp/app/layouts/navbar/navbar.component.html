@@ -25,13 +25,13 @@
         </form>
       </div>
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a
-            class="nav-link"
-            routerLink="/"
-            (click)="collapseNavbar()"
-            *ngSwitchCase="account?.authorities?.includes('ROLE_USER') && !account?.authorities?.includes('ROLE_ADMIN')"
-          >
+        <li
+          class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngSwitchCase="account?.authorities?.includes('ROLE_USER') && !account?.authorities?.includes('ROLE_ADMIN')"
+        >
+          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
             <span>
               <fa-icon icon="cart-shopping"></fa-icon>
               <span class="badge bg-danger cartCounter">{{ counter }}</span>
