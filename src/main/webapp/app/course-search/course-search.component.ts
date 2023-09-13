@@ -1,8 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Course } from 'app/core/request/course.model';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 import { CartService } from 'app/core/util/cart.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { ProduitService } from 'app/entities/produit/service/produit.service';
+import { IProduit } from 'app/entities/produit/produit.model';
+import {LoginService} from "../login/login.service";
 
 @Component({
   selector: 'jhi-course-search',
@@ -10,112 +14,29 @@ import { Subject } from 'rxjs';
   styleUrls: ['./course-search.component.scss'],
 })
 export class CourseSearchComponent implements OnInit, OnDestroy {
-  courses: Course[] = [];
+  courses: IProduit[] | null = [];
+  account: Account | null = null;
+  display = 'none';
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private cartService: CartService,
+    private produitService: ProduitService,
+    private loginService: LoginService,
+  ) {}
 
   ngOnInit(): void {
-    this.courses.push(
-      {
-        idProduit: 1,
-        nomProduit: 'Cours de Piano',
-        desc: 'Découvrez le monde de la musique à travers les touches du piano! Notre cours de piano offre un voyage passionnant pour les débutants et avancés. Vous développerez des compétences techniques, une expression artistique et un lien profond avec la musique. Rejoignez-nous et embarquez pour une aventure musicale qui enrichira votre vie et vous procurera une joie durable.',
-        tarifUnit: 50,
-        quantiteDispo: 3,
-        lienImg: '/content/images/course images/piano.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-09-12T09:00:00'),
-        duree: 3,
-        promo: null,
-        quantiteTotale: 50,
-        nomProf: 'Jeanne Marie',
-      },
-      {
-        idProduit: 2,
-        nomProduit: 'Cours de Piano Pour Enfants',
-        desc: 'Notre cours est conçu spécialement pour les petits musiciens en pleine croissance, offrant une introduction amusante et éducative au piano. Avec une atmosphère chaleureuse, les enfants apprendront les compétences de base du piano tout en explorant leur créativité musicale. Ce cours est une opportunité de développer la motricité fine, la discipline et l’appréciation de la musique.',
-        tarifUnit: 50,
-        quantiteDispo: 22,
-        lienImg: '/content/images/course images/piano-enfants.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-10-12T15:00:00'),
-        duree: 2,
-        promo: 20,
-        quantiteTotale: 30,
-        nomProf: 'Jeanne Marie',
-      },
-      {
-        idProduit: 1,
-        nomProduit: 'Cours de Piano',
-        desc: 'Découvrez le monde de la musique à travers les touches du piano! Notre cours de piano offre un voyage passionnant pour les débutants et avancés. Vous développerez des compétences techniques, une expression artistique et un lien profond avec la musique. Rejoignez-nous et embarquez pour une aventure musicale qui enrichira votre vie et vous procurera une joie durable.',
-        tarifUnit: 50,
-        quantiteDispo: 3,
-        lienImg: '/content/images/course images/piano.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-09-12T09:00:00'),
-        duree: 3,
-        promo: null,
-        quantiteTotale: 50,
-        nomProf: 'Jeanne Marie',
-      },
-      {
-        idProduit: 2,
-        nomProduit: 'Cours de Piano Pour Enfants',
-        desc: 'Notre cours est conçu spécialement pour les petits musiciens en pleine croissance, offrant une introduction amusante et éducative au piano. Avec une atmosphère chaleureuse, les enfants apprendront les compétences de base du piano tout en explorant leur créativité musicale. Ce cours est une opportunité de développer la motricité fine, la discipline et l’appréciation de la musique.',
-        tarifUnit: 50,
-        quantiteDispo: 22,
-        lienImg: '/content/images/course images/piano-enfants.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-10-12T15:00:00'),
-        duree: 2,
-        promo: 20,
-        quantiteTotale: 30,
-        nomProf: 'Jeanne Marie',
-      },
-      {
-        idProduit: 1,
-        nomProduit: 'Cours de Piano',
-        desc: 'Découvrez le monde de la musique à travers les touches du piano! Notre cours de piano offre un voyage passionnant pour les débutants et avancés. Vous développerez des compétences techniques, une expression artistique et un lien profond avec la musique. Rejoignez-nous et embarquez pour une aventure musicale qui enrichira votre vie et vous procurera une joie durable.',
-        tarifUnit: 50,
-        quantiteDispo: 3,
-        lienImg: '/content/images/course images/piano.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-09-12T09:00:00'),
-        duree: 3,
-        promo: null,
-        quantiteTotale: 50,
-        nomProf: 'Jeanne Marie',
-      },
-      {
-        idProduit: 2,
-        nomProduit: 'Cours de Piano Pour Enfants',
-        desc: 'Notre cours est conçu spécialement pour les petits musiciens en pleine croissance, offrant une introduction amusante et éducative au piano. Avec une atmosphère chaleureuse, les enfants apprendront les compétences de base du piano tout en explorant leur créativité musicale. Ce cours est une opportunité de développer la motricité fine, la discipline et l’appréciation de la musique.',
-        tarifUnit: 50,
-        quantiteDispo: 22,
-        lienImg: '/content/images/course images/piano-enfants.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-10-12T15:00:00'),
-        duree: 2,
-        promo: 20,
-        quantiteTotale: 30,
-        nomProf: 'Jeanne Marie',
-      },
-      {
-        idProduit: 2,
-        nomProduit: 'Cours de Piano Pour Enfants',
-        desc: 'Notre cours est conçu spécialement pour les petits musiciens en pleine croissance, offrant une introduction amusante et éducative au piano. Avec une atmosphère chaleureuse, les enfants apprendront les compétences de base du piano tout en explorant leur créativité musicale. Ce cours est une opportunité de développer la motricité fine, la discipline et l’appréciation de la musique.',
-        tarifUnit: 50,
-        quantiteDispo: 22,
-        lienImg: '/content/images/course images/piano-enfants.jpg',
-        idSousCategorie: 1,
-        dateTime: new Date('2023-10-12T15:00:00'),
-        duree: 2,
-        promo: 20,
-        quantiteTotale: 30,
-        nomProf: 'Jeanne Marie',
-      }
-    );
+    this.accountService
+      .getAuthenticationState()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(account => (this.account = account));
+
+    this.produitService.query().subscribe({
+      next: value => (this.courses = value.body),
+      error: error => console.log(error),
+    });
   }
 
   ngOnDestroy(): void {
@@ -123,15 +44,27 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  viewDetails(id: number): void {
-    this.router.navigate(['/course-details/' + id.toString()]);
+  viewDetails(course: IProduit): void {
+    this.router.navigateByUrl('/course-details/' + course.id.toString(), { state: course });
   }
 
-  addToCart(course: Course, event: Event): void {
-    // this.notifierService.notify('success', 'You are awesome! I mean it!');
-    this.cartService.addToCart(course, 1);
-    console.log(this.cartService.cart);
-
+  addToCart(course: IProduit, event: Event): void {
+    if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
+      this.cartService.addToCart(course, 1);
+    } else {
+      this.display = 'block';
+    }
+    event.stopPropagation();
+  }
+  onCloseHandled(event: Event): void {
+    this.display = 'none';
+    event.stopPropagation();
+  }
+  goToLogin(event: Event): void {
+    if (this.account?.authorities.includes('ROLE_ADMIN')) {
+      this.loginService.logout();
+    }
+    this.router.navigateByUrl('/login');
     event.stopPropagation();
   }
 }
