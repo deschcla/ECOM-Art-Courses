@@ -42,7 +42,11 @@
       "confirmpassword.label": "Confirmation du nouveau mot de passe",
       "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
       "email.label": "Email",
-      "email.placeholder": "Votre email"
+      "email.placeholder": "Votre email",
+      "phone.label": "Téléphone portable",
+      "phone.placeholder": "Numéro de téléphone actuel",
+      "birthday.label": "Date de naissance",
+      "birthday.placeholder": "Votre anniversaire"
     },
     "messages": {
       "info": {
@@ -61,21 +65,29 @@
       },
       "validate": {
         "newpassword": {
-          "required": "Votre mot de passe est requis.",
-          "minlength": "Votre mot de passe doit comporter au moins 4 caractères.",
+          "required": "Votre mot de passe est requis, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
+          "minlength": "Votre mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
           "maxlength": "Votre mot de passe ne doit pas comporter plus de 50 caractères.",
           "strength": "Robustesse du mot de passe :"
         },
         "confirmpassword": {
-          "required": "Votre confirmation du mot de passe est requise.",
-          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères.",
+          "required": "Votre confirmation du mot de passe est requise, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
+          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
           "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères."
         },
         "email": {
           "required": "Votre email est requis.",
           "minlength": "Votre email doit comporter au moins 5 caractères.",
           "maxlength": "Votre email ne doit pas comporter plus de 50 caractères.",
-          "invalid": "Votre email n'est pas valide."
+          "invalid": "Format d'email non valide"
+        },
+        "phone": {
+          "required": "Votre numéro de téléphone est requis.",
+          "invalid": "Votre numéro de téléphone n'est pas valide."
+        },
+        "birthday": {
+          "required": "Votre date de naissance est requis.",
+          "invalid": "Votre date de naissance n'est pas valide"
         }
       }
     },
