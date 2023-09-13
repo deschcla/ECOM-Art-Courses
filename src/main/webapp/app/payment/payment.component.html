@@ -1,56 +1,62 @@
 <div class="container">
   <div class="row">
-
     <div class="col-md-6 col-lg-8">
-
       <h4 class="my-0">Paiement carte bancaire</h4>
-      <p class="fs-6 text-muted">Afin de finaliser votre commande, veuillez de compléter vos coordonnées de paiement.</p>
+      <p class="fs-6 text-muted">Afin de finaliser votre commande, veuillez compléter vos coordonnées de paiement.</p>
 
       <ul class="list-group mb-0 shadow-lg bg-body rounded h-86" id="list-payment">
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
-            <input class="form-check-input" type="radio" disabled>
+            <input class="form-check-input" type="radio" disabled />
             <label class="form-check-label">
-              <img src="https://booking.webestica.com/assets/images/element/paypal.svg" class="h-30px ms-2" alt="" height=30>
+              <img src="https://booking.webestica.com/assets/images/element/paypal.svg" class="h-30px ms-2" alt="" height="30" />
             </label>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
-            <input class="form-check-input" type="radio" disabled>
+            <input class="form-check-input" type="radio" disabled />
             <label class="form-check-label">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Apple_Pay_logo.svg/1200px-Apple_Pay_logo.svg.png" class="h-30px ms-3" alt="" height="17">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Apple_Pay_logo.svg/1200px-Apple_Pay_logo.svg.png"
+                class="h-30px ms-3"
+                alt=""
+                height="17"
+              />
             </label>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
-            <input class="form-check-input" type="radio" disabled>
+            <input class="form-check-input" type="radio" disabled />
             <label class="form-check-label">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png" class="h-30px ms-3" alt="" height="20">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1200px-Google_Pay_Logo.svg.png"
+                class="h-30px ms-3"
+                alt=""
+                height="20"
+              />
             </label>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
-            <input class="form-check-input" type="radio" checked="checked">
-            <label class="form-check-label ms-3">
-              Carte de crédit
-            </label>
+            <input class="form-check-input" type="radio" checked="checked" />
+            <label class="form-check-label ms-3"> Carte de crédit </label>
           </div>
           <div class="d-flex align-items-center">
-            <img src="https://booking.webestica.com/assets/images/element/visa.svg" class="h-30px ms-3" alt="" height="27">
-            <img src="https://booking.webestica.com/assets/images/element/mastercard.svg" class="h-30px ms-3" alt="" height="27">
+            <img src="https://booking.webestica.com/assets/images/element/visa.svg" class="h-30px ms-3" alt="" height="27" />
+            <img src="https://booking.webestica.com/assets/images/element/mastercard.svg" class="h-30px ms-3" alt="" height="27" />
           </div>
         </li>
 
-        <li class="list-group-item d-flex justify-content-center lh-sm py-5 ">
-
-          <form [formGroup]="paymentForm"
-                [ngClass]="{ 'was-validated': paymentForm.valid }"
-                class="needs-validation row gy-3 w-90"
-                novalidate>
-
+        <li class="list-group-item d-flex justify-content-center lh-sm py-5">
+          <form
+            [formGroup]="paymentForm"
+            [ngClass]="{ 'was-validated': paymentForm.valid }"
+            class="needs-validation row gy-3 w-90"
+            novalidate
+          >
             <div class="col-md-12">
               <label for="cc-number" class="form-label">Numéro de carte</label>
 
@@ -58,10 +64,23 @@
                 <span class="input-group-text">
                   <fa-icon [icon]="faCreditCardAlt"></fa-icon>
                 </span>
-                <input type="text" class="form-control" id="cc-number" maxlength="16" placeholder="0000 0000 0000 0000" formControlName="card_number">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-number"
+                  maxlength="16"
+                  placeholder="0000 0000 0000 0000"
+                  formControlName="card_number"
+                />
               </div>
 
-              <div class="msg-invalid" *ngIf="paymentForm.controls['card_number'].invalid && (paymentForm.controls['card_number'].dirty || paymentForm.controls['card_number'].touched)">
+              <div
+                class="msg-invalid"
+                *ngIf="
+                  paymentForm.controls['card_number'].invalid &&
+                  (paymentForm.controls['card_number'].dirty || paymentForm.controls['card_number'].touched)
+                "
+              >
                 Numéro de carte bancaire invalide
               </div>
             </div>
@@ -73,9 +92,15 @@
                 <span class="input-group-text">
                   <fa-icon [icon]="faCalendarAlt"></fa-icon>
                 </span>
-                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp">
+                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp" />
               </div>
-              <div class="msg-invalid" *ngIf="paymentForm.controls['date_exp'].invalid && (paymentForm.controls['date_exp'].dirty || paymentForm.controls['date_exp'].touched)">
+              <div
+                class="msg-invalid"
+                *ngIf="
+                  paymentForm.controls['date_exp'].invalid &&
+                  (paymentForm.controls['date_exp'].dirty || paymentForm.controls['date_exp'].touched)
+                "
+              >
                 Date d'expiration invalide
               </div>
             </div>
@@ -87,56 +112,58 @@
                 <span class="input-group-text">
                   <fa-icon [icon]="faLock"></fa-icon>
                 </span>
-                <input type="password" class="form-control" id="cc-cvv" placeholder="000" formControlName="ccv">
+                <input type="password" class="form-control" id="cc-cvv" placeholder="000" formControlName="ccv" />
               </div>
-              <div class="msg-invalid" *ngIf="paymentForm.controls['ccv'].invalid && (paymentForm.controls['ccv'].dirty || paymentForm.controls['ccv'].touched)">
+              <div
+                class="msg-invalid"
+                *ngIf="paymentForm.controls['ccv'].invalid && (paymentForm.controls['ccv'].dirty || paymentForm.controls['ccv'].touched)"
+              >
                 Cryptogramme visuel invalide
               </div>
             </div>
-
           </form>
 
           <!--<p>Form value: {{ paymentForm.value | json }}</p>
           <p>Form status: {{ paymentForm.status | json }}</p>-->
-
         </li>
-
       </ul>
     </div>
 
     <div class="col-md-6 col-lg-4 order-md-last">
-
       <h4 class="d-flex justify-content-between align-items-center margin-sommaire">
         <span class="text-primary">Sommaire</span>
         <span class="badge bg-primary rounded-pill">{{ commandes.length }}</span>
       </h4>
 
       <ul class="list-group shadow-lg bg-body" id="list-products">
-
-        <li *ngFor="let commande of commandes" class="align-items-center list-group-item d-flex justify-content-between lh-sm border-item-bottom py-4">
-          <img src="{{commande.produit.lienImg}}" width="25%" height="60" class="col-4 img-rounded" alt="image d'un produit" />
+        <li
+          *ngFor="let commande of commandes"
+          class="align-items-center list-group-item d-flex justify-content-between lh-sm border-item-bottom py-4"
+        >
+          <img src="{{ commande.produit.lienImg }}" width="25%" height="60" class="col-4 img-rounded" alt="image d'un produit" />
           <div class="col-6 ps-3">
-            <h6 class="my-0">{{commande.produit.nomProduit}}</h6>
-            <small class="text-muted">Quantité: {{commande.quantite}}</small>
+            <h6 class="my-0">{{ commande.produit.nomProduit }}</h6>
+            <small class="text-muted">Quantité: {{ commande.quantite }}</small>
           </div>
           <div class="col">
-            <h6 *ngIf="commande.produit.promo" [ngClass]="{ 'text-decoration-line-through': commande.produit.promo }">{{ (commande.produit.tarifUnit * commande.quantite).toFixed(2) }}€</h6>
+            <h6 *ngIf="commande.produit.promo" [ngClass]="{ 'text-decoration-line-through': commande.produit.promo }">
+              {{ (commande.produit.tarifUnit * commande.quantite).toFixed(2) }}€
+            </h6>
             <span *ngIf="commande.produit.promo; else montantWithoutPromo" class="text-danger">
-              {{((commande.produit.tarifUnit - ((commande.produit.tarifUnit * commande.produit.promo) / 100)) * commande.quantite).toFixed(2)}}€
+              {{
+                ((commande.produit.tarifUnit - (commande.produit.tarifUnit * commande.produit.promo) / 100) * commande.quantite).toFixed(2)
+              }}€
             </span>
           </div>
-          <ng-template #montantWithoutPromo>
-            {{(commande.produit.tarifUnit * commande.quantite).toFixed(2)}}€
-          </ng-template>
+          <ng-template #montantWithoutPromo> {{ (commande.produit.tarifUnit * commande.quantite).toFixed(2) }}€ </ng-template>
         </li>
-
       </ul>
 
       <ul class="list-group mb-3 shadow-lg bg-body" id="list-prices">
         <li class="col align-items-center list-group-item border-item-bottom py-3">
           <div class="d-flex justify-content-between">
             <span class="fw-bold">Sous-total</span>
-            <strong class="fw-bold">{{ (calcMontant()).toFixed(2) }} €</strong>
+            <strong class="fw-bold">{{ calcMontant().toFixed(2) }} €</strong>
           </div>
           <div class="d-flex justify-content-between">
             <span class="fw-bold">TVA</span>
@@ -150,12 +177,11 @@
         </li>
 
         <li class="list-group-item d-flex py-3">
-          <button [disabled]="!paymentForm.valid" (click)="validatePayment()" type="submit" class="btn btn-primary w-100">Paiement sécurisé</button>
+          <button [disabled]="!paymentForm.valid" (click)="validatePayment()" type="submit" class="btn btn-primary w-100">
+            Paiement sécurisé
+          </button>
         </li>
       </ul>
     </div>
-
   </div>
 </div>
-
-
