@@ -51,6 +51,16 @@ import { PaymentComponent } from './payment/payment.component';
           title: 'login.title',
         },
         {
+          path: 'course-details/:id',
+          component: CourseDetailsComponent,
+          title: 'course-details.title',
+        },
+        {
+          path: 'payment',
+          component: PaymentComponent,
+          title: 'payment.title',
+        },
+        {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
         },

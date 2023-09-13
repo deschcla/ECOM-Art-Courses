@@ -45,7 +45,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
 
   viewDetails(course: IProduit): void {
-    this.router.navigateByUrl('/course-details/' + course.id.toString(), { state: course });
+    this.router.navigateByUrl('/course-details/' + course.id.toString());
   }
 
   addToCart(course: IProduit, event: Event): void {
