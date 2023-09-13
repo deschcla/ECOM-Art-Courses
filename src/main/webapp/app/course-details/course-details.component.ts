@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CartService } from 'app/core/util/cart.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
+import {LoginService} from "../login/login.service";
 
 @Component({
   selector: 'jhi-course-details',
@@ -26,7 +27,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private cartService: CartService,
     private produitService: ProduitService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
@@ -58,7 +60,7 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course: IProduit, amount: number): void {
-    if (this.account?.activated) {
+    if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, amount);
     } else {
       this.display = 'block';
@@ -68,6 +70,9 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     this.display = 'none';
   }
   goToLogin(): void {
+    if (this.account?.authorities.includes('ROLE_ADMIN')) {
+      this.loginService.logout();
+    }
     this.router.navigateByUrl('/login');
   }
 }
