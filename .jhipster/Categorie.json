@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20230912073711",
+  "entityTableName": "categorie",
+  "fields": [
+    {
+      "fieldName": "typeCategorie",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Categorie",
+  "relationships": [
+    {
+      "otherEntityName": "sousCategorie",
+      "otherEntityRelationshipName": "categorie",
+      "relationshipName": "sousCategorie",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -10,16 +10,23 @@ import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
-import { PaymentComponent } from "./payment/payment.component";
+import { CourseDetailsComponent } from './course-details/course-details.component';
+import { CourseSearchComponent } from './course-search/course-search.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
         {
-          path: '',
+          path: 'home',
           component: HomeComponent,
           title: 'home.title',
+        },
+        {
+          path: '',
+          component: CourseSearchComponent,
+          title: 'course-search.title',
         },
         {
           path: '',
@@ -44,14 +51,10 @@ import { PaymentComponent } from "./payment/payment.component";
           title: 'login.title',
         },
         {
-          path: 'payment',
-          component: PaymentComponent,
-          title: 'payment.title',
-        },
-        {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
         },
+        // { path: '**', redirectTo: 'course-search' },
         ...errorRoute,
       ],
       { enableTracing: DEBUG_INFO_ENABLED, bindToComponentInputs: true }

@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="sousCategorie">
+      <h2 data-cy="sousCategorieDetailsHeading"><span jhiTranslate="ecomArtCoursesApp.sousCategorie.detail.title">Sous Categorie</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ sousCategorie.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.sousCategorie.typeSousCategorie">Type Sous Categorie</span></dt>
+        <dd>
+          <span>{{ sousCategorie.typeSousCategorie }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.sousCategorie.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ sousCategorie.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.sousCategorie.updateAt">Update At</span></dt>
+        <dd>
+          <span>{{ sousCategorie.updateAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.sousCategorie.categorie">Categorie</span></dt>
+        <dd>
+          <div *ngIf="sousCategorie.categorie">
+            <a [routerLink]="['/categorie', sousCategorie.categorie.id, 'view']">{{ sousCategorie.categorie.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/sous-categorie', sousCategorie.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

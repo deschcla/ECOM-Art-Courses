@@ -1,0 +1,75 @@
+{
+  "applications": "*",
+  "changelogDate": "20230912073710",
+  "entityTableName": "produit",
+  "fields": [
+    {
+      "fieldName": "nomProduit",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "desc",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tarifUnit",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "duree",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lienImg",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "quantiteTotale",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "quantiteDispo",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Produit",
+  "relationships": [
+    {
+      "otherEntityName": "sousCategorie",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "souscategorie",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "ligneCommande",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "ligneCommande",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "commande",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

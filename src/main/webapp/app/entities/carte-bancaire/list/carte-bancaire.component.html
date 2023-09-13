@@ -1,0 +1,113 @@
+<div>
+  <h2 id="page-heading" data-cy="CarteBancaireHeading">
+    <span jhiTranslate="ecomArtCoursesApp.carteBancaire.home.title">Carte Bancaires</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="ecomArtCoursesApp.carteBancaire.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-carte-bancaire"
+        [routerLink]="['/carte-bancaire/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="ecomArtCoursesApp.carteBancaire.home.createLabel"> Create a new Carte Bancaire </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="carteBancaires?.length === 0">
+    <span jhiTranslate="ecomArtCoursesApp.carteBancaire.home.notFound">No Carte Bancaires found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="carteBancaires && carteBancaires.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="refCarte">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.carteBancaire.refCarte">Ref Carte</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdAt">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.carteBancaire.createdAt">Created At</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="updateAt">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.carteBancaire.updateAt">Update At</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="commande.id">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.carteBancaire.commande">Commande</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let carteBancaire of carteBancaires; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/carte-bancaire', carteBancaire.id, 'view']">{{ carteBancaire.id }}</a>
+          </td>
+          <td>{{ carteBancaire.refCarte }}</td>
+          <td>{{ carteBancaire.createdAt | formatMediumDatetime }}</td>
+          <td>{{ carteBancaire.updateAt | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="carteBancaire.commande">
+              <a [routerLink]="['/commande', carteBancaire.commande.id, 'view']">{{ carteBancaire.commande.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/carte-bancaire', carteBancaire.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/carte-bancaire', carteBancaire.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(carteBancaire)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

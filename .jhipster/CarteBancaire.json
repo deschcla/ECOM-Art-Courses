@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20230912073715",
+  "entityTableName": "carte_bancaire",
+  "fields": [
+    {
+      "fieldName": "refCarte",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "CarteBancaire",
+  "relationships": [
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "carteBancaire",
+      "relationshipName": "commande",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

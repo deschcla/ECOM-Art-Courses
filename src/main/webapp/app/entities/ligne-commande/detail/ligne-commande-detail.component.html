@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="ligneCommande">
+      <h2 data-cy="ligneCommandeDetailsHeading"><span jhiTranslate="ecomArtCoursesApp.ligneCommande.detail.title">Ligne Commande</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ ligneCommande.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.quantite">Quantite</span></dt>
+        <dd>
+          <span>{{ ligneCommande.quantite }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.montant">Montant</span></dt>
+        <dd>
+          <span>{{ ligneCommande.montant }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.validated">Validated</span></dt>
+        <dd>
+          <span>{{ ligneCommande.validated }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.nomParticipant">Nom Participant</span></dt>
+        <dd>
+          <span>{{ ligneCommande.nomParticipant }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ ligneCommande.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.updateAt">Update At</span></dt>
+        <dd>
+          <span>{{ ligneCommande.updateAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.produit">Produit</span></dt>
+        <dd>
+          <div *ngIf="ligneCommande.produit">
+            <a [routerLink]="['/produit', ligneCommande.produit.id, 'view']">{{ ligneCommande.produit.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.commande">Commande</span></dt>
+        <dd>
+          <div *ngIf="ligneCommande.commande">
+            <a [routerLink]="['/commande', ligneCommande.commande.id, 'view']">{{ ligneCommande.commande.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/ligne-commande', ligneCommande.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -14,13 +14,15 @@ import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import NavbarItem from './navbar-item.model';
+import { CartService } from 'app/core/util/cart.service';
+import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective],
+  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective, FormsModule, ReactiveFormsModule],
 })
 export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
@@ -30,6 +32,11 @@ export default class NavbarComponent implements OnInit {
   version = '';
   account: Account | null = null;
   entitiesNavbarItems: NavbarItem[] = [];
+  counter: number = 0;
+
+  searchForm = new FormGroup({
+    search: new FormControl(''),
+  });
 
   constructor(
     private loginService: LoginService,
@@ -37,7 +44,8 @@ export default class NavbarComponent implements OnInit {
     private stateStorageService: StateStorageService,
     private accountService: AccountService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -53,6 +61,9 @@ export default class NavbarComponent implements OnInit {
 
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
+    });
+    this.cartService.counterChange.subscribe(value => {
+      this.counter = value;
     });
   }
 
@@ -77,5 +88,8 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+  search(): void {
+    console.log(this.searchForm.value.search);
   }
 }
