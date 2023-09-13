@@ -43,9 +43,9 @@
         <jib-maven-plugin.image>eclipse-temurin:17-jre-focal</jib-maven-plugin.image>
         <jib-maven-plugin.version>3.3.2</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-        <liquibase-plugin.password/>
-        <liquibase-plugin.url/>
-        <liquibase-plugin.username/>
+        <liquibase-plugin.password>root</liquibase-plugin.password>
+        <liquibase-plugin.url>jdbc:postgresql://localhost:5432/ECOM-Art-Courses</liquibase-plugin.url>
+        <liquibase-plugin.username>ECOM-Art-Courses</liquibase-plugin.username>
         <liquibase.version>4.20.0</liquibase.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
@@ -780,10 +780,10 @@
                         <changeLogFile>config/liquibase/master.xml</changeLogFile>
                         <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                         <driver>org.postgresql.Driver</driver>
-                        <url>${liquibase-plugin.url}</url>
+                        <url>jdbc:postgresql://localhost:5432/ECOM-Art-Courses</url>
                         <defaultSchemaName/>
-                        <username>${liquibase-plugin.username}</username>
-                        <password>${liquibase-plugin.password}</password>
+                        <username>ECOM-Art-Courses</username>
+                        <password>root</password>
                         <verbose>true</verbose>
                         <logging>debug</logging>
                         <contexts>!test</contexts>
@@ -838,7 +838,7 @@
                 <profile.test>testdev</profile.test>
                 <liquibase-plugin.url>jdbc:postgresql://localhost:5432/ECOM-Art-Courses</liquibase-plugin.url>
                 <liquibase-plugin.username>ECOM-Art-Courses</liquibase-plugin.username>
-                <liquibase-plugin.password/>
+                <liquibase-plugin.password>root</liquibase-plugin.password>
             </properties>
             <dependencies>
                 <dependency>
@@ -942,7 +942,7 @@
                 <profile.test>testprod</profile.test>
                 <liquibase-plugin.url>jdbc:postgresql://localhost:5432/ECOM-Art-Courses</liquibase-plugin.url>
                 <liquibase-plugin.username>ECOM-Art-Courses</liquibase-plugin.username>
-                <liquibase-plugin.password/>
+                <liquibase-plugin.password>root</liquibase-plugin.password>
             </properties>
             <build>
                 <plugins>
