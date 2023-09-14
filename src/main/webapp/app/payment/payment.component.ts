@@ -5,7 +5,6 @@ import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model
 import { CartService } from 'app/core/util/cart.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { Router } from '@angular/router';
-import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
 
 @Component({
   selector: 'jhi-payment',
@@ -54,9 +53,7 @@ export class PaymentComponent implements OnInit {
   }
 
   public validatePayment(): void {
-    // alert(this.paymentForm.status);
-    const releveFacture: IReleveFacture = {};
-    this.router.navigate(['/facture']);
+    alert(this.paymentForm.status);
   }
 
   viewDetails(courseId: number): void {

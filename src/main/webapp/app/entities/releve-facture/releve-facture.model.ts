@@ -6,7 +6,7 @@ export interface IReleveFacture {
   montant?: number | null;
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
-  acheteur?: IAcheteur | null;
+  acheteur?: Pick<IAcheteur, 'id'> | null;
 }
 
 export type NewReleveFacture = Omit<IReleveFacture, 'id'> & { id: null };

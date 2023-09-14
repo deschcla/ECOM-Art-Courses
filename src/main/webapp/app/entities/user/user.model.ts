@@ -1,10 +1,6 @@
 export interface IUser {
   id: number;
   login?: string;
-  firstName?: string | null;
-  lastName?: string | null;
-  email?: string;
-  numTel?: string;
 }
 
 export class User implements IUser {
