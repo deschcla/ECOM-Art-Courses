@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.1" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -27,6 +27,7 @@
     <include file="config/liquibase/changelog/20230912073715_added_entity_constraints_CarteBancaire.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230912073716_added_entity_constraints_ReleveFacture.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230912073709_added_entity_constraints_Acheteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914091630_updated_entity_Produit.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
