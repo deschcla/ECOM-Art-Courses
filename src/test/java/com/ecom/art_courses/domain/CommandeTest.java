@@ -20,4 +20,15 @@ class CommandeTest {
         commande1.setId(null);
         assertThat(commande1).isNotEqualTo(commande2);
     }
+
+//    @Test
+//    void commander() throws Exception {
+//        TestUtil.equalsVerifier(Commande.class);
+//        TestUtil.equalsVerifier(LigneCommande.class);
+//        TestUtil.equalsVerifier(Produit.class);
+//        TestUtil.equalsVerifier(Categorie.class);
+//        TestUtil.equalsVerifier(SousCategorie.class);
+//        TestUtil.equalsVerifier(CarteBancaire.class);
+//        Commande commande3 = new Commande();
+//    }
 }
