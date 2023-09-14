@@ -65,21 +65,22 @@
       },
       "validate": {
         "newpassword": {
-          "required": "Votre mot de passe est requis, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
-          "minlength": "Votre mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
+          "pattern": "Votre mot de passe est requis, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
+          "minlength": "Votre mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
           "maxlength": "Votre mot de passe ne doit pas comporter plus de 50 caractères.",
           "strength": "Robustesse du mot de passe :"
         },
         "confirmpassword": {
           "required": "Votre confirmation du mot de passe est requise, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
-          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
-          "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères."
+          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
+          "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères.",
+          "validation": "Les mots de passe ne sont pas identiques."
         },
         "email": {
           "required": "Votre email est requis.",
           "minlength": "Votre email doit comporter au moins 5 caractères.",
           "maxlength": "Votre email ne doit pas comporter plus de 50 caractères.",
-          "invalid": "Format d'email non valide"
+          "invalid": "Format d'email non valide."
         },
         "phone": {
           "required": "Votre numéro de téléphone est requis.",
