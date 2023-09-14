@@ -125,15 +125,12 @@
         <div class="align-items-center">
           <h6 class="d-inline-block mb-2 me-4">Catégorie Tags:</h6>
           <ul class="list-inline mb-0">
-            <!--<li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Poésie</a> </li>
-            <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Musique</a> </li>
-            <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Peinture</a> </li>
-            <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Sculpture</a> </li>-->
-            <li class="list-inline-item">
+            <li class="list-inline-item" *ngIf="course?.souscategorie?.typeSousCategorie">
               <a class="btn btn-light btn-sm mb-xl-0" href="#">{{ course?.souscategorie?.typeSousCategorie }}</a>
             </li>
-            <!-- <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Culture</a></li>
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeux</a></li> -->
+            <li class="list-inline-item" *ngIf="course?.souscategorie?.categorie?.typeCategorie">
+              <a class="btn btn-light btn-sm mb-xl-0" href="#">{{ course?.souscategorie?.categorie?.typeCategorie }}</a>
+            </li>
           </ul>
         </div>
       </div>
