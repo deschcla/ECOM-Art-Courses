@@ -4,47 +4,55 @@
   <div class="col-md-10">
     <div class="row">
       <div *ngFor="let course of courses" class="col-md-auto">
-        <div class="card" (click)="viewDetails(course.idProduit)">
+        <div class="card" (click)="viewDetails(course)">
           <img class="card-img-top" src="{{ course.lienImg }}" alt="{{ course.nomProduit }} img" />
 
           <div class="card-body">
             <h5 class="card-title">{{ course.nomProduit }}</h5>
 
-            <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo < 10 }">
-              {{ course.quantiteDispo }} places left
+            <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo! < 0.15 * course.quantiteTotale! }">
+              {{ course.quantiteDispo }} places disponibles
             </p>
 
             <div class="progress">
               <div
                 class="progress-bar"
                 role="progressbar"
-                [ngStyle]="{ width: ((course.quantiteTotale - course.quantiteDispo) / course.quantiteTotale) * 100 + '%' }"
-                [ngClass]="{ 'bg-danger': course.quantiteDispo < 10 }"
-                [attr.aria-valuenow]="course.quantiteTotale - course.quantiteDispo"
+                [ngStyle]="{ width: ((course.quantiteTotale! - course.quantiteDispo!) / course.quantiteTotale!) * 100 + '%' }"
+                [ngClass]="{ 'bg-danger': course.quantiteDispo! < 0.15 * course.quantiteTotale! }"
+                [attr.aria-valuenow]="course.quantiteTotale! - course.quantiteDispo!"
                 aria-valuemin="0"
                 [attr.aria-valuenow]="course.quantiteTotale"
               ></div>
             </div>
 
             <div class="card-text moreInfo">
-              <span>{{ course.dateTime | date : 'shortDate' }}</span> · <span>{{ course.dateTime | date : 'H:mm' }}</span> ·
-              <span>{{ course.duree }}h</span>
+              <span>{{ course.date!.format('DD/MM/YYYY') }}</span> ·
+              <span>{{ course.date!.format('HH') }}h{{ course.date!.format('mm') }}</span> ·
+              <span>{{ course.duree }} heures</span>
             </div>
 
             <div class="text-center price-div">
               <span class="card-text price">
-                <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span>
-                <span *ngIf="course.promo" class="promo text-danger"
-                  >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% off)</span
-                >
+                <span> {{ course.tarifUnit }}€ </span>
+                <!-- <span [ngClass]="{ promoStrikeout: course.promo }"> {{ course.tarifUnit }}€ </span> -->
+                <!-- <span *ngIf="course.promo" class="promo text-danger"
+                  >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% de réduction)</span
+                > -->
               </span>
-              <button type="button" class="btn btn-primary cart" (click)="addToCart(course, $event)">
+              <button
+                type="button"
+                class="btn btn-primary cart"
+                (click)="addToCart(course, $event)"
+                [ngClass]="{ disabled: course.quantiteDispo! == 0 }"
+              >
                 <fa-icon icon="cart-plus"></fa-icon>
               </button>
             </div>
           </div>
         </div>
       </div>
+
       <!-- <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
           <li class="page-item disabled">
@@ -58,6 +66,24 @@
           </li>
         </ul>
       </nav> -->
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{ display: display }">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vous n'êtes pas connecté!</h5>
+        <button type="button" class="close" (click)="onCloseHandled($event)" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Veuillez vous connecter pour ajouter à votre panier.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCloseHandled($event)">Fermer</button>
+        <button type="button" class="btn btn-primary" (click)="goToLogin($event)">Se Connecter</button>
+      </div>
     </div>
   </div>
 </div>

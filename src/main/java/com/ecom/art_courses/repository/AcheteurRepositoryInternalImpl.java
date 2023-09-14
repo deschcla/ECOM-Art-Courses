@@ -1,6 +1,5 @@
 package com.ecom.art_courses.repository;
 
-
 import com.ecom.art_courses.domain.Acheteur;
 import com.ecom.art_courses.repository.rowmapper.AcheteurRowMapper;
 import com.ecom.art_courses.repository.rowmapper.UserRowMapper;
