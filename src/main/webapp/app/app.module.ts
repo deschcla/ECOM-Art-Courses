@@ -24,6 +24,7 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FactureComponent } from './facture/facture.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
-  declarations: [CourseDetailsComponent, CourseSearchComponent, PaymentComponent],
+  declarations: [CourseDetailsComponent, CourseSearchComponent, PaymentComponent, FactureComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
