@@ -18,6 +18,7 @@ export class CartComponent implements OnInit{
   selectedAmount: number = 1;
   course: IProduit | null = null;
   faTrashCan = faTrashCan;
+  protected readonly parseInt = parseInt;
 
   constructor(
     private cartService: CartService,
@@ -48,8 +49,11 @@ export class CartComponent implements OnInit{
     this.router.navigateByUrl('/course-details/' + courseId.toString());
   }
 
-  onSelected(value: string): void {
-    this.selectedAmount = +value;
+  onChanged(course: IProduit, value: number): void {
+    this.selectedAmount = value;
+    this.cartService.changeToCart(course, value)
+    this.quantite = 0
+    this.commandes.forEach(commande => (this.quantite += commande.quantite!));
   }
 
   counter(i: number): any[] {
@@ -57,14 +61,6 @@ export class CartComponent implements OnInit{
   }
 
   removeILigneCommande(commandeChoosen: ILigneCommande): void{
-    /*
-    this.commandes.forEach((commande, index) => {
-      if(commandeChoosen == commande){
-        this.commandes.splice(index,1)
-      }
-    })
-
-     */
     this.cartService.deleteCartProducts(commandeChoosen)
   }
 

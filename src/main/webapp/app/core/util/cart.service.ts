@@ -42,6 +42,15 @@ export class CartService {
     this.counterChange.next((this.counter += num));
   }
 
+  changeToCart(course: IProduit, num: number): void {
+    this.cart.forEach((commande) => {
+      if(course == commande.produit){
+        this.counterChange.next((this.counter = this.counter - commande.quantite! + num));
+        commande.quantite = num
+      }
+    })
+  }
+
   deleteCartProducts(commandeChoosen: ILigneCommande): void {
 
     this.cart.forEach((commande, index) => {

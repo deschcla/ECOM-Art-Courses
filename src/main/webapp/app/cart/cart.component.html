@@ -20,13 +20,10 @@
               <h6 class="fw-bold">{{ (commande.produit?.tarifUnit!).toFixed(2) }} €</h6>
 
               Qté:
-              <select class="custom-select" #amount (change)="onSelected(amount.value)" [disabled]="course?.quantiteDispo == 0">
-                <option *ngIf="commande.quantite; else dispoPlace">{{ commande.quantite }}</option>
-                <ng-template #dispoPlace>
-                  <option *ngFor="let item of [1, 2, 3, 4]; let i = index">
-                    {{ i + 1 }}
-                  </option>
-                </ng-template>
+              <select class="custom-select" #amount (change)="onChanged(commande.produit!, parseInt(amount.value))">
+                <option *ngFor="let item of counter(commande.produit?.quantiteDispo!); let i = index">
+                  {{ i + 1 }}
+                </option>
               </select>
             </div>
             <div class="col text-end px-5">
