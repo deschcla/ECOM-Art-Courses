@@ -27,6 +27,8 @@
     <include file="config/liquibase/changelog/20230914223853_added_entity_constraints_LigneCommande.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230914223854_added_entity_constraints_CarteBancaire.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230914223855_added_entity_constraints_ReleveFacture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230915141630_updated_entity_Produit.xml" relativeToChangelogFile="false"/>
+ 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
