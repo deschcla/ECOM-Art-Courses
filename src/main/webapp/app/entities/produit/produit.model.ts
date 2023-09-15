@@ -16,6 +16,7 @@ export interface IProduit {
   updateAt?: dayjs.Dayjs | null;
   souscategorie?: ISousCategorie | null;
   commandes?: Pick<ICommande, 'id'>[] | null;
+  clicked?: boolean;
 }
 
 export type NewProduit = Omit<IProduit, 'id'> & { id: null };

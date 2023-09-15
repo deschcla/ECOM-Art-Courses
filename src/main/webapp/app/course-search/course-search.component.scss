@@ -83,12 +83,12 @@
   color: black;
 }
 
-.cart {
-  transition: 0s 200ms;
+.cartStyle {
+  // transition: 0s 200ms;
 }
 
-.cart:active {
+.cartStyle:active {
   background-color: grey;
   border-color: gray;
-  transition: 0s;
+  // transition: 0s;
 }

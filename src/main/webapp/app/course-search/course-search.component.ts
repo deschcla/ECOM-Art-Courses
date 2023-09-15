@@ -49,14 +49,12 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/course-details/' + course.id.toString());
   }
 
-  addToCart(course: IProduit, event: MouseEvent): void {
+  addToCart(course: IProduit, event: Event): void {
+    console.log(event);
+
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1);
-      console.log(event);
-      // if ((event.target as HTMLElement).tagName === 'A') {
-      let target = event.target as HTMLElement;
-      target.children[0].innerHTML = "<fa-icon icon='check'></fa-icon>";
-      // }
+      course.clicked = true;
     } else {
       this.display = 'block';
     }
