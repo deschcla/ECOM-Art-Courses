@@ -42,6 +42,16 @@ export class CartService {
     this.counterChange.next((this.counter += num));
   }
 
+  deleteCartProducts(commandeChoosen: ILigneCommande): void {
+
+    this.cart.forEach((commande, index) => {
+      if(commandeChoosen == commande){
+        this.cart.splice(index,1)
+        this.counterChange.next((this.counter -= commande.quantite!));
+      }
+    })
+  }
+
   getCartProducts(): ILigneCommande[] {
     return this.cart;
   }

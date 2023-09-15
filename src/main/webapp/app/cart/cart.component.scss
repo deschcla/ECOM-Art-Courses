@@ -1,0 +1,27 @@
+#list-products{
+  box-shadow: unset!important;
+  height: 420px;
+  overflow-y: scroll;
+}
+
+#list-products::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+#list-products::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.box-shadow-cart{
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+.img-rounded{
+  border-radius: 5%;
+}
+
+#btn-trash:hover{
+  color: white;
+}
