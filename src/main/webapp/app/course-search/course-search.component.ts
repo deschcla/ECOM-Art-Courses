@@ -33,10 +33,20 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => (this.account = account));
 
-    this.produitService.query().subscribe({
-      next: value => (this.courses = value.body),
-      error: error => console.log(error),
+    if (this.cartService.courses.length == 0){
+      this.produitService.query().subscribe({
+          next: value => {
+
+            this.cartService.fillCourses(value.body!)
+
+        },
+        error: error => console.log(error),
+      });
+    }
+    this.cartService.courseChange.subscribe(value => {
+      this.courses = value;
     });
+
   }
 
   ngOnDestroy(): void {

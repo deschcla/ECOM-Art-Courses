@@ -16,6 +16,8 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import NavbarItem from './navbar-item.model';
 import { CartService } from 'app/core/util/cart.service';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IProduit } from "../../entities/produit/produit.model";
+import { ProduitService } from "../../entities/produit/service/produit.service";
 
 @Component({
   standalone: true,
@@ -33,6 +35,7 @@ export default class NavbarComponent implements OnInit {
   account: Account | null = null;
   entitiesNavbarItems: NavbarItem[] = [];
   counter: number = 0;
+  courses: IProduit[] | null = [];
 
   searchForm = new FormGroup({
     search: new FormControl(''),
@@ -45,7 +48,8 @@ export default class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private produitService: ProduitService,
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -64,6 +68,11 @@ export default class NavbarComponent implements OnInit {
     });
     this.cartService.counterChange.subscribe(value => {
       this.counter = value;
+    });
+
+    this.produitService.query().subscribe({
+      next: value => (this.courses = value.body),
+      error: error => console.log(error),
     });
   }
 
@@ -91,5 +100,15 @@ export default class NavbarComponent implements OnInit {
   }
   search(): void {
     console.log(this.searchForm.value.search);
+  }
+
+  onKeyUp(event): void{
+    //console.log(event.target.value)
+    const res = this.courses?.filter(course => {
+      return (course.nomProduit!.indexOf(event.target.value) !== -1) ||
+        (course.desc!.indexOf(event.target.value) !== -1)
+    })
+    this.cartService.fillCourses(res!)
+    //console.log(res)
   }
 }
