@@ -21,7 +21,11 @@
 
               Qté:
               <select class="custom-select" #amount (change)="onChanged(commande.produit!, parseInt(amount.value))">
-                <option *ngFor="let item of counter(commande.produit?.quantiteDispo!); let i = index">
+                <option
+                  *ngFor="let item of counter(commande.produit?.quantiteDispo!); let i = index"
+                  [selected]="(i + 1) == commande.quantite"
+                  [value]="i + 1"
+                >
                   {{ i + 1 }}
                 </option>
               </select>
