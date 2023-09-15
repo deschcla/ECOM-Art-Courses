@@ -11,11 +11,15 @@ import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model
 export class FactureComponent implements OnInit {
   commandes: ILigneCommande[] = [];
   releveFacture: IReleveFacture;
+  date: string;
 
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
     this.commandes = this.cartService.getCartProducts();
+    this.releveFacture = window.history.state;
+    this.date = '12/12/2012';
+    console.log(this.releveFacture);
   }
 
   public calcMontant(): number {

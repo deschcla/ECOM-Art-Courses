@@ -28,7 +28,8 @@
         <div class="invoice-to">
           <!-- <small>to</small> -->
           <address class="m-t-5 m-b-5">
-            <strong class="text-inverse">{{ releveFacture.acheteur?.internalUser?.firstName }}</strong
+            <strong class="text-inverse"
+              >{{ releveFacture.acheteur?.internalUser?.firstName }} {{ releveFacture.acheteur?.internalUser?.lastName }}</strong
             ><br />
             {{ releveFacture.acheteur?.internalUser?.email }} <br />
             {{ releveFacture.acheteur?.internalUser?.numTel }}
@@ -36,7 +37,7 @@
         </div>
         <div class="invoice-date">
           <small>Invoice</small>
-          <div class="date text-inverse m-t-5">{{ releveFacture.createdAt?.format('DD/MM/YYYY') }}</div>
+          <div class="date text-inverse m-t-5">{{ date }}</div>
           <div class="invoice-detail">#{{ releveFacture.id }}</div>
         </div>
       </div>
@@ -51,7 +52,7 @@
                 <th>COURS</th>
                 <th class="text-center" width="10%">TARIF</th>
                 <th class="text-center" width="10%">QUANTITÉ</th>
-                <th class="text-right" width="20%">TOTAL DE LA LIGNE</th>
+                <th class="text-right" width="20%">TOTAL</th>
               </tr>
             </thead>
             <tbody>
@@ -93,21 +94,17 @@
       </div>
       <!-- end invoice-content -->
       <!-- begin invoice-note -->
-      <div class="invoice-note">
-        * Make all cheques payable to [Your Company Name]<br />
-        * Payment is due within 30 days<br />
-        * If you have any questions concerning this invoice, contact [Name, Phone Number, Email]
-      </div>
+      <!-- <div class="invoice-note"></div> -->
       <!-- end invoice-note -->
       <!-- begin invoice-footer -->
-      <div class="invoice-footer">
+      <!-- <div class="invoice-footer">
         <p class="text-center m-b-5 f-w-600">THANK YOU FOR YOUR BUSINESS</p>
         <p class="text-center">
           <span class="m-r-10"><i class="fa fa-fw fa-lg fa-globe"></i> matiasgallipoli.com</span>
           <span class="m-r-10"><i class="fa fa-fw fa-lg fa-phone-volume"></i> T:016-18192302</span>
           <span class="m-r-10"><i class="fa fa-fw fa-lg fa-envelope"></i> rtiemps@gmail.com</span>
         </p>
-      </div>
+      </div> -->
       <!-- end invoice-footer -->
     </div>
   </div>
