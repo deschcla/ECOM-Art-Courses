@@ -62,6 +62,13 @@ export class CartService {
   }
 
   getCartProducts(): ILigneCommande[] {
-    return this.cart;
+    let res: ILigneCommande[] = [];
+    this.cart.forEach((commande) => {
+      if(commande.produit?.quantiteDispo == 0) {
+        this.deleteCartProducts(commande)
+      }
+      res = this.cart;
+    })
+    return res;
   }
 }

@@ -19,6 +19,7 @@ export class CartComponent implements OnInit{
   course: IProduit | null = null;
   faTrashCan = faTrashCan;
   protected readonly parseInt = parseInt;
+  display = 'none';
 
   constructor(
     private cartService: CartService,
@@ -62,6 +63,7 @@ export class CartComponent implements OnInit{
   removeILigneCommande(commandeChoosen: ILigneCommande): void{
     this.cartService.deleteCartProducts(commandeChoosen)
     this.updateQuantity()
+    this.display = 'none';
   }
 
   updateQuantity(): void{
@@ -69,4 +71,12 @@ export class CartComponent implements OnInit{
     this.commandes.forEach(commande => (this.quantite += commande.quantite!));
   }
 
+  onOpenHandled(): void{
+    this.display = 'block';
+  }
+
+  onCloseHandled(event: Event): void {
+    this.display = 'none';
+    event.stopPropagation();
+  }
 }
