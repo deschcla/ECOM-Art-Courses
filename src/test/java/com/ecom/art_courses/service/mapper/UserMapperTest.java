@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -75,8 +76,8 @@ class UserMapperTest {
         List<User> users = userMapper.userDTOsToUsers(usersDto);
 
         assertThat(users).isNotEmpty().size().isEqualTo(1);
-        assertThat(users.get(0).getAuthorities()).isNotNull();
-        assertThat(users.get(0).getAuthorities()).isNotEmpty();
+        Assertions.assertThat(users.get(0).getAuthorities()).isNotNull();
+        Assertions.assertThat(users.get(0).getAuthorities()).isNotEmpty();
         assertThat(users.get(0).getAuthorities().iterator().next().getName()).isEqualTo("ADMIN");
     }
 
@@ -90,8 +91,8 @@ class UserMapperTest {
         List<User> users = userMapper.userDTOsToUsers(usersDto);
 
         assertThat(users).isNotEmpty().size().isEqualTo(1);
-        assertThat(users.get(0).getAuthorities()).isNotNull();
-        assertThat(users.get(0).getAuthorities()).isEmpty();
+        Assertions.assertThat(users.get(0).getAuthorities()).isNotNull();
+        Assertions.assertThat(users.get(0).getAuthorities()).isEmpty();
     }
 
     @Test
@@ -103,8 +104,8 @@ class UserMapperTest {
         User user = userMapper.userDTOToUser(userDto);
 
         assertThat(user).isNotNull();
-        assertThat(user.getAuthorities()).isNotNull();
-        assertThat(user.getAuthorities()).isNotEmpty();
+        Assertions.assertThat(user.getAuthorities()).isNotNull();
+        Assertions.assertThat(user.getAuthorities()).isNotEmpty();
         assertThat(user.getAuthorities().iterator().next().getName()).isEqualTo("ADMIN");
     }
 
@@ -115,18 +116,18 @@ class UserMapperTest {
         User user = userMapper.userDTOToUser(userDto);
 
         assertThat(user).isNotNull();
-        assertThat(user.getAuthorities()).isNotNull();
-        assertThat(user.getAuthorities()).isEmpty();
+        Assertions.assertThat(user.getAuthorities()).isNotNull();
+        Assertions.assertThat(user.getAuthorities()).isEmpty();
     }
 
     @Test
     void userDTOToUserMapWithNullUserShouldReturnNull() {
-        assertThat(userMapper.userDTOToUser(null)).isNull();
+        Assertions.assertThat(userMapper.userDTOToUser(null)).isNull();
     }
 
     @Test
     void testUserFromId() {
-        assertThat(userMapper.userFromId(DEFAULT_ID).getId()).isEqualTo(DEFAULT_ID);
-        assertThat(userMapper.userFromId(null)).isNull();
+        Assertions.assertThat(userMapper.userFromId(DEFAULT_ID).getId()).isEqualTo(DEFAULT_ID);
+        Assertions.assertThat(userMapper.userFromId(null)).isNull();
     }
 }

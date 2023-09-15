@@ -1,38 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { ReleveFactureDetailComponent } from './releve-facture-detail.component';
 
 describe('ReleveFacture Management Detail Component', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ReleveFactureDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+  let comp: ReleveFactureDetailComponent;
+  let fixture: ComponentFixture<ReleveFactureDetailComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ReleveFactureDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: ReleveFactureDetailComponent,
-              resolve: { releveFacture: () => of({ id: 123 }) },
-            },
-          ],
-          withComponentInputBinding()
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ releveFacture: { id: 123 } }) },
+        },
       ],
     })
       .overrideTemplate(ReleveFactureDetailComponent, '')
       .compileComponents();
+    fixture = TestBed.createComponent(ReleveFactureDetailComponent);
+    comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load releveFacture on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', ReleveFactureDetailComponent);
+    it('Should load releveFacture on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.releveFacture).toEqual(expect.objectContaining({ id: 123 }));
+      expect(comp.releveFacture).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

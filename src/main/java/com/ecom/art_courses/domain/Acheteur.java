@@ -1,58 +1,61 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Acheteur.
  */
-@Table("acheteur")
+@Entity
+@Table(name = "acheteur")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Acheteur implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @Column(name = "id")
     private Long id;
 
-    @Column("adresse")
+    @Column(name = "adresse")
     private String adresse;
 
-    @Column("date_naiss")
+    @Column(name = "date_naiss")
     private LocalDate dateNaiss;
 
-    @Column("num_tel")
+    @Column(name = "num_tel")
     private String numTel;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @OneToOne(optional = false)
+    @NotNull
+    @MapsId
+    @JoinColumn(name = "id")
     private User internalUser;
 
-    @Transient
+    @OneToMany(mappedBy = "acheteur")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "commandes", "acheteur" }, allowSetters = true)
     private Set<ReleveFacture> releveFactures = new HashSet<>();
 
-    @Transient
+    @OneToMany(mappedBy = "acheteur")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
     private Set<Commande> commandes = new HashSet<>();
-
-    @Column("internal_user_id")
-    private Long internalUserId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -140,7 +143,6 @@ public class Acheteur implements Serializable {
 
     public void setInternalUser(User user) {
         this.internalUser = user;
-        this.internalUserId = user != null ? user.getId() : null;
     }
 
     public Acheteur internalUser(User user) {
@@ -208,14 +210,6 @@ public class Acheteur implements Serializable {
         this.commandes.remove(commande);
         commande.setAcheteur(null);
         return this;
-    }
-
-    public Long getInternalUserId() {
-        return this.internalUserId;
-    }
-
-    public void setInternalUserId(Long user) {
-        this.internalUserId = user;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

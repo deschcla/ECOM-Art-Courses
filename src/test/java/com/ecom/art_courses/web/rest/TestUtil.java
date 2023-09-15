@@ -6,19 +6,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 
 /**
  * Utility class for testing REST controllers.
@@ -172,16 +175,28 @@ public final class TestUtil {
     }
 
     /**
-     * Executes a query on the EntityManager finding all stored objects.
+     * Create a {@link FormattingConversionService} which use ISO date format, instead of the localized one.
+     * @return the {@link FormattingConversionService}.
+     */
+    public static FormattingConversionService createFormattingConversionService() {
+        DefaultFormattingConversionService dfcs = new DefaultFormattingConversionService();
+        DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
+        registrar.setUseIsoFormat(true);
+        registrar.registerFormatters(dfcs);
+        return dfcs;
+    }
+
+    /**
+     * Makes a an executes a query to the EntityManager finding all stored objects.
      * @param <T> The type of objects to be searched
      * @param em The instance of the EntityManager
-     * @param clazz The class type to be searched
+     * @param clss The class type to be searched
      * @return A list of all found objects
      */
-    public static <T> List<T> findAll(EntityManager em, Class<T> clazz) {
+    public static <T> List<T> findAll(EntityManager em, Class<T> clss) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(clazz);
-        Root<T> rootEntry = cq.from(clazz);
+        CriteriaQuery<T> cq = cb.createQuery(clss);
+        Root<T> rootEntry = cq.from(clss);
         CriteriaQuery<T> all = cq.select(rootEntry);
         TypedQuery<T> allQuery = em.createQuery(all);
         return allQuery.getResultList();

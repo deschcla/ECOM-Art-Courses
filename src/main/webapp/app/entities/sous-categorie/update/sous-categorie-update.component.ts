@@ -4,9 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { SousCategorieFormService, SousCategorieFormGroup } from './sous-categorie-form.service';
 import { ISousCategorie } from '../sous-categorie.model';
 import { SousCategorieService } from '../service/sous-categorie.service';
@@ -14,10 +11,8 @@ import { ICategorie } from 'app/entities/categorie/categorie.model';
 import { CategorieService } from 'app/entities/categorie/service/categorie.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-sous-categorie-update',
   templateUrl: './sous-categorie-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class SousCategorieUpdateComponent implements OnInit {
   isSaving = false;

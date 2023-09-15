@@ -4,9 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { AcheteurFormService, AcheteurFormGroup } from './acheteur-form.service';
 import { IAcheteur } from '../acheteur.model';
 import { AcheteurService } from '../service/acheteur.service';
@@ -14,10 +11,8 @@ import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-acheteur-update',
   templateUrl: './acheteur-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class AcheteurUpdateComponent implements OnInit {
   isSaving = false;

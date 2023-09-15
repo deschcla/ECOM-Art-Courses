@@ -8,7 +8,7 @@ import { of, throwError } from 'rxjs';
 
 import { AccountService } from 'app/core/auth/account.service';
 
-import PasswordComponent from './password.component';
+import { PasswordComponent } from './password.component';
 import { PasswordService } from './password.service';
 
 describe('PasswordComponent', () => {
@@ -18,7 +18,8 @@ describe('PasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PasswordComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [PasswordComponent],
       providers: [FormBuilder, AccountService],
     })
       .overrideTemplate(PasswordComponent, '')

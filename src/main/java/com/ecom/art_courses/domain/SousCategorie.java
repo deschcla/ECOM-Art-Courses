@@ -1,48 +1,50 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A SousCategorie.
  */
-@Table("sous_categorie")
+@Entity
+@Table(name = "sous_categorie")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class SousCategorie implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("type_sous_categorie")
+    @Column(name = "type_sous_categorie")
     private String typeSousCategorie;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @OneToMany(mappedBy = "souscategorie")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "souscategorie", "ligneCommandes", "commandes" }, allowSetters = true)
     private Set<Produit> produits = new HashSet<>();
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "sousCategories" }, allowSetters = true)
     private Categorie categorie;
-
-    @Column("categorie_id")
-    private Long categorieId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -135,20 +137,11 @@ public class SousCategorie implements Serializable {
 
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
-        this.categorieId = categorie != null ? categorie.getId() : null;
     }
 
     public SousCategorie categorie(Categorie categorie) {
         this.setCategorie(categorie);
         return this;
-    }
-
-    public Long getCategorieId() {
-        return this.categorieId;
-    }
-
-    public void setCategorieId(Long categorie) {
-        this.categorieId = categorie;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

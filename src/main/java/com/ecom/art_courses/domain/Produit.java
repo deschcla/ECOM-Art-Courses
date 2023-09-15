@@ -1,74 +1,77 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Produit.
  */
-@Table("produit")
+@Entity
+@Table(name = "produit")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Produit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("nom_produit")
+    @Column(name = "nom_produit")
     private String nomProduit;
 
-    @Column("jhi_desc")
+    @Column(name = "jhi_desc")
     private String desc;
 
-    @Column("tarif_unit")
+    @Column(name = "tarif_unit")
     private Float tarifUnit;
 
-    @Column("date")
+    @Column(name = "date")
     private ZonedDateTime date;
 
-    @Column("duree")
+    @Column(name = "duree")
     private String duree;
 
-    @Column("lien_img")
+    @Column(name = "lien_img")
     private String lienImg;
 
-    @Column("quantite_totale")
+    @Column(name = "quantite_totale")
     private Integer quantiteTotale;
 
-    @Column("quantite_dispo")
+    @Column(name = "quantite_dispo")
     private Integer quantiteDispo;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "produits", "categorie" }, allowSetters = true)
     private SousCategorie souscategorie;
 
-    @Transient
+    @OneToMany(mappedBy = "produit")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "produit", "commande" }, allowSetters = true)
     private Set<LigneCommande> ligneCommandes = new HashSet<>();
 
-    @Transient
+    @ManyToMany(mappedBy = "produits")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
     private Set<Commande> commandes = new HashSet<>();
-
-    @Column("souscategorie_id")
-    private Long souscategorieId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -221,7 +224,6 @@ public class Produit implements Serializable {
 
     public void setSouscategorie(SousCategorie sousCategorie) {
         this.souscategorie = sousCategorie;
-        this.souscategorieId = sousCategorie != null ? sousCategorie.getId() : null;
     }
 
     public Produit souscategorie(SousCategorie sousCategorie) {
@@ -289,14 +291,6 @@ public class Produit implements Serializable {
         this.commandes.remove(commande);
         commande.getProduits().remove(this);
         return this;
-    }
-
-    public Long getSouscategorieId() {
-        return this.souscategorieId;
-    }
-
-    public void setSouscategorieId(Long sousCategorie) {
-        this.souscategorieId = sousCategorie;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { IAcheteur } from '../acheteur.model';
 import { AcheteurService } from '../service/acheteur.service';
 
-import acheteurResolve from './acheteur-routing-resolve.service';
+import { AcheteurRoutingResolveService } from './acheteur-routing-resolve.service';
 
 describe('Acheteur routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: AcheteurRoutingResolveService;
   let service: AcheteurService;
   let resultAcheteur: IAcheteur | null | undefined;
 
@@ -33,6 +34,7 @@ describe('Acheteur routing resolve service', () => {
     mockRouter = TestBed.inject(Router);
     jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
+    routingResolveService = TestBed.inject(AcheteurRoutingResolveService);
     service = TestBed.inject(AcheteurService);
     resultAcheteur = undefined;
   });
@@ -44,12 +46,8 @@ describe('Acheteur routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        acheteurResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultAcheteur = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultAcheteur = result;
       });
 
       // THEN
@@ -63,12 +61,8 @@ describe('Acheteur routing resolve service', () => {
       mockActivatedRouteSnapshot.params = {};
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        acheteurResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultAcheteur = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultAcheteur = result;
       });
 
       // THEN
@@ -82,12 +76,8 @@ describe('Acheteur routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        acheteurResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultAcheteur = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultAcheteur = result;
       });
 
       // THEN

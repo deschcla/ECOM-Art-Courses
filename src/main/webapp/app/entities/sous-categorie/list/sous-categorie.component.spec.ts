@@ -16,11 +16,8 @@ describe('SousCategorie Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'sous-categorie', component: SousCategorieComponent }]),
-        HttpClientTestingModule,
-        SousCategorieComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'sous-categorie', component: SousCategorieComponent }]), HttpClientTestingModule],
+      declarations: [SousCategorieComponent],
       providers: [
         {
           provide: ActivatedRoute,

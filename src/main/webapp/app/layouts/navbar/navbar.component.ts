@@ -1,51 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { SessionStorageService } from 'ngx-webstorage';
 
-import { StateStorageService } from 'app/core/auth/state-storage.service';
-import SharedModule from 'app/shared/shared.module';
-import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { VERSION } from 'app/app.constants';
 import { LANGUAGES } from 'app/config/language.constants';
-import ActiveMenuDirective from './active-menu.directive';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
-import NavbarItem from './navbar-item.model';
-import { CartService } from 'app/core/util/cart.service';
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  standalone: true,
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective, FormsModule, ReactiveFormsModule],
 })
-export default class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit {
   inProduction?: boolean;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
   openAPIEnabled?: boolean;
   version = '';
   account: Account | null = null;
-  entitiesNavbarItems: NavbarItem[] = [];
-  counter: number = 0;
-
-  searchForm = new FormGroup({
-    search: new FormControl(''),
-  });
+  entitiesNavbarItems: any[] = [];
 
   constructor(
     private loginService: LoginService,
     private translateService: TranslateService,
-    private stateStorageService: StateStorageService,
+    private sessionStorageService: SessionStorageService,
     private accountService: AccountService,
     private profileService: ProfileService,
-    private router: Router,
-    private cartService: CartService
+    private router: Router
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -62,13 +48,10 @@ export default class NavbarComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
-    this.cartService.counterChange.subscribe(value => {
-      this.counter = value;
-    });
   }
 
   changeLanguage(languageKey: string): void {
-    this.stateStorageService.storeLocale(languageKey);
+    this.sessionStorageService.store('locale', languageKey);
     this.translateService.use(languageKey);
   }
 
@@ -88,8 +71,5 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  }
-  search(): void {
-    console.log(this.searchForm.value.search);
   }
 }

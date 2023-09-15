@@ -1,58 +1,57 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A LigneCommande.
  */
-@Table("ligne_commande")
+@Entity
+@Table(name = "ligne_commande")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class LigneCommande implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("quantite")
+    @Column(name = "quantite")
     private Integer quantite;
 
-    @Column("montant")
+    @Column(name = "montant")
     private Float montant;
 
-    @Column("validated")
+    @Column(name = "validated")
     private Integer validated;
 
-    @Column("nom_participant")
+    @Column(name = "nom_participant")
     private String nomParticipant;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "souscategorie", "ligneCommandes", "commandes" }, allowSetters = true)
     private Produit produit;
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
     private Commande commande;
-
-    @Column("produit_id")
-    private Long produitId;
-
-    @Column("commande_id")
-    private Long commandeId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -153,7 +152,6 @@ public class LigneCommande implements Serializable {
 
     public void setProduit(Produit produit) {
         this.produit = produit;
-        this.produitId = produit != null ? produit.getId() : null;
     }
 
     public LigneCommande produit(Produit produit) {
@@ -167,28 +165,11 @@ public class LigneCommande implements Serializable {
 
     public void setCommande(Commande commande) {
         this.commande = commande;
-        this.commandeId = commande != null ? commande.getId() : null;
     }
 
     public LigneCommande commande(Commande commande) {
         this.setCommande(commande);
         return this;
-    }
-
-    public Long getProduitId() {
-        return this.produitId;
-    }
-
-    public void setProduitId(Long produit) {
-        this.produitId = produit;
-    }
-
-    public Long getCommandeId() {
-        return this.commandeId;
-    }
-
-    public void setCommandeId(Long commande) {
-        this.commandeId = commande;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

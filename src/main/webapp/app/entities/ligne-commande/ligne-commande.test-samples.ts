@@ -3,24 +3,24 @@ import dayjs from 'dayjs/esm';
 import { ILigneCommande, NewLigneCommande } from './ligne-commande.model';
 
 export const sampleWithRequiredData: ILigneCommande = {
-  id: 4423,
+  id: 93307,
 };
 
 export const sampleWithPartialData: ILigneCommande = {
-  id: 7315,
-  quantite: 30050,
-  montant: 16926,
-  nomParticipant: 'Delaware Clothing',
+  id: 6875,
+  quantite: 65420,
+  createdAt: dayjs('2023-09-14T10:38'),
+  updateAt: dayjs('2023-09-14T11:15'),
 };
 
 export const sampleWithFullData: ILigneCommande = {
-  id: 31655,
-  quantite: 26779,
-  montant: 31338,
-  validated: 25991,
-  nomParticipant: 'Loan toolset',
-  createdAt: dayjs('2023-09-12T00:31'),
-  updateAt: dayjs('2023-09-11T09:03'),
+  id: 8051,
+  quantite: 38050,
+  montant: 71483,
+  validated: 28612,
+  nomParticipant: 'Personal systematic',
+  createdAt: dayjs('2023-09-14T12:21'),
+  updateAt: dayjs('2023-09-14T05:22'),
 };
 
 export const sampleWithNewData: NewLigneCommande = {

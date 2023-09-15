@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073710",
+  "changelogDate": "20230914223849",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "produit",
   "fields": [
     {
@@ -44,13 +46,16 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "Produit",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "sousCategorie",
       "otherEntityRelationshipName": "produit",
       "relationshipName": "souscategorie",
-      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
@@ -58,18 +63,16 @@
       "otherEntityName": "ligneCommande",
       "otherEntityRelationshipName": "produit",
       "relationshipName": "ligneCommande",
-      "relationshipSide": "right",
       "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "commande",
       "otherEntityRelationshipName": "produit",
+      "ownerSide": false,
       "relationshipName": "commande",
-      "relationshipSide": "right",
       "relationshipType": "many-to-many",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

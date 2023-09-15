@@ -97,7 +97,7 @@ export class FilterOptions implements IFilterOptions {
     params.keys
       .filter(paramKey => filterRegex.test(paramKey))
       .forEach(matchingParam => {
-        const matches = filterRegex.exec(matchingParam);
+        const matches = matchingParam.match(filterRegex);
         if (matches && matches.length > 1) {
           this.getFilterOptionByName(matches[1], true).addValue(...params.getAll(matchingParam));
         }
