@@ -17,6 +17,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   courses: IProduit[] | null = [];
   account: Account | null = null;
   display = 'none';
+  // show : boolean = false;
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -48,9 +49,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/course-details/' + course.id.toString());
   }
 
-  addToCart(course: IProduit, event: Event): void {
+  addToCart(course: IProduit, event: MouseEvent): void {
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1);
+      console.log(event);
+      // if ((event.target as HTMLElement).tagName === 'A') {
+      let target = event.target as HTMLElement;
+      target.children[0].innerHTML = "<fa-icon icon='check'></fa-icon>";
+      // }
     } else {
       this.display = 'block';
     }
