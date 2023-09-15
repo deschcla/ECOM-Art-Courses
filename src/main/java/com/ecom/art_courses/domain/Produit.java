@@ -58,6 +58,12 @@ public class Produit implements Serializable {
     @Column(name = "update_at")
     private Instant updateAt;
 
+    @Column(name = "nom_prof")
+    private String nomProf;
+
+    @Column(name = "promotion")
+    private String promotion;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "produits", "categorie" }, allowSetters = true)
@@ -216,6 +222,32 @@ public class Produit implements Serializable {
 
     public void setUpdateAt(Instant updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getNomProf() {
+        return this.nomProf;
+    }
+
+    public Produit nomProf(String nomProf) {
+        this.setNomProf(nomProf);
+        return this;
+    }
+
+    public void setNomProf(String nomProf) {
+        this.nomProf = nomProduit;
+    }
+
+    public String getPromotion() {
+        return this.promotion;
+    }
+
+    public Produit promotion(String promotion) {
+        this.setPromotion(promotion);
+        return this;
+    }
+
+    public void setPromotion(String promotion) {
+        this.promotion = promotion;
     }
 
     public SousCategorie getSouscategorie() {

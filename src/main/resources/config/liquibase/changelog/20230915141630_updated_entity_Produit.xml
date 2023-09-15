@@ -13,9 +13,35 @@
         <dropColumn tableName="produit" columnName="souscategorie_id"/>
         <addColumn tableName="produit">
             <column name="nom_prof" type="varchar(255)"></column>
-            <column name="promotion" type="bigint"></column>
+            <column name="promotion" type="varchar(255)"></column>
             <column name="souscategorie_id" type="numeric"></column>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="2023091514160-2" author="mgradvohl">
+        <loadUpdateData
+            file="config/liquibase/fake-data/updated_produit.csv"
+            onlyUpdate="true"
+            primaryKey="id"
+            separator=";"
+            tableName="produit"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="nom_produit" type="string"/>
+            <column name="jhi_desc" type="string"/>
+            <column name="tarif_unit" type="numeric"/>
+            <column name="date" type="date"/>
+            <column name="duree" type="string"/>
+            <column name="lien_img" type="string"/>
+            <column name="quantite_totale" type="numeric"/>
+            <column name="quantite_dispo" type="numeric"/>
+            <column name="created_at" type="date"/>
+            <column name="update_at" type="date"/>
+            <column name="nom_prof" type="varchar(255)"/>
+            <column name="promotion" type="varchar(255)"/>
+            <column name="souscategorie_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadUpdateData>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

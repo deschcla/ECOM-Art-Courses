@@ -25,6 +25,8 @@ export const sampleWithFullData: IProduit = {
   quantiteDispo: 42304,
   createdAt: dayjs('2023-09-14T15:00'),
   updateAt: dayjs('2023-09-14T22:09'),
+  nomProf: 'Jeanne Darc',
+  promotion: '10',
 };
 
 export const sampleWithNewData: NewProduit = {
