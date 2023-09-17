@@ -1,6 +1,7 @@
 @import 'bootstrap-variables';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootswatch/dist/flatly/variables';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -12,6 +13,15 @@ h2,
 h3,
 h4 {
   font-weight: 300;
+}
+
+.btn-primary {
+  background-color: #314455 !important;
+  border-color: #314455 !important;
+}
+
+.btn {
+  padding: 6px 12px !important;
 }
 
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
@@ -71,7 +81,7 @@ Generic styles
 
 .jh-card {
   padding: 1.5%;
-  margin-top: 20px;
+  // margin-top: 20px;
   border: none;
 }
 

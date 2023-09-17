@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import dayjs from 'dayjs/esm';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -20,11 +20,15 @@ import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import { MainComponent } from './layouts/main/main.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
+import NavbarComponent from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
+import { CourseDetailsComponent } from './course-details/course-details.component';
+import { CourseSearchComponent } from './course-search/course-search.component';
+import { PaymentComponent } from './payment/payment.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -38,6 +42,9 @@ import { ErrorComponent } from './layouts/error/error.component';
     HttpClientModule,
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
+    NavbarComponent,
+    FontAwesomeModule,
+    ReactiveFormsModule,
   ],
   providers: [
     Title,
@@ -45,7 +52,16 @@ import { ErrorComponent } from './layouts/error/error.component';
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [
+    CourseDetailsComponent,
+    CourseSearchComponent,
+    PaymentComponent,
+    MainComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
