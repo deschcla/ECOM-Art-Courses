@@ -3,8 +3,11 @@ package com.ecom.art_courses.service.impl;
 import com.ecom.art_courses.domain.Produit;
 import com.ecom.art_courses.repository.ProduitRepository;
 import com.ecom.art_courses.service.ProduitService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,7 +37,17 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit update(Produit produit) {
         log.debug("Request to update Produit : {}", produit);
-        return produitRepository.save(produit);
+        Produit produitBD = produitRepository.findById(produit.getId()).orElse(null);
+
+        if (produitBD != null) {
+            if (produitBD.getVersion().equals(produit.getVersion())) {
+                return produitRepository.save(produit);
+            } else {
+                throw new OptimisticLockException("Version conflit");
+            }
+        } else {
+            throw new EntityNotFoundException("Entity not found");
+        }
     }
 
     @Override

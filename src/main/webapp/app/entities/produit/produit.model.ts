@@ -16,6 +16,7 @@ export interface IProduit {
   updateAt?: dayjs.Dayjs | null;
   nomProf?: string | null;
   promotion?: string | null;
+  version?: number | null;
   souscategorie?: Pick<ISousCategorie, 'id'> | null;
   commandes?: Pick<ICommande, 'id'>[] | null;
 }
