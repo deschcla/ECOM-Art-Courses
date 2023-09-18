@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073709",
+  "changelogDate": "20230914223848",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "acheteur",
   "fields": [
     {
@@ -24,21 +26,25 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "Acheteur",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
+      "id": true,
       "otherEntityName": "user",
+      "ownerSide": true,
       "relationshipName": "internalUser",
-      "relationshipSide": "left",
       "relationshipType": "one-to-one",
       "relationshipValidateRules": "required",
-      "relationshipWithBuiltInEntity": true
+      "useJPADerivedIdentifier": true
     },
     {
       "otherEntityName": "releveFacture",
       "otherEntityRelationshipName": "acheteur",
       "relationshipName": "releveFacture",
-      "relationshipSide": "left",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
     },
@@ -46,11 +52,9 @@
       "otherEntityName": "commande",
       "otherEntityRelationshipName": "acheteur",
       "relationshipName": "commande",
-      "relationshipSide": "left",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

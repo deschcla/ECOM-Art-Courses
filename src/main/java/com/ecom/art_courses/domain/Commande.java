@@ -1,66 +1,74 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Commande.
  */
-@Table("commande")
+@Entity
+@Table(name = "commande")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Commande implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("montant")
+    @Column(name = "montant")
     private Float montant;
 
-    @Column("validated")
+    @Column(name = "validated")
     private Integer validated;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @OneToMany(mappedBy = "commande")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "commande" }, allowSetters = true)
     private Set<CarteBancaire> carteBancaires = new HashSet<>();
 
-    @Transient
+    @ManyToMany
+    @NotNull
+    @JoinTable(
+        name = "rel_commande__produit",
+        joinColumns = @JoinColumn(name = "commande_id"),
+        inverseJoinColumns = @JoinColumn(name = "produit_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "souscategorie", "ligneCommandes", "commandes" }, allowSetters = true)
     private Set<Produit> produits = new HashSet<>();
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "commandes", "acheteur" }, allowSetters = true)
     private ReleveFacture releveFacture;
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "internalUser", "releveFactures", "commandes" }, allowSetters = true)
     private Acheteur acheteur;
 
-    @Transient
+    @OneToMany(mappedBy = "commande")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "produit", "commande" }, allowSetters = true)
     private Set<LigneCommande> ligneCommandes = new HashSet<>();
-
-    @Column("releve_facture_id")
-    private Long releveFactureId;
-
-    @Column("acheteur_id")
-    private Long acheteurId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -191,7 +199,6 @@ public class Commande implements Serializable {
 
     public void setReleveFacture(ReleveFacture releveFacture) {
         this.releveFacture = releveFacture;
-        this.releveFactureId = releveFacture != null ? releveFacture.getId() : null;
     }
 
     public Commande releveFacture(ReleveFacture releveFacture) {
@@ -205,7 +212,6 @@ public class Commande implements Serializable {
 
     public void setAcheteur(Acheteur acheteur) {
         this.acheteur = acheteur;
-        this.acheteurId = acheteur != null ? acheteur.getId() : null;
     }
 
     public Commande acheteur(Acheteur acheteur) {
@@ -242,22 +248,6 @@ public class Commande implements Serializable {
         this.ligneCommandes.remove(ligneCommande);
         ligneCommande.setCommande(null);
         return this;
-    }
-
-    public Long getReleveFactureId() {
-        return this.releveFactureId;
-    }
-
-    public void setReleveFactureId(Long releveFacture) {
-        this.releveFactureId = releveFacture;
-    }
-
-    public Long getAcheteurId() {
-        return this.acheteurId;
-    }
-
-    public void setAcheteurId(Long acheteur) {
-        this.acheteurId = acheteur;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

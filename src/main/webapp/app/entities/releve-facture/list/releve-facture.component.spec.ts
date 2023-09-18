@@ -16,11 +16,8 @@ describe('ReleveFacture Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'releve-facture', component: ReleveFactureComponent }]),
-        HttpClientTestingModule,
-        ReleveFactureComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'releve-facture', component: ReleveFactureComponent }]), HttpClientTestingModule],
+      declarations: [ReleveFactureComponent],
       providers: [
         {
           provide: ActivatedRoute,

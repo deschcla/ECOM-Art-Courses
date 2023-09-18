@@ -3,19 +3,21 @@ import dayjs from 'dayjs/esm';
 import { ICarteBancaire, NewCarteBancaire } from './carte-bancaire.model';
 
 export const sampleWithRequiredData: ICarteBancaire = {
-  id: 10344,
+  id: 72915,
 };
 
 export const sampleWithPartialData: ICarteBancaire = {
-  id: 3624,
-  refCarte: 'bluetooth deposit',
+  id: 40633,
+  refCarte: 'transmitting',
+  createdAt: dayjs('2023-09-14T07:20'),
+  updateAt: dayjs('2023-09-14T22:04'),
 };
 
 export const sampleWithFullData: ICarteBancaire = {
-  id: 733,
-  refCarte: 'consequuntur systems Southeast',
-  createdAt: dayjs('2023-09-12T03:06'),
-  updateAt: dayjs('2023-09-11T17:05'),
+  id: 3909,
+  refCarte: 'EXE',
+  createdAt: dayjs('2023-09-14T13:46'),
+  updateAt: dayjs('2023-09-14T08:19'),
 };
 
 export const sampleWithNewData: NewCarteBancaire = {

@@ -3,12 +3,12 @@ package com.ecom.art_courses.service.impl;
 import com.ecom.art_courses.domain.SousCategorie;
 import com.ecom.art_courses.repository.SousCategorieRepository;
 import com.ecom.art_courses.service.SousCategorieService;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Service Implementation for managing {@link SousCategorie}.
@@ -26,19 +26,19 @@ public class SousCategorieServiceImpl implements SousCategorieService {
     }
 
     @Override
-    public Mono<SousCategorie> save(SousCategorie sousCategorie) {
+    public SousCategorie save(SousCategorie sousCategorie) {
         log.debug("Request to save SousCategorie : {}", sousCategorie);
         return sousCategorieRepository.save(sousCategorie);
     }
 
     @Override
-    public Mono<SousCategorie> update(SousCategorie sousCategorie) {
+    public SousCategorie update(SousCategorie sousCategorie) {
         log.debug("Request to update SousCategorie : {}", sousCategorie);
         return sousCategorieRepository.save(sousCategorie);
     }
 
     @Override
-    public Mono<SousCategorie> partialUpdate(SousCategorie sousCategorie) {
+    public Optional<SousCategorie> partialUpdate(SousCategorie sousCategorie) {
         log.debug("Request to partially update SousCategorie : {}", sousCategorie);
 
         return sousCategorieRepository
@@ -56,30 +56,26 @@ public class SousCategorieServiceImpl implements SousCategorieService {
 
                 return existingSousCategorie;
             })
-            .flatMap(sousCategorieRepository::save);
+            .map(sousCategorieRepository::save);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Flux<SousCategorie> findAll() {
+    public List<SousCategorie> findAll() {
         log.debug("Request to get all SousCategories");
         return sousCategorieRepository.findAll();
     }
 
-    public Mono<Long> countAll() {
-        return sousCategorieRepository.count();
-    }
-
     @Override
     @Transactional(readOnly = true)
-    public Mono<SousCategorie> findOne(Long id) {
+    public Optional<SousCategorie> findOne(Long id) {
         log.debug("Request to get SousCategorie : {}", id);
         return sousCategorieRepository.findById(id);
     }
 
     @Override
-    public Mono<Void> delete(Long id) {
+    public void delete(Long id) {
         log.debug("Request to delete SousCategorie : {}", id);
-        return sousCategorieRepository.deleteById(id);
+        sousCategorieRepository.deleteById(id);
     }
 }

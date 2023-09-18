@@ -3,12 +3,12 @@ package com.ecom.art_courses.service.impl;
 import com.ecom.art_courses.domain.CarteBancaire;
 import com.ecom.art_courses.repository.CarteBancaireRepository;
 import com.ecom.art_courses.service.CarteBancaireService;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Service Implementation for managing {@link CarteBancaire}.
@@ -26,19 +26,19 @@ public class CarteBancaireServiceImpl implements CarteBancaireService {
     }
 
     @Override
-    public Mono<CarteBancaire> save(CarteBancaire carteBancaire) {
+    public CarteBancaire save(CarteBancaire carteBancaire) {
         log.debug("Request to save CarteBancaire : {}", carteBancaire);
         return carteBancaireRepository.save(carteBancaire);
     }
 
     @Override
-    public Mono<CarteBancaire> update(CarteBancaire carteBancaire) {
+    public CarteBancaire update(CarteBancaire carteBancaire) {
         log.debug("Request to update CarteBancaire : {}", carteBancaire);
         return carteBancaireRepository.save(carteBancaire);
     }
 
     @Override
-    public Mono<CarteBancaire> partialUpdate(CarteBancaire carteBancaire) {
+    public Optional<CarteBancaire> partialUpdate(CarteBancaire carteBancaire) {
         log.debug("Request to partially update CarteBancaire : {}", carteBancaire);
 
         return carteBancaireRepository
@@ -56,30 +56,26 @@ public class CarteBancaireServiceImpl implements CarteBancaireService {
 
                 return existingCarteBancaire;
             })
-            .flatMap(carteBancaireRepository::save);
+            .map(carteBancaireRepository::save);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Flux<CarteBancaire> findAll() {
+    public List<CarteBancaire> findAll() {
         log.debug("Request to get all CarteBancaires");
         return carteBancaireRepository.findAll();
     }
 
-    public Mono<Long> countAll() {
-        return carteBancaireRepository.count();
-    }
-
     @Override
     @Transactional(readOnly = true)
-    public Mono<CarteBancaire> findOne(Long id) {
+    public Optional<CarteBancaire> findOne(Long id) {
         log.debug("Request to get CarteBancaire : {}", id);
         return carteBancaireRepository.findById(id);
     }
 
     @Override
-    public Mono<Void> delete(Long id) {
+    public void delete(Long id) {
         log.debug("Request to delete CarteBancaire : {}", id);
-        return carteBancaireRepository.deleteById(id);
+        carteBancaireRepository.deleteById(id);
     }
 }

@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 
 import { UserManagementService } from '../service/user-management.service';
 
-import UserManagementDeleteDialogComponent from './user-management-delete-dialog.component';
+import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 
 describe('User Management Delete Component', () => {
   let comp: UserManagementDeleteDialogComponent;
@@ -17,7 +17,8 @@ describe('User Management Delete Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, UserManagementDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [UserManagementDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(UserManagementDeleteDialogComponent, '')

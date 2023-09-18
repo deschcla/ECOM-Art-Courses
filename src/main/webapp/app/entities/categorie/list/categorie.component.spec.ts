@@ -16,11 +16,8 @@ describe('Categorie Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'categorie', component: CategorieComponent }]),
-        HttpClientTestingModule,
-        CategorieComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'categorie', component: CategorieComponent }]), HttpClientTestingModule],
+      declarations: [CategorieComponent],
       providers: [
         {
           provide: ActivatedRoute,

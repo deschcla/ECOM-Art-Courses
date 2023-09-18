@@ -1,15 +1,11 @@
 import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import SharedModule from 'app/shared/shared.module';
-
 @Component({
   selector: 'jhi-password-strength-bar',
-  standalone: true,
-  imports: [SharedModule],
   templateUrl: './password-strength-bar.component.html',
   styleUrls: ['./password-strength-bar.component.scss'],
 })
-export default class PasswordStrengthBarComponent {
+export class PasswordStrengthBarComponent {
   colors = ['#F00', '#F90', '#FF0', '#9F0', '#0F0'];
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {}

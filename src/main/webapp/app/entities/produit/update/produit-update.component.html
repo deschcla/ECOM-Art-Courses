@@ -8,12 +8,12 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.nomProduit" for="field_nomProduit">Nom Produit</label>
           <input
             type="text"
@@ -25,17 +25,17 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.desc" for="field_desc">Desc</label>
           <input type="text" class="form-control" name="desc" id="field_desc" data-cy="desc" formControlName="desc" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.tarifUnit" for="field_tarifUnit">Tarif Unit</label>
           <input type="number" class="form-control" name="tarifUnit" id="field_tarifUnit" data-cy="tarifUnit" formControlName="tarifUnit" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.date" for="field_date">Date</label>
           <div class="d-flex">
             <input
@@ -50,17 +50,17 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.duree" for="field_duree">Duree</label>
           <input type="text" class="form-control" name="duree" id="field_duree" data-cy="duree" formControlName="duree" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.lienImg" for="field_lienImg">Lien Img</label>
           <input type="text" class="form-control" name="lienImg" id="field_lienImg" data-cy="lienImg" formControlName="lienImg" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.quantiteTotale" for="field_quantiteTotale"
             >Quantite Totale</label
           >
@@ -74,7 +74,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.quantiteDispo" for="field_quantiteDispo">Quantite Dispo</label>
           <input
             type="number"
@@ -86,7 +86,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.createdAt" for="field_createdAt">Created At</label>
           <div class="d-flex">
             <input
@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.updateAt" for="field_updateAt">Update At</label>
           <div class="d-flex">
             <input
@@ -116,7 +116,17 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.nomProf" for="field_nomProf">Nom Professeur</label>
+          <input type="text" class="form-control" name="nomProf" id="field_nomProf" data-cy="nomProf" formControlName="nomProf" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.promotion" for="field_promotion">Promotion</label>
+          <input type="text" class="form-control" name="promotion" id="field_promotion" data-cy="promotion" formControlName="promotion" />
+        </div>
+
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.souscategorie" for="field_souscategorie">Souscategorie</label>
           <select
             class="form-control"

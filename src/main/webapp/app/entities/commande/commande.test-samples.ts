@@ -3,20 +3,21 @@ import dayjs from 'dayjs/esm';
 import { ICommande, NewCommande } from './commande.model';
 
 export const sampleWithRequiredData: ICommande = {
-  id: 27769,
+  id: 5189,
 };
 
 export const sampleWithPartialData: ICommande = {
-  id: 2622,
-  updateAt: dayjs('2023-09-12T06:22'),
+  id: 99518,
+  montant: 4218,
+  createdAt: dayjs('2023-09-14T17:48'),
 };
 
 export const sampleWithFullData: ICommande = {
-  id: 9586,
-  montant: 30777,
-  validated: 11954,
-  createdAt: dayjs('2023-09-12T00:46'),
-  updateAt: dayjs('2023-09-11T21:28'),
+  id: 93952,
+  montant: 76871,
+  validated: 40062,
+  createdAt: dayjs('2023-09-14T15:56'),
+  updateAt: dayjs('2023-09-14T03:39'),
 };
 
 export const sampleWithNewData: NewCommande = {

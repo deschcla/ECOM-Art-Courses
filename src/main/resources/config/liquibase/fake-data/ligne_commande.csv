@@ -1,4 +1,4 @@
-id;quantite;montant;validated;nom_participant;created_at;update_at;produit_id;commande_id
+﻿id;quantite;montant;validated;nom_participant;created_at;update_at;produit_id;commande_id
 1;2;40;0;null;2023-09-11T11:14:00;2023-09-11T11:14:00;1;1
 2;1;30;0;null;2023-09-11T11:14:00;2023-09-11T11:14:00;2;2
 3;1;10;0;null;2023-09-11T11:14:00;2023-09-11T11:14:00;3;2

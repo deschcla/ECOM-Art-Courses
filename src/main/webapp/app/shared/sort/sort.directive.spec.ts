@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import SortDirective from './sort.directive';
+import { SortDirective } from './sort.directive';
 
 @Component({
   template: `
@@ -26,8 +26,7 @@ describe('Directive: SortDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SortDirective],
-      declarations: [TestSortDirectiveComponent],
+      declarations: [TestSortDirectiveComponent, SortDirective],
     });
     fixture = TestBed.createComponent(TestSortDirectiveComponent);
     component = fixture.componentInstance;

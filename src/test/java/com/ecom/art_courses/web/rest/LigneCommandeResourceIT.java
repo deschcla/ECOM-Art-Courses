@@ -2,34 +2,34 @@ package com.ecom.art_courses.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.ecom.art_courses.IntegrationTest;
 import com.ecom.art_courses.domain.Commande;
 import com.ecom.art_courses.domain.LigneCommande;
 import com.ecom.art_courses.domain.Produit;
-import com.ecom.art_courses.repository.EntityManager;
 import com.ecom.art_courses.repository.LigneCommandeRepository;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for the {@link LigneCommandeResource} REST controller.
  */
 @IntegrationTest
-@AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
+@AutoConfigureMockMvc
 @WithMockUser
 class LigneCommandeResourceIT {
 
@@ -64,7 +64,7 @@ class LigneCommandeResourceIT {
     private EntityManager em;
 
     @Autowired
-    private WebTestClient webTestClient;
+    private MockMvc restLigneCommandeMockMvc;
 
     private LigneCommande ligneCommande;
 
@@ -84,11 +84,23 @@ class LigneCommandeResourceIT {
             .updateAt(DEFAULT_UPDATE_AT);
         // Add required entity
         Produit produit;
-        produit = em.insert(ProduitResourceIT.createEntity(em)).block();
+        if (TestUtil.findAll(em, Produit.class).isEmpty()) {
+            produit = ProduitResourceIT.createEntity(em);
+            em.persist(produit);
+            em.flush();
+        } else {
+            produit = TestUtil.findAll(em, Produit.class).get(0);
+        }
         ligneCommande.setProduit(produit);
         // Add required entity
         Commande commande;
-        commande = em.insert(CommandeResourceIT.createEntity(em)).block();
+        if (TestUtil.findAll(em, Commande.class).isEmpty()) {
+            commande = CommandeResourceIT.createEntity(em);
+            em.persist(commande);
+            em.flush();
+        } else {
+            commande = TestUtil.findAll(em, Commande.class).get(0);
+        }
         ligneCommande.setCommande(commande);
         return ligneCommande;
     }
@@ -109,51 +121,43 @@ class LigneCommandeResourceIT {
             .updateAt(UPDATED_UPDATE_AT);
         // Add required entity
         Produit produit;
-        produit = em.insert(ProduitResourceIT.createUpdatedEntity(em)).block();
+        if (TestUtil.findAll(em, Produit.class).isEmpty()) {
+            produit = ProduitResourceIT.createUpdatedEntity(em);
+            em.persist(produit);
+            em.flush();
+        } else {
+            produit = TestUtil.findAll(em, Produit.class).get(0);
+        }
         ligneCommande.setProduit(produit);
         // Add required entity
         Commande commande;
-        commande = em.insert(CommandeResourceIT.createUpdatedEntity(em)).block();
+        if (TestUtil.findAll(em, Commande.class).isEmpty()) {
+            commande = CommandeResourceIT.createUpdatedEntity(em);
+            em.persist(commande);
+            em.flush();
+        } else {
+            commande = TestUtil.findAll(em, Commande.class).get(0);
+        }
         ligneCommande.setCommande(commande);
         return ligneCommande;
     }
 
-    public static void deleteEntities(EntityManager em) {
-        try {
-            em.deleteAll(LigneCommande.class).block();
-        } catch (Exception e) {
-            // It can fail, if other entities are still referring this - it will be removed later.
-        }
-        ProduitResourceIT.deleteEntities(em);
-        CommandeResourceIT.deleteEntities(em);
-    }
-
-    @AfterEach
-    public void cleanup() {
-        deleteEntities(em);
-    }
-
     @BeforeEach
     public void initTest() {
-        deleteEntities(em);
         ligneCommande = createEntity(em);
     }
 
     @Test
+    @Transactional
     void createLigneCommande() throws Exception {
-        int databaseSizeBeforeCreate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeCreate = ligneCommandeRepository.findAll().size();
         // Create the LigneCommande
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isCreated();
+        restLigneCommandeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ligneCommande)))
+            .andExpect(status().isCreated());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeCreate + 1);
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(DEFAULT_QUANTITE);
@@ -165,143 +169,82 @@ class LigneCommandeResourceIT {
     }
 
     @Test
+    @Transactional
     void createLigneCommandeWithExistingId() throws Exception {
         // Create the LigneCommande with an existing ID
         ligneCommande.setId(1L);
 
-        int databaseSizeBeforeCreate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeCreate = ligneCommandeRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restLigneCommandeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ligneCommande)))
+            .andExpect(status().isBadRequest());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
-    void getAllLigneCommandesAsStream() {
+    @Transactional
+    void getAllLigneCommandes() throws Exception {
         // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
-
-        List<LigneCommande> ligneCommandeList = webTestClient
-            .get()
-            .uri(ENTITY_API_URL)
-            .accept(MediaType.APPLICATION_NDJSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentTypeCompatibleWith(MediaType.APPLICATION_NDJSON)
-            .returnResult(LigneCommande.class)
-            .getResponseBody()
-            .filter(ligneCommande::equals)
-            .collectList()
-            .block(Duration.ofSeconds(5));
-
-        assertThat(ligneCommandeList).isNotNull();
-        assertThat(ligneCommandeList).hasSize(1);
-        LigneCommande testLigneCommande = ligneCommandeList.get(0);
-        assertThat(testLigneCommande.getQuantite()).isEqualTo(DEFAULT_QUANTITE);
-        assertThat(testLigneCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testLigneCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
-        assertThat(testLigneCommande.getNomParticipant()).isEqualTo(DEFAULT_NOM_PARTICIPANT);
-        assertThat(testLigneCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testLigneCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
-    }
-
-    @Test
-    void getAllLigneCommandes() {
-        // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
+        ligneCommandeRepository.saveAndFlush(ligneCommande);
 
         // Get all the ligneCommandeList
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL + "?sort=id,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .expectBody()
-            .jsonPath("$.[*].id")
-            .value(hasItem(ligneCommande.getId().intValue()))
-            .jsonPath("$.[*].quantite")
-            .value(hasItem(DEFAULT_QUANTITE))
-            .jsonPath("$.[*].montant")
-            .value(hasItem(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.[*].validated")
-            .value(hasItem(DEFAULT_VALIDATED))
-            .jsonPath("$.[*].nomParticipant")
-            .value(hasItem(DEFAULT_NOM_PARTICIPANT))
-            .jsonPath("$.[*].createdAt")
-            .value(hasItem(DEFAULT_CREATED_AT.toString()))
-            .jsonPath("$.[*].updateAt")
-            .value(hasItem(DEFAULT_UPDATE_AT.toString()));
+        restLigneCommandeMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ligneCommande.getId().intValue())))
+            .andExpect(jsonPath("$.[*].quantite").value(hasItem(DEFAULT_QUANTITE)))
+            .andExpect(jsonPath("$.[*].montant").value(hasItem(DEFAULT_MONTANT.doubleValue())))
+            .andExpect(jsonPath("$.[*].validated").value(hasItem(DEFAULT_VALIDATED)))
+            .andExpect(jsonPath("$.[*].nomParticipant").value(hasItem(DEFAULT_NOM_PARTICIPANT)))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updateAt").value(hasItem(DEFAULT_UPDATE_AT.toString())));
     }
 
     @Test
-    void getLigneCommande() {
+    @Transactional
+    void getLigneCommande() throws Exception {
         // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
+        ligneCommandeRepository.saveAndFlush(ligneCommande);
 
         // Get the ligneCommande
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL_ID, ligneCommande.getId())
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .expectBody()
-            .jsonPath("$.id")
-            .value(is(ligneCommande.getId().intValue()))
-            .jsonPath("$.quantite")
-            .value(is(DEFAULT_QUANTITE))
-            .jsonPath("$.montant")
-            .value(is(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.validated")
-            .value(is(DEFAULT_VALIDATED))
-            .jsonPath("$.nomParticipant")
-            .value(is(DEFAULT_NOM_PARTICIPANT))
-            .jsonPath("$.createdAt")
-            .value(is(DEFAULT_CREATED_AT.toString()))
-            .jsonPath("$.updateAt")
-            .value(is(DEFAULT_UPDATE_AT.toString()));
+        restLigneCommandeMockMvc
+            .perform(get(ENTITY_API_URL_ID, ligneCommande.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id").value(ligneCommande.getId().intValue()))
+            .andExpect(jsonPath("$.quantite").value(DEFAULT_QUANTITE))
+            .andExpect(jsonPath("$.montant").value(DEFAULT_MONTANT.doubleValue()))
+            .andExpect(jsonPath("$.validated").value(DEFAULT_VALIDATED))
+            .andExpect(jsonPath("$.nomParticipant").value(DEFAULT_NOM_PARTICIPANT))
+            .andExpect(jsonPath("$.createdAt").value(DEFAULT_CREATED_AT.toString()))
+            .andExpect(jsonPath("$.updateAt").value(DEFAULT_UPDATE_AT.toString()));
     }
 
     @Test
-    void getNonExistingLigneCommande() {
+    @Transactional
+    void getNonExistingLigneCommande() throws Exception {
         // Get the ligneCommande
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL_ID, Long.MAX_VALUE)
-            .accept(MediaType.APPLICATION_PROBLEM_JSON)
-            .exchange()
-            .expectStatus()
-            .isNotFound();
+        restLigneCommandeMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
+    @Transactional
     void putExistingLigneCommande() throws Exception {
         // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
+        ligneCommandeRepository.saveAndFlush(ligneCommande);
 
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
 
         // Update the ligneCommande
-        LigneCommande updatedLigneCommande = ligneCommandeRepository.findById(ligneCommande.getId()).block();
+        LigneCommande updatedLigneCommande = ligneCommandeRepository.findById(ligneCommande.getId()).get();
+        // Disconnect from session so that the updates on updatedLigneCommande are not directly saved in db
+        em.detach(updatedLigneCommande);
         updatedLigneCommande
             .quantite(UPDATED_QUANTITE)
             .montant(UPDATED_MONTANT)
@@ -310,17 +253,16 @@ class LigneCommandeResourceIT {
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, updatedLigneCommande.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(updatedLigneCommande))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restLigneCommandeMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedLigneCommande.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedLigneCommande))
+            )
+            .andExpect(status().isOk());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(UPDATED_QUANTITE);
@@ -332,103 +274,102 @@ class LigneCommandeResourceIT {
     }
 
     @Test
+    @Transactional
     void putNonExistingLigneCommande() throws Exception {
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
         ligneCommande.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, ligneCommande.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restLigneCommandeMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, ligneCommande.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(ligneCommande))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void putWithIdMismatchLigneCommande() throws Exception {
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
         ligneCommande.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, count.incrementAndGet())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restLigneCommandeMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(ligneCommande))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void putWithMissingIdPathParamLigneCommande() throws Exception {
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
         ligneCommande.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isEqualTo(405);
+        restLigneCommandeMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ligneCommande)))
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void partialUpdateLigneCommandeWithPatch() throws Exception {
         // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
+        ligneCommandeRepository.saveAndFlush(ligneCommande);
 
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
 
         // Update the ligneCommande using partial update
         LigneCommande partialUpdatedLigneCommande = new LigneCommande();
         partialUpdatedLigneCommande.setId(ligneCommande.getId());
 
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, partialUpdatedLigneCommande.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(partialUpdatedLigneCommande))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        partialUpdatedLigneCommande.quantite(UPDATED_QUANTITE).validated(UPDATED_VALIDATED).createdAt(UPDATED_CREATED_AT);
+
+        restLigneCommandeMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedLigneCommande.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedLigneCommande))
+            )
+            .andExpect(status().isOk());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
-        assertThat(testLigneCommande.getQuantite()).isEqualTo(DEFAULT_QUANTITE);
+        assertThat(testLigneCommande.getQuantite()).isEqualTo(UPDATED_QUANTITE);
         assertThat(testLigneCommande.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testLigneCommande.getValidated()).isEqualTo(DEFAULT_VALIDATED);
+        assertThat(testLigneCommande.getValidated()).isEqualTo(UPDATED_VALIDATED);
         assertThat(testLigneCommande.getNomParticipant()).isEqualTo(DEFAULT_NOM_PARTICIPANT);
-        assertThat(testLigneCommande.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
+        assertThat(testLigneCommande.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testLigneCommande.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
     }
 
     @Test
+    @Transactional
     void fullUpdateLigneCommandeWithPatch() throws Exception {
         // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
+        ligneCommandeRepository.saveAndFlush(ligneCommande);
 
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
 
         // Update the ligneCommande using partial update
         LigneCommande partialUpdatedLigneCommande = new LigneCommande();
@@ -442,17 +383,16 @@ class LigneCommandeResourceIT {
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, partialUpdatedLigneCommande.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(partialUpdatedLigneCommande))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restLigneCommandeMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedLigneCommande.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedLigneCommande))
+            )
+            .andExpect(status().isOk());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
         LigneCommande testLigneCommande = ligneCommandeList.get(ligneCommandeList.size() - 1);
         assertThat(testLigneCommande.getQuantite()).isEqualTo(UPDATED_QUANTITE);
@@ -464,83 +404,78 @@ class LigneCommandeResourceIT {
     }
 
     @Test
+    @Transactional
     void patchNonExistingLigneCommande() throws Exception {
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
         ligneCommande.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, ligneCommande.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restLigneCommandeMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, ligneCommande.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(ligneCommande))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void patchWithIdMismatchLigneCommande() throws Exception {
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
         ligneCommande.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, count.incrementAndGet())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restLigneCommandeMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(ligneCommande))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void patchWithMissingIdPathParamLigneCommande() throws Exception {
-        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = ligneCommandeRepository.findAll().size();
         ligneCommande.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(ligneCommande))
-            .exchange()
-            .expectStatus()
-            .isEqualTo(405);
+        restLigneCommandeMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(ligneCommande))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the LigneCommande in the database
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
-    void deleteLigneCommande() {
+    @Transactional
+    void deleteLigneCommande() throws Exception {
         // Initialize the database
-        ligneCommandeRepository.save(ligneCommande).block();
+        ligneCommandeRepository.saveAndFlush(ligneCommande);
 
-        int databaseSizeBeforeDelete = ligneCommandeRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeDelete = ligneCommandeRepository.findAll().size();
 
         // Delete the ligneCommande
-        webTestClient
-            .delete()
-            .uri(ENTITY_API_URL_ID, ligneCommande.getId())
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isNoContent();
+        restLigneCommandeMockMvc
+            .perform(delete(ENTITY_API_URL_ID, ligneCommande.getId()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll().collectList().block();
+        List<LigneCommande> ligneCommandeList = ligneCommandeRepository.findAll();
         assertThat(ligneCommandeList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

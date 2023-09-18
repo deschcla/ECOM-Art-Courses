@@ -12,17 +12,17 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.carteBancaire.refCarte" for="field_refCarte">Ref Carte</label>
           <input type="text" class="form-control" name="refCarte" id="field_refCarte" data-cy="refCarte" formControlName="refCarte" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.carteBancaire.createdAt" for="field_createdAt">Created At</label>
           <div class="d-flex">
             <input
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.carteBancaire.updateAt" for="field_updateAt">Update At</label>
           <div class="d-flex">
             <input
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.carteBancaire.commande" for="field_commande">Commande</label>
           <select
             class="form-control"

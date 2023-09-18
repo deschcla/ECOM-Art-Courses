@@ -30,6 +30,8 @@ describe('Produit Form Service', () => {
             quantiteDispo: expect.any(Object),
             createdAt: expect.any(Object),
             updateAt: expect.any(Object),
+            nomProf: expect.any(Object),
+            promotion: expect.any(Object),
             souscategorie: expect.any(Object),
             commandes: expect.any(Object),
           })
@@ -52,6 +54,8 @@ describe('Produit Form Service', () => {
             quantiteDispo: expect.any(Object),
             createdAt: expect.any(Object),
             updateAt: expect.any(Object),
+            nomProf: expect.any(Object),
+            promotion: expect.any(Object),
             souscategorie: expect.any(Object),
             commandes: expect.any(Object),
           })
