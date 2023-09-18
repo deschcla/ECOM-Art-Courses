@@ -361,10 +361,6 @@ public class Produit implements Serializable {
         return getClass().hashCode();
     }
 
-    public String getCategorieName() {
-        return this.souscategorie.getCategorieName();
-    }
-
     // prettier-ignore
     @Override
     public String toString() {
@@ -383,7 +379,6 @@ public class Produit implements Serializable {
             ", nomProf='" + getNomProf() + "'" +
             ", promotion='" + getPromotion() + "'" +
             ", version='" + getVersion() + "'" +
-            ", categorie='" + getCategorieName() + "'" +
             "}";
     }
 }
