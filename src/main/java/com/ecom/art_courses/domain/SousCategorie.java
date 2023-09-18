@@ -173,4 +173,8 @@ public class SousCategorie implements Serializable {
             ", updateAt='" + getUpdateAt() + "'" +
             "}";
     }
+
+    public String getCategorieName() {
+        return this.getCategorie().getTypeCategorie();
+    }
 }
