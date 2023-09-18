@@ -80,6 +80,8 @@
     "@angular/platform-browser": "16.1.4",
     "@angular/platform-browser-dynamic": "16.1.4",
     "@angular/router": "16.1.4",
+    "@aws-sdk/client-s3": "^3.414.0",
+    "@aws-sdk/s3-request-presigner": "^3.414.0",
     "@fortawesome/angular-fontawesome": "latest",
     "@fortawesome/fontawesome-common-types": "latest",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
