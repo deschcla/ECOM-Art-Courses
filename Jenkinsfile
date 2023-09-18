@@ -31,6 +31,17 @@ pipeline {
 
             }
         }
+        stage('install tools') {
+            steps {
+                sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
+            }
+        }
+
+        stage('npm install') {
+            steps {
+                sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
+            }
+        }   
 //         stage('backend tests') {
 //             try {
 //                 sh "./mvnw -ntp verify -P-webapp"
