@@ -45,6 +45,7 @@ type ProduitFormGroupContent = {
   updateAt: FormControl<ProduitFormRawValue['updateAt']>;
   nomProf: FormControl<ProduitFormRawValue['nomProf']>;
   promotion: FormControl<ProduitFormRawValue['promotion']>;
+  version: FormControl<ProduitFormRawValue['version']>;
   souscategorie: FormControl<ProduitFormRawValue['souscategorie']>;
   commandes: FormControl<ProduitFormRawValue['commandes']>;
 };
@@ -78,6 +79,7 @@ export class ProduitFormService {
       updateAt: new FormControl(produitRawValue.updateAt),
       nomProf: new FormControl(produitRawValue.nomProf),
       promotion: new FormControl(produitRawValue.promotion),
+      version: new FormControl(produitRawValue.version),
       souscategorie: new FormControl(produitRawValue.souscategorie, {
         validators: [Validators.required],
       }),

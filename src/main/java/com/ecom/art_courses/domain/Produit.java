@@ -64,6 +64,10 @@ public class Produit implements Serializable {
     @Column(name = "promotion")
     private String promotion;
 
+    @Column(name = "version")
+    @Version
+    private Integer version;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "produits", "categorie" }, allowSetters = true)
@@ -246,6 +250,19 @@ public class Produit implements Serializable {
         return this;
     }
 
+    public Integer getVersion() {
+        return this.version;
+    }
+
+    public Produit version(Integer version) {
+        this.setVersion(version);
+        return this;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public void setPromotion(String promotion) {
         this.promotion = promotion;
     }
@@ -359,6 +376,9 @@ public class Produit implements Serializable {
             ", quantiteDispo=" + getQuantiteDispo() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updateAt='" + getUpdateAt() + "'" +
+            ", nomProf='" + getNomProf() + "'" +
+            ", promotion='" + getPromotion() + "'" +
+            ", version='" + getVersion() + "'" +
             "}";
     }
 }

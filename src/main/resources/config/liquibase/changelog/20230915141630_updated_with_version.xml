@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.1" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
@@ -6,21 +6,18 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--
-        Added the entity Produit.
-    -->
-    <changeSet id="2023091514160-1" author="mgradvohl">
+    <!-- Added the new column version to the entity produit. -->
+    <changeSet id="20230916160000-1" author="deschcla">
         <dropColumn tableName="produit" columnName="souscategorie_id"/>
         <addColumn tableName="produit">
-            <column name="nom_prof" type="varchar(255)"></column>
-            <column name="promotion" type="varchar(255)"></column>
-            <column name="souscategorie_id" type="numeric"></column>
+            <column name="version" type="numeric"/>
+            <column name="souscategorie_id" type="numeric"/>
         </addColumn>
     </changeSet>
 
-    <changeSet id="2023091514160-2" author="mgradvohl">
+    <changeSet id="20230916160000-2" author="deschcla">
         <loadUpdateData
-            file="config/liquibase/fake-data/updated_produit.csv"
+            file="config/liquibase/fake-data/updated_produit2.csv"
             onlyUpdate="true"
             primaryKey="id"
             separator=";"
@@ -39,6 +36,7 @@
             <column name="update_at" type="date"/>
             <column name="nom_prof" type="varchar(255)"/>
             <column name="promotion" type="varchar(255)"/>
+            <column name="version" type="numeric"/>
             <column name="souscategorie_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadUpdateData>
