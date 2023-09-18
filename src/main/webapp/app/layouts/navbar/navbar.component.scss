@@ -1,5 +1,6 @@
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import 'bootstrap/scss/functions';
+@import 'bootswatch/dist/flatly/variables';
+@import 'bootstrap/scss/variables';
 
 /* ==========================================================================
 Navbar
@@ -17,10 +18,31 @@ Navbar
 
 .navbar {
   padding: 0.2rem 1rem;
+  .dropdown-item.active,
+  .dropdown-item.active:focus,
+  .dropdown-item.active:hover {
+    background-color: $dark;
+  }
+
+  .navbar-nav {
+    font-size: x-large;
+    justify-content: space-around;
+    flex-direction: row;
+  }
 
   a.nav-link {
     font-weight: 400;
   }
+
+  .navbar-toggler {
+    &:hover {
+      color: $navbar-dark-hover-color;
+    }
+  }
+}
+
+.dropdown-toggle::after {
+  display: none !important;
 }
 
 /* ==========================================================================
@@ -31,6 +53,53 @@ Logo styles
   width: 45px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
+  background: url('/content/images/logo-jhipster.png') no-repeat center center;
   background-size: contain;
+}
+
+/* ==========================================================================
+Search Bar
+========================================================================== */
+
+.inputs {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.form-control {
+  text-indent: 25px;
+  height: 45px;
+  border-radius: 15px;
+  font-size: large;
+  border: 1px solid #a9b1b9;
+  // color: #a9b1b9;
+  // position: fixed;
+}
+
+.form-control:focus,
+.form-control:hover {
+  color: #495057;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.12), 0 4px 4px rgba(0, 0, 0, 0.06);
+}
+
+.inputs fa-icon {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  color: #a9b1b9;
+}
+
+/* ==========================================================================
+cart counter
+========================================================================== */
+
+.cartCounter {
+  height: 37px;
+  padding: 3px 10px;
+  font-size: 27px;
+  border-radius: 26px;
+  transform: perspective(0px) translate(-15px) rotate(0deg) scale(0.5);
+  transform-origin: top;
+  position: absolute;
 }

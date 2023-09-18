@@ -96,8 +96,12 @@ module.exports = async (config, options, targetOptions) => {
       to: 'swagger-ui/',
       globOptions: { ignore: ['**/index.html'] },
     },
+    // {
+    //   from: require.resolve('axios/dist/axios.min.js'),
+    //   to: 'swagger-ui/',
+    // },
     {
-      from: require.resolve('axios/dist/axios.min.js'),
+      from: path.join(path.dirname(require.resolve('axios/package.json')), 'dist/axios.min.js'),
       to: 'swagger-ui/',
     },
     { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui/' },

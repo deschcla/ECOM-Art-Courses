@@ -17,7 +17,7 @@ export interface IProduit {
   nomProf?: string | null;
   promotion?: string | null;
   version?: number | null;
-  souscategorie?: Pick<ISousCategorie, 'id'> | null;
+  souscategorie?: ISousCategorie | null;
   commandes?: Pick<ICommande, 'id'>[] | null;
 }
 
