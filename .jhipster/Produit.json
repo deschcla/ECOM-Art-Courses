@@ -44,6 +44,18 @@
     {
       "fieldName": "updateAt",
       "fieldType": "Instant"
+    },
+    {
+      "fieldName": "nomProf",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "Promotion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "Version",
+      "fieldType": "Integer"
     }
   ],
   "fluentMethods": true,
