@@ -24,25 +24,25 @@ node {
             sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
         }
 
-        stage('backend tests') {
-            try {
-                sh "./mvnw -ntp verify -P-webapp"
-            } catch(err) {
-                throw err
-            } finally {
-                junit '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
-            }
-        }
-        stage('frontend tests') {
-            try {
-               sh "npm install"
-               sh "npm test"
-            } catch(err) {
-                throw err
-            } finally {
-                junit '**/target/test-results/TESTS-results-jest.xml'
-            }
-        }
+//         stage('backend tests') {
+//             try {
+//                 sh "./mvnw -ntp verify -P-webapp"
+//             } catch(err) {
+//                 throw err
+//             } finally {
+//                 junit '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
+//             }
+//         }
+//         stage('frontend tests') {
+//             try {
+//                sh "npm install"
+//                sh "npm test"
+//             } catch(err) {
+//                 throw err
+//             } finally {
+//                 junit '**/target/test-results/TESTS-results-jest.xml'
+//             }
+//         }
 
         // stage('packaging') {
         //     sh "./mvnw -ntp verify -P-webapp -Pprod -DskipTests"
@@ -61,7 +61,7 @@ node {
         }
 
         stage('Deploy to dockerhub') {
-            sh "./mvnw package -Pprod verify  -DskipTests jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
+            sh "./mvnw package -Pprod verify  jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
 
         }
 
