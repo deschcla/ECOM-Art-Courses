@@ -27,9 +27,8 @@ export class PaymentComponent implements OnInit {
     date_exp: new FormControl(this.model_date_expiration, [
       Validators.required,
       Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/),
-      validDateExp
-      ]
-    ),
+      validDateExp,
+    ]),
     ccv: new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{3,4}$/)]),
   });
 
@@ -67,33 +66,31 @@ export class PaymentComponent implements OnInit {
   }
 }
 
-export const validDateExp: ValidatorFn = (control) =>{
-  let res = false
-
+export const validDateExp: ValidatorFn = control => {
+  let res = false;
   // year input > year actuel
-  if(control.value.split('/')[1] > (new Date().getFullYear()).toString().substring(2, 4)){
-    res = true
+  if (control.value.split('/')[1] > new Date().getFullYear().toString().substring(2, 4)) {
+    res = true;
     // year input == year actuel
-  }else if(control.value.split('/')[1] === (new Date().getFullYear()).toString().substring(2, 4)){
+  } else if (control.value.split('/')[1] === new Date().getFullYear().toString().substring(2, 4)) {
     //month input < month actuel
-    if((control.value.split('/')[0]) < (new Date().toLocaleDateString().split('/')[1])){
-      res = false
+    if (+control.value.split('/')[0] < +new Date().toLocaleDateString().split('/')[0]) {
+      res = false;
       // month input >= month actuel
-    }else{
-      res = true
+    } else {
+      res = true;
     }
-  }else{
-    res = false
+  } else {
+    res = false;
   }
-  if(!res){
+  if (!res) {
     return {
-      'validDateExp': {
+      validDateExp: {
         reason: '',
-        value: control.value
-      }
+        value: control.value,
+      },
     };
-  }else{
-    return null
+  } else {
+    return null;
   }
-
-}
+};
