@@ -21,6 +21,7 @@ export const sampleWithFullData: ILigneCommande = {
   nomParticipant: 'Personal systematic',
   createdAt: dayjs('2023-09-14T12:21'),
   updateAt: dayjs('2023-09-14T05:22'),
+  panier: true,
 };
 
 export const sampleWithNewData: NewLigneCommande = {

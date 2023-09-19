@@ -24,6 +24,7 @@
       "nomParticipant": "Nom Participant",
       "createdAt": "Created At",
       "updateAt": "Update At",
+      "panier": "Panier",
       "produit": "Produit",
       "commande": "Commande"
     }

@@ -38,6 +38,10 @@
         <dd>
           <span>{{ ligneCommande.updateAt | formatMediumDatetime }}</span>
         </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.panier">Panier</span></dt>
+        <dd>
+          <span>{{ ligneCommande.panier }}</span>
+        </dd>
         <dt><span jhiTranslate="ecomArtCoursesApp.ligneCommande.produit">Produit</span></dt>
         <dd>
           <div *ngIf="ligneCommande.produit">

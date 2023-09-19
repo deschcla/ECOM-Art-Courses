@@ -43,6 +43,9 @@ public class LigneCommande implements Serializable {
     @Column(name = "update_at")
     private Instant updateAt;
 
+    @Column(name = "panier")
+    private Boolean panier;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "souscategorie", "ligneCommandes", "commandes" }, allowSetters = true)
@@ -144,6 +147,19 @@ public class LigneCommande implements Serializable {
 
     public void setUpdateAt(Instant updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public Boolean getPanier() {
+        return this.panier;
+    }
+
+    public LigneCommande panier(Boolean panier) {
+        this.setPanier(panier);
+        return this;
+    }
+
+    public void setPanier(Boolean panier) {
+        this.panier = panier;
     }
 
     public Produit getProduit() {

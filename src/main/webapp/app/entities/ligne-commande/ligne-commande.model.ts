@@ -10,6 +10,7 @@ export interface ILigneCommande {
   nomParticipant?: string | null;
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
+  panier?: true | false;
   produit?: IProduit | null;
   commande?: ICommande | null;
 }

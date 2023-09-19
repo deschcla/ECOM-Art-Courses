@@ -28,6 +28,7 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
     @Override
     public LigneCommande save(LigneCommande ligneCommande) {
         log.debug("Request to save LigneCommande : {}", ligneCommande);
+        ligneCommande.getCommande().addLigneCommande(ligneCommande);
         return ligneCommandeRepository.save(ligneCommande);
     }
 
@@ -61,6 +62,9 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 }
                 if (ligneCommande.getUpdateAt() != null) {
                     existingLigneCommande.setUpdateAt(ligneCommande.getUpdateAt());
+                }
+                if (ligneCommande.getPanier() != null) {
+                    existingLigneCommande.setPanier(ligneCommande.getPanier());
                 }
 
                 return existingLigneCommande;

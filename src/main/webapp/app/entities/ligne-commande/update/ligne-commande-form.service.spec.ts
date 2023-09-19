@@ -26,6 +26,7 @@ describe('LigneCommande Form Service', () => {
             nomParticipant: expect.any(Object),
             createdAt: expect.any(Object),
             updateAt: expect.any(Object),
+            panier: expect.any(Object),
             produit: expect.any(Object),
             commande: expect.any(Object),
           })
@@ -44,6 +45,7 @@ describe('LigneCommande Form Service', () => {
             nomParticipant: expect.any(Object),
             createdAt: expect.any(Object),
             updateAt: expect.any(Object),
+            panier: expect.any(Object),
             produit: expect.any(Object),
             commande: expect.any(Object),
           })
