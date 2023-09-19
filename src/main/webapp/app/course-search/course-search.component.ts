@@ -7,7 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LoginService } from '../login/login.service';
-import { NotificationService } from "../notification.service";
+import { NotificationService } from '../core/util/notification.service';
 
 @Component({
   selector: 'jhi-course-search',
@@ -26,7 +26,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private produitService: ProduitService,
     private loginService: LoginService,
-    private ntfService: NotificationService,
+    private ntfService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -53,10 +53,9 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   addToCart(course: IProduit, event: Event): void {
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1);
-      this.notify("Success", 'Produit ajouté au panier avec succès');
     } else {
       this.display = 'block';
-      this.notify("Error", "Échec de l'ajout au panier, veuillez réssayer");
+      this.ntfService.notifyBanner('Error', "Échec de l'ajout au panier, veuillez réssayer");
     }
     event.stopPropagation();
   }
@@ -71,27 +70,4 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/login');
     event.stopPropagation();
   }
-
-  notify(type, message) {
-
-    switch (type) {
-      case 'Success':
-        setTimeout(() => {
-          this.ntfService.success(message, 1500); // duration 1.5s notification disappear
-        }, 200); // wait 0.2s show a notification
-        break;
-      case 'Warning':
-        setTimeout(() => {
-          this.ntfService.warning(message, 1500);
-        }, 200);
-        break;
-      case 'Error':
-        setTimeout(() => {
-          this.ntfService.error(message, 1500);
-        }, 200);
-        break;
-    }
-
-  }
-
 }
