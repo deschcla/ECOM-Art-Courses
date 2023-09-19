@@ -14,28 +14,10 @@ export class CartService {
   counter: number = 0;
   cart: ILigneCommande[] = [];
   account: Account | null;
-  // ligneCommande: NewLigneCommande;
 
   counterChange: Subject<number> = new Subject<number>();
 
   constructor(private ligneCommandeService: LigneCommandeService, private accountService: AccountService) {}
-
-  // addToCart(course: IProduit, num: number): void {
-  //   this.ligneCommande = {
-  //     id: null,
-  //     quantite: num,
-  //     montant: course.tarifUnit,
-  //     validated: 0,
-  //     produit: course,
-  //   };
-  //   this.ligneCommandeService.create(this.ligneCommande).subscribe({
-  //     next: value => {
-  //       console.log('added to cart');
-  //       this.counterChange.next((this.counter += num));
-  //     },
-  //     error: error => console.log(error),
-  //   });
-  // }
 
   addToCart(course: IProduit, num: number): void {
     // this.cart.push({
@@ -68,7 +50,7 @@ export class CartService {
       });
   }
 
-  changeToCart(course: IProduit, num: number): void {
+  changeToCart(course: ILigneCommande, num: number): void {
     this.cart.forEach(commande => {
       if (course == commande.produit) {
         this.counterChange.next((this.counter = this.counter - commande.quantite! + num));
