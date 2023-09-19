@@ -42,15 +42,14 @@
                   >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% de réduction)</span
                 > -->
               </span>
-              <button
-                type="button"
-                class="btn btn-primary cartStyle"
-                (click)="addToCart(course, $event)"
-                [ngClass]="{ disabled: course.quantiteDispo! == 0 }"
+              <button type="button" class="btn btn-primary cartStyle" (click)="addToCart(course, $event)">
+                <!-- [ngClass]="{ disabled: course.quantiteDispo! == 0 }"
                 [disabled]="course.clicked"
-              >
-                <fa-icon icon="cart-plus" *ngIf="!course.clicked"></fa-icon>
-                <fa-icon icon="check" *ngIf="course.clicked"></fa-icon>
+              > -->
+                <fa-icon icon="cart-plus"></fa-icon>
+
+                <!-- <fa-icon icon="cart-plus" *ngIf="!course.clicked"></fa-icon> -->
+                <!-- <fa-icon icon="check" *ngIf="course.clicked"></fa-icon> -->
               </button>
             </div>
           </div>

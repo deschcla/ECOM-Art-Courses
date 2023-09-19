@@ -5,8 +5,8 @@
         <h3 class="my-4">{{ course?.nomProduit }}</h3>
         <div class="align-items-center">
           <ul class="list-inline mb-0">
-            <li class="list-inline-item" *ngIf="course?.souscategorie?.categorie?.typeCategorie">
-              <button class="btn btn-light btn-sm mb-xl-0">{{ course?.souscategorie?.categorie?.typeCategorie }}</button>
+            <li class="list-inline-item" *ngIf="course?.souscategorie?.categorieName">
+              <button class="btn btn-light btn-sm mb-xl-0">{{ course?.souscategorie?.categorieName }}</button>
             </li>
             <li class="list-inline-item" *ngIf="course?.souscategorie?.typeSousCategorie">
               <button class="btn btn-light btn-sm mb-xl-0">{{ course?.souscategorie?.typeSousCategorie }}</button>
@@ -54,7 +54,7 @@
                 <div class="input-group-append">
                   <button
                     type="button"
-                    class="btn btn-primary fontBig"
+                    class="btn btn-primary fontBig cartStyle"
                     id="btn-cart"
                     (click)="addToCart(course!, selectedAmount)"
                     [disabled]="course?.quantiteDispo == 0"

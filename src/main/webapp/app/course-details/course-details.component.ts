@@ -7,7 +7,6 @@ import { CartService } from 'app/core/util/cart.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { LoginService } from '../login/login.service';
-import { SousCategorieService } from 'app/entities/sous-categorie/service/sous-categorie.service';
 
 @Component({
   selector: 'jhi-course-details',
@@ -29,8 +28,7 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private produitService: ProduitService,
     private router: Router,
-    private loginService: LoginService,
-    private sousCategorieService: SousCategorieService
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
@@ -43,9 +41,6 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       this.idProduit = params['id'];
       this.produitService.find(this.idProduit).subscribe({
         next: value => {
-          this.sousCategorieService.find(value.body!.souscategorie!.id).subscribe({
-            next: val => (value.body!.souscategorie!['categorie'] = val.body?.categorie),
-          });
           this.course = value.body;
         },
       });

@@ -7,6 +7,7 @@ export interface ISousCategorie {
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
   categorie?: ICategorie | null;
+  categorieName?: string | null;
 }
 
 export type NewSousCategorie = Omit<ISousCategorie, 'id'> & { id: null };

@@ -120,3 +120,8 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.cartStyle:active {
+  background-color: grey;
+  border-color: gray;
+}
