@@ -32,9 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/ECOM-Art-Courses
-    username: ECOM-Art-Courses
-    password: root
+    url: jdbc:postgresql://ecom-art-courses.cn80kogfosst.eu-west-1.rds.amazonaws.com:5432/ecom-art-courses
+    username: postgres
+    password: SExt9uaZ6RXcxBx
     hikari:
       poolName: Hikari
       auto-commit: false

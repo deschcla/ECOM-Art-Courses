@@ -27,6 +27,7 @@ node {
 //         stage('backend tests') {
 //             try {
 //                 sh "./mvnw -ntp verify -P-webapp"
+//                 sh "mvn test"
 //             } catch(err) {
 //                 throw err
 //             } finally {

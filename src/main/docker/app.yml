@@ -1,28 +1,68 @@
-# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-version: '3.8'
+version: '3'
 services:
   ecom-art-courses-app:
-    image: ecom-art-courses
+    image: rocdaana27/ecom-art-courses:latest
+    container_name: ecom-art-courses-app
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ecom-art-courses-postgresql:5432/ECOM-Art-Courses
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://ecom-art-courses-postgresql:5432/ECOM-Art-Courses
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://34.243.2.5:5432/ECOM-Art-Courses
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://34.243.2.5:5432/ECOM-Art-Courses
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=ii9DX3GVMKHZhbA
+
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the ap>
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:8080:8080
-  ecom-art-courses-postgresql:
-    image: postgres:14.5
-    # volumes:
-    #   - ~/volumes/jhipster/ECOM-Art-Courses/postgresql/:/var/lib/postgresql/data/
+      - '127.0.0.1:8080:8080'
+  ecom-art-courses:
+    image: postgres:15.4
+    container_name: ecom-art-courses
+    volumes:
+      - ./postgres:/var/lib/postgresql
     environment:
       - POSTGRES_USER=ECOM-Art-Courses
       - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ECOM-Art-Courses
       - POSTGRES_HOST_AUTH_METHOD=trust
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
+      # If you want to expose these ports outside your dev PC,
+      # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:5432:5432
+      - '127.0.0.1:5432:5432'
+#  jenkins:
+#    image: jenkins/jenkins:lts-jdk17
+#    container_name: jenkins
+#    privileged: true
+#    ports:
+#      - "8080:8080" # Jenkins web UI
+#      - "50000:50000" # Jenkins agent communication port
+#    volumes:
+#      - jenkins_home:/var/jenkins_home
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /usr/bin/docker:/usr/bin/docker
+#      - ./config.json:/root/.docker/config.json
+#    networks:
+#    - jenkinsnet
+#    environment:
+#      - JENKINS_OPTS="--argumentsRealm.roles.admin=admin --argumentsRealm.passw>
+#  nginx:
+#    image: nginx:latest
+#    container_name: nginx
+#    ports:
+#      - "8088:8088" # HTTP
+#    privileged: true
+#    volumes:
+#      - ./nginx-config:/etc/nginx/conf.d
+#    depends_on:
+#      - jenkins
+#      - ecom-art-courses-app
+#    networks:
+#      - jenkinsnet
+
+networks:
+  jenkinsnet:
+
+volumes:
+  jenkins_home:
