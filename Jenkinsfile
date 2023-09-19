@@ -34,14 +34,8 @@ node {
             }
         }
         stage('frontend build') {
-            try {
-               sh "npm install"
-               sh "npm run build"
-            } catch(err) {
-                throw err
-            } finally {
-                junit '**/target/test-results/TESTS-results-jest.xml'
-            }
+            sh "npm install"
+            sh "npm run build"
         }
         stage('DockerHub setup'){
             withCredentials([usernamePassword(credentialsId: '6aa2882d-fb9f-4995-985e-5e737302ca68', usernameVariable: 'DOCKERHUB_USR', passwordVariable: 'DOCKERHUB_PSW')]) {
