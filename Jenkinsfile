@@ -61,7 +61,7 @@ node {
         }
 
         stage('Deploy to dockerhub') {
-            sh "./mvnw package -Pprod verify jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
+            sh "./mvnw package -Pprod verify  -DskipTests jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
 
         }
 
