@@ -33,12 +33,10 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => (this.account = account));
 
-    if (this.cartService.courses.length == 0){
+    if (this.courses?.length === 0) {
       this.produitService.query().subscribe({
-          next: value => {
-
-            this.cartService.fillCourses(value.body!)
-
+        next: value => {
+          this.cartService.fillCourses(value.body!);
         },
         error: error => console.log(error),
       });
@@ -46,7 +44,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.cartService.courseChange.subscribe(value => {
       this.courses = value;
     });
-
   }
 
   ngOnDestroy(): void {

@@ -16,8 +16,8 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import NavbarItem from './navbar-item.model';
 import { CartService } from 'app/core/util/cart.service';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IProduit } from "../../entities/produit/produit.model";
-import { ProduitService } from "../../entities/produit/service/produit.service";
+import { IProduit } from '../../entities/produit/produit.model';
+import { ProduitService } from '../../entities/produit/service/produit.service';
 
 @Component({
   standalone: true,
@@ -49,7 +49,7 @@ export default class NavbarComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router,
     private cartService: CartService,
-    private produitService: ProduitService,
+    private produitService: ProduitService
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -98,17 +98,9 @@ export default class NavbarComponent implements OnInit {
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
-  search(): void {
-    console.log(this.searchForm.value.search);
-  }
 
-  onKeyUp(event): void{
-    //console.log(event.target.value)
-    const res = this.courses?.filter(course => {
-      return (course.nomProduit!.indexOf(event.target.value) !== -1) ||
-        (course.desc!.indexOf(event.target.value) !== -1)
-    })
-    this.cartService.fillCourses(res!)
-    //console.log(res)
+  onKeyUp(): void {
+    const res = this.courses?.filter(course => course.nomProduit?.toLowerCase()?.includes(this.searchForm.value.search!.toLowerCase()));
+    this.cartService.fillCourses(res!);
   }
 }
