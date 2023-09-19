@@ -126,3 +126,10 @@ body {
 .invoice-content {
   margin: 0 -20px;
 }
+
+.centerDiv {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

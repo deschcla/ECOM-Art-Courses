@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from 'app/core/util/cart.service';
 import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
 import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
@@ -13,7 +14,7 @@ export class FactureComponent implements OnInit {
   releveFacture: IReleveFacture;
   date: string;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.commandes = this.cartService.getCartProducts();
@@ -34,5 +35,9 @@ export class FactureComponent implements OnInit {
       // }
     });
     return montant;
+  }
+
+  returnHome(): void {
+    this.router.navigateByUrl('');
   }
 }
