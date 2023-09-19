@@ -491,6 +491,7 @@
                             <configuration>
                                 <files>
                                     <file>sonar-project.properties</file>
+                                    <file>.env</file>
                                 </files>
                             </configuration>
                         </execution>
@@ -585,7 +586,11 @@
                             </platforms>
                         </from>
                         <to>
-                            <image>ecom-art-courses:latest</image>
+                            <image>registry-1.docker.io/rocdaana27/ecom-art-courses</image>
+                            <auth>
+                                <username>${DOCKERHUB_USERNAME}</username>
+                                <password>${DOCKERHUB_PASSWORD}</password>
+                            </auth>
                         </to>
                         <container>
                             <entrypoint>
