@@ -100,9 +100,9 @@ export class RegisterComponent implements AfterViewInit {
       this.doNotMatch = true;
     } else {
       console.log(this.registerForm.value.first_name);
-      const { login, first_name, last_name, email, phone, birthday } = this.registerForm.getRawValue();
+      const { login, first_name, last_name, email } = this.registerForm.getRawValue();
       this.registerService
-        .save({ login, first_name, last_name, email, phone, password, birthday, langKey: this.translateService.currentLang })
+        .save({ login, first_name, last_name, email, password, langKey: this.translateService.currentLang })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }
