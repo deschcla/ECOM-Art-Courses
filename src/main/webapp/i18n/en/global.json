@@ -151,5 +151,11 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
+  "course-search": {
+    "title": "Home Page"
+  },
+  "payment": {
+    "title": "Payment Page"
+  },
   "footer": "This is your footer"
 }
