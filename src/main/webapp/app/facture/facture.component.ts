@@ -40,4 +40,10 @@ export class FactureComponent implements OnInit {
   returnHome(): void {
     this.router.navigateByUrl('');
   }
+
+  print(): void {
+    setTimeout(function () {
+      window.print();
+    }, 1000);
+  }
 }

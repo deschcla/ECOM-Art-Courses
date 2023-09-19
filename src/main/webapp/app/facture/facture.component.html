@@ -3,31 +3,17 @@
   <div class="container">
     <div class="col-md-12">
       <div class="invoice">
-        <!-- begin invoice-company -->
         <div class="invoice-company text-inverse f-w-600">
           <span class="pull-right d-print-none">
             <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"
               ><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Imprimer</a
             >
           </span>
-          <!-- PUT LOGO HERE -->
+          <span class="logo-img"></span>
           Institut d'Art de Grenoble
         </div>
-        <!-- end invoice-company -->
-        <!-- begin invoice-header -->
         <div class="invoice-header">
-          <!-- <div class="invoice-from">
-               <small>from</small>
-               <address class="m-t-5 m-b-5">
-                  <strong class="text-inverse">Twitter, Inc.</strong><br>
-                  Street Address<br>
-                  City, Zip Code<br>
-                  Phone: (123) 456-7890<br>
-                  Fax: (123) 456-7890
-               </address>
-            </div> -->
           <div class="invoice-to">
-            <!-- <small>to</small> -->
             <address class="m-t-5 m-b-5">
               <strong class="text-inverse"
                 >{{ releveFacture.acheteur?.internalUser?.firstName }} {{ releveFacture.acheteur?.internalUser?.lastName }}</strong
@@ -42,10 +28,7 @@
             <div class="invoice-detail">#{{ releveFacture.id }}</div>
           </div>
         </div>
-        <!-- end invoice-header -->
-        <!-- begin invoice-content -->
         <div class="invoice-content">
-          <!-- begin table-responsive -->
           <div class="table-responsive">
             <table class="table table-invoice">
               <thead>
@@ -69,8 +52,6 @@
               </tbody>
             </table>
           </div>
-          <!-- end table-responsive -->
-          <!-- begin invoice-price -->
           <div class="invoice-price">
             <div class="invoice-price-left">
               <div class="invoice-price-row">
@@ -91,22 +72,7 @@
               <small>Total TTC (EUR)</small> <span class="f-w-600">{{ calcMontant().toFixed(2) }} €</span>
             </div>
           </div>
-          <!-- end invoice-price -->
         </div>
-        <!-- end invoice-content -->
-        <!-- begin invoice-note -->
-        <!-- <div class="invoice-note"></div> -->
-        <!-- end invoice-note -->
-        <!-- begin invoice-footer -->
-        <!-- <div class="invoice-footer">
-        <p class="text-center m-b-5 f-w-600">THANK YOU FOR YOUR BUSINESS</p>
-        <p class="text-center">
-          <span class="m-r-10"><i class="fa fa-fw fa-lg fa-globe"></i> matiasgallipoli.com</span>
-          <span class="m-r-10"><i class="fa fa-fw fa-lg fa-phone-volume"></i> T:016-18192302</span>
-          <span class="m-r-10"><i class="fa fa-fw fa-lg fa-envelope"></i> rtiemps@gmail.com</span>
-        </p>
-      </div> -->
-        <!-- end invoice-footer -->
       </div>
     </div>
   </div>

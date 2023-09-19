@@ -10,6 +10,7 @@ body {
 
 .invoice-company {
   font-size: 20px;
+  margin: 0 -20px;
 }
 
 .invoice-header {
@@ -132,4 +133,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.logo-img {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('/content/images/logo-jhipster.png') no-repeat center center;
+  background-size: contain;
+  -webkit-print-color-adjust: exact;
 }
