@@ -1,38 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CarteBancaireDetailComponent } from './carte-bancaire-detail.component';
 
 describe('CarteBancaire Management Detail Component', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CarteBancaireDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+  let comp: CarteBancaireDetailComponent;
+  let fixture: ComponentFixture<CarteBancaireDetailComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CarteBancaireDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: CarteBancaireDetailComponent,
-              resolve: { carteBancaire: () => of({ id: 123 }) },
-            },
-          ],
-          withComponentInputBinding()
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ carteBancaire: { id: 123 } }) },
+        },
       ],
     })
       .overrideTemplate(CarteBancaireDetailComponent, '')
       .compileComponents();
+    fixture = TestBed.createComponent(CarteBancaireDetailComponent);
+    comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load carteBancaire on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', CarteBancaireDetailComponent);
+    it('Should load carteBancaire on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.carteBancaire).toEqual(expect.objectContaining({ id: 123 }));
+      expect(comp.carteBancaire).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

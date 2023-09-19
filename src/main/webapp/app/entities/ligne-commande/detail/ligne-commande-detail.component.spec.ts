@@ -1,38 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { LigneCommandeDetailComponent } from './ligne-commande-detail.component';
 
 describe('LigneCommande Management Detail Component', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [LigneCommandeDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+  let comp: LigneCommandeDetailComponent;
+  let fixture: ComponentFixture<LigneCommandeDetailComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [LigneCommandeDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: LigneCommandeDetailComponent,
-              resolve: { ligneCommande: () => of({ id: 123 }) },
-            },
-          ],
-          withComponentInputBinding()
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ ligneCommande: { id: 123 } }) },
+        },
       ],
     })
       .overrideTemplate(LigneCommandeDetailComponent, '')
       .compileComponents();
+    fixture = TestBed.createComponent(LigneCommandeDetailComponent);
+    comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load ligneCommande on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', LigneCommandeDetailComponent);
+    it('Should load ligneCommande on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.ligneCommande).toEqual(expect.objectContaining({ id: 123 }));
+      expect(comp.ligneCommande).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

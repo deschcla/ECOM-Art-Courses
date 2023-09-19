@@ -14,6 +14,9 @@ export interface IProduit {
   quantiteDispo?: number | null;
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
+  nomProf?: string | null;
+  promotion?: string | null;
+  version?: number | null;
   souscategorie?: ISousCategorie | null;
   commandes?: Pick<ICommande, 'id'>[] | null;
 }

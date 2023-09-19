@@ -1,2 +1,1 @@
-org.springframework.test.context.ContextCustomizerFactory = com.ecom.\
-    art_courses.config.SqlTestContainersSpringContextCustomizerFactory
+org.springframework.test.context.ContextCustomizerFactory = com.ecom.art_courses.config.TestContainersSpringContextCustomizerFactory

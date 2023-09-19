@@ -3,13 +3,14 @@ package com.ecom.art_courses.service.impl;
 import com.ecom.art_courses.domain.Commande;
 import com.ecom.art_courses.repository.CommandeRepository;
 import com.ecom.art_courses.service.CommandeService;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Service Implementation for managing {@link Commande}.
@@ -27,19 +28,19 @@ public class CommandeServiceImpl implements CommandeService {
     }
 
     @Override
-    public Mono<Commande> save(Commande commande) {
+    public Commande save(Commande commande) {
         log.debug("Request to save Commande : {}", commande);
         return commandeRepository.save(commande);
     }
 
     @Override
-    public Mono<Commande> update(Commande commande) {
+    public Commande update(Commande commande) {
         log.debug("Request to update Commande : {}", commande);
         return commandeRepository.save(commande);
     }
 
     @Override
-    public Mono<Commande> partialUpdate(Commande commande) {
+    public Optional<Commande> partialUpdate(Commande commande) {
         log.debug("Request to partially update Commande : {}", commande);
 
         return commandeRepository
@@ -60,34 +61,30 @@ public class CommandeServiceImpl implements CommandeService {
 
                 return existingCommande;
             })
-            .flatMap(commandeRepository::save);
+            .map(commandeRepository::save);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Flux<Commande> findAll() {
+    public List<Commande> findAll() {
         log.debug("Request to get all Commandes");
         return commandeRepository.findAll();
     }
 
-    public Flux<Commande> findAllWithEagerRelationships(Pageable pageable) {
+    public Page<Commande> findAllWithEagerRelationships(Pageable pageable) {
         return commandeRepository.findAllWithEagerRelationships(pageable);
-    }
-
-    public Mono<Long> countAll() {
-        return commandeRepository.count();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Mono<Commande> findOne(Long id) {
+    public Optional<Commande> findOne(Long id) {
         log.debug("Request to get Commande : {}", id);
         return commandeRepository.findOneWithEagerRelationships(id);
     }
 
     @Override
-    public Mono<Void> delete(Long id) {
+    public void delete(Long id) {
         log.debug("Request to delete Commande : {}", id);
-        return commandeRepository.deleteById(id);
+        commandeRepository.deleteById(id);
     }
 }

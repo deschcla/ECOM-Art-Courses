@@ -2,34 +2,34 @@ package com.ecom.art_courses.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.ecom.art_courses.IntegrationTest;
 import com.ecom.art_courses.domain.Acheteur;
 import com.ecom.art_courses.domain.Commande;
 import com.ecom.art_courses.domain.ReleveFacture;
-import com.ecom.art_courses.repository.EntityManager;
 import com.ecom.art_courses.repository.ReleveFactureRepository;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for the {@link ReleveFactureResource} REST controller.
  */
 @IntegrationTest
-@AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
+@AutoConfigureMockMvc
 @WithMockUser
 class ReleveFactureResourceIT {
 
@@ -55,7 +55,7 @@ class ReleveFactureResourceIT {
     private EntityManager em;
 
     @Autowired
-    private WebTestClient webTestClient;
+    private MockMvc restReleveFactureMockMvc;
 
     private ReleveFacture releveFacture;
 
@@ -72,11 +72,23 @@ class ReleveFactureResourceIT {
             .updateAt(DEFAULT_UPDATE_AT);
         // Add required entity
         Commande commande;
-        commande = em.insert(CommandeResourceIT.createEntity(em)).block();
+        if (TestUtil.findAll(em, Commande.class).isEmpty()) {
+            commande = CommandeResourceIT.createEntity(em);
+            em.persist(commande);
+            em.flush();
+        } else {
+            commande = TestUtil.findAll(em, Commande.class).get(0);
+        }
         releveFacture.getCommandes().add(commande);
         // Add required entity
         Acheteur acheteur;
-        acheteur = em.insert(AcheteurResourceIT.createEntity(em)).block();
+        if (TestUtil.findAll(em, Acheteur.class).isEmpty()) {
+            acheteur = AcheteurResourceIT.createEntity(em);
+            em.persist(acheteur);
+            em.flush();
+        } else {
+            acheteur = TestUtil.findAll(em, Acheteur.class).get(0);
+        }
         releveFacture.setAcheteur(acheteur);
         return releveFacture;
     }
@@ -94,51 +106,43 @@ class ReleveFactureResourceIT {
             .updateAt(UPDATED_UPDATE_AT);
         // Add required entity
         Commande commande;
-        commande = em.insert(CommandeResourceIT.createUpdatedEntity(em)).block();
+        if (TestUtil.findAll(em, Commande.class).isEmpty()) {
+            commande = CommandeResourceIT.createUpdatedEntity(em);
+            em.persist(commande);
+            em.flush();
+        } else {
+            commande = TestUtil.findAll(em, Commande.class).get(0);
+        }
         releveFacture.getCommandes().add(commande);
         // Add required entity
         Acheteur acheteur;
-        acheteur = em.insert(AcheteurResourceIT.createUpdatedEntity(em)).block();
+        if (TestUtil.findAll(em, Acheteur.class).isEmpty()) {
+            acheteur = AcheteurResourceIT.createUpdatedEntity(em);
+            em.persist(acheteur);
+            em.flush();
+        } else {
+            acheteur = TestUtil.findAll(em, Acheteur.class).get(0);
+        }
         releveFacture.setAcheteur(acheteur);
         return releveFacture;
     }
 
-    public static void deleteEntities(EntityManager em) {
-        try {
-            em.deleteAll(ReleveFacture.class).block();
-        } catch (Exception e) {
-            // It can fail, if other entities are still referring this - it will be removed later.
-        }
-        CommandeResourceIT.deleteEntities(em);
-        AcheteurResourceIT.deleteEntities(em);
-    }
-
-    @AfterEach
-    public void cleanup() {
-        deleteEntities(em);
-    }
-
     @BeforeEach
     public void initTest() {
-        deleteEntities(em);
         releveFacture = createEntity(em);
     }
 
     @Test
+    @Transactional
     void createReleveFacture() throws Exception {
-        int databaseSizeBeforeCreate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeCreate = releveFactureRepository.findAll().size();
         // Create the ReleveFacture
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isCreated();
+        restReleveFactureMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(releveFacture)))
+            .andExpect(status().isCreated());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeCreate + 1);
         ReleveFacture testReleveFacture = releveFactureList.get(releveFactureList.size() - 1);
         assertThat(testReleveFacture.getMontant()).isEqualTo(DEFAULT_MONTANT);
@@ -147,141 +151,88 @@ class ReleveFactureResourceIT {
     }
 
     @Test
+    @Transactional
     void createReleveFactureWithExistingId() throws Exception {
         // Create the ReleveFacture with an existing ID
         releveFacture.setId(1L);
 
-        int databaseSizeBeforeCreate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeCreate = releveFactureRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restReleveFactureMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(releveFacture)))
+            .andExpect(status().isBadRequest());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
-    void getAllReleveFacturesAsStream() {
+    @Transactional
+    void getAllReleveFactures() throws Exception {
         // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
-
-        List<ReleveFacture> releveFactureList = webTestClient
-            .get()
-            .uri(ENTITY_API_URL)
-            .accept(MediaType.APPLICATION_NDJSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentTypeCompatibleWith(MediaType.APPLICATION_NDJSON)
-            .returnResult(ReleveFacture.class)
-            .getResponseBody()
-            .filter(releveFacture::equals)
-            .collectList()
-            .block(Duration.ofSeconds(5));
-
-        assertThat(releveFactureList).isNotNull();
-        assertThat(releveFactureList).hasSize(1);
-        ReleveFacture testReleveFacture = releveFactureList.get(0);
-        assertThat(testReleveFacture.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testReleveFacture.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testReleveFacture.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
-    }
-
-    @Test
-    void getAllReleveFactures() {
-        // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
+        releveFactureRepository.saveAndFlush(releveFacture);
 
         // Get all the releveFactureList
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL + "?sort=id,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .expectBody()
-            .jsonPath("$.[*].id")
-            .value(hasItem(releveFacture.getId().intValue()))
-            .jsonPath("$.[*].montant")
-            .value(hasItem(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.[*].createdAt")
-            .value(hasItem(DEFAULT_CREATED_AT.toString()))
-            .jsonPath("$.[*].updateAt")
-            .value(hasItem(DEFAULT_UPDATE_AT.toString()));
+        restReleveFactureMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(releveFacture.getId().intValue())))
+            .andExpect(jsonPath("$.[*].montant").value(hasItem(DEFAULT_MONTANT.doubleValue())))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updateAt").value(hasItem(DEFAULT_UPDATE_AT.toString())));
     }
 
     @Test
-    void getReleveFacture() {
+    @Transactional
+    void getReleveFacture() throws Exception {
         // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
+        releveFactureRepository.saveAndFlush(releveFacture);
 
         // Get the releveFacture
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL_ID, releveFacture.getId())
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .expectBody()
-            .jsonPath("$.id")
-            .value(is(releveFacture.getId().intValue()))
-            .jsonPath("$.montant")
-            .value(is(DEFAULT_MONTANT.doubleValue()))
-            .jsonPath("$.createdAt")
-            .value(is(DEFAULT_CREATED_AT.toString()))
-            .jsonPath("$.updateAt")
-            .value(is(DEFAULT_UPDATE_AT.toString()));
+        restReleveFactureMockMvc
+            .perform(get(ENTITY_API_URL_ID, releveFacture.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id").value(releveFacture.getId().intValue()))
+            .andExpect(jsonPath("$.montant").value(DEFAULT_MONTANT.doubleValue()))
+            .andExpect(jsonPath("$.createdAt").value(DEFAULT_CREATED_AT.toString()))
+            .andExpect(jsonPath("$.updateAt").value(DEFAULT_UPDATE_AT.toString()));
     }
 
     @Test
-    void getNonExistingReleveFacture() {
+    @Transactional
+    void getNonExistingReleveFacture() throws Exception {
         // Get the releveFacture
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL_ID, Long.MAX_VALUE)
-            .accept(MediaType.APPLICATION_PROBLEM_JSON)
-            .exchange()
-            .expectStatus()
-            .isNotFound();
+        restReleveFactureMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
+    @Transactional
     void putExistingReleveFacture() throws Exception {
         // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
+        releveFactureRepository.saveAndFlush(releveFacture);
 
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
 
         // Update the releveFacture
-        ReleveFacture updatedReleveFacture = releveFactureRepository.findById(releveFacture.getId()).block();
+        ReleveFacture updatedReleveFacture = releveFactureRepository.findById(releveFacture.getId()).get();
+        // Disconnect from session so that the updates on updatedReleveFacture are not directly saved in db
+        em.detach(updatedReleveFacture);
         updatedReleveFacture.montant(UPDATED_MONTANT).createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, updatedReleveFacture.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(updatedReleveFacture))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restReleveFactureMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedReleveFacture.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedReleveFacture))
+            )
+            .andExpect(status().isOk());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
         ReleveFacture testReleveFacture = releveFactureList.get(releveFactureList.size() - 1);
         assertThat(testReleveFacture.getMontant()).isEqualTo(UPDATED_MONTANT);
@@ -290,100 +241,99 @@ class ReleveFactureResourceIT {
     }
 
     @Test
+    @Transactional
     void putNonExistingReleveFacture() throws Exception {
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
         releveFacture.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, releveFacture.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restReleveFactureMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, releveFacture.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(releveFacture))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void putWithIdMismatchReleveFacture() throws Exception {
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
         releveFacture.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, count.incrementAndGet())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restReleveFactureMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(releveFacture))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void putWithMissingIdPathParamReleveFacture() throws Exception {
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
         releveFacture.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isEqualTo(405);
+        restReleveFactureMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(releveFacture)))
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void partialUpdateReleveFactureWithPatch() throws Exception {
         // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
+        releveFactureRepository.saveAndFlush(releveFacture);
 
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
 
         // Update the releveFacture using partial update
         ReleveFacture partialUpdatedReleveFacture = new ReleveFacture();
         partialUpdatedReleveFacture.setId(releveFacture.getId());
 
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, partialUpdatedReleveFacture.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(partialUpdatedReleveFacture))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        partialUpdatedReleveFacture.createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
+
+        restReleveFactureMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedReleveFacture.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedReleveFacture))
+            )
+            .andExpect(status().isOk());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
         ReleveFacture testReleveFacture = releveFactureList.get(releveFactureList.size() - 1);
         assertThat(testReleveFacture.getMontant()).isEqualTo(DEFAULT_MONTANT);
-        assertThat(testReleveFacture.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testReleveFacture.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
+        assertThat(testReleveFacture.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
+        assertThat(testReleveFacture.getUpdateAt()).isEqualTo(UPDATED_UPDATE_AT);
     }
 
     @Test
+    @Transactional
     void fullUpdateReleveFactureWithPatch() throws Exception {
         // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
+        releveFactureRepository.saveAndFlush(releveFacture);
 
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
 
         // Update the releveFacture using partial update
         ReleveFacture partialUpdatedReleveFacture = new ReleveFacture();
@@ -391,17 +341,16 @@ class ReleveFactureResourceIT {
 
         partialUpdatedReleveFacture.montant(UPDATED_MONTANT).createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, partialUpdatedReleveFacture.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(partialUpdatedReleveFacture))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restReleveFactureMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedReleveFacture.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedReleveFacture))
+            )
+            .andExpect(status().isOk());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
         ReleveFacture testReleveFacture = releveFactureList.get(releveFactureList.size() - 1);
         assertThat(testReleveFacture.getMontant()).isEqualTo(UPDATED_MONTANT);
@@ -410,83 +359,78 @@ class ReleveFactureResourceIT {
     }
 
     @Test
+    @Transactional
     void patchNonExistingReleveFacture() throws Exception {
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
         releveFacture.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, releveFacture.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restReleveFactureMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, releveFacture.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(releveFacture))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void patchWithIdMismatchReleveFacture() throws Exception {
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
         releveFacture.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, count.incrementAndGet())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restReleveFactureMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(releveFacture))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void patchWithMissingIdPathParamReleveFacture() throws Exception {
-        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = releveFactureRepository.findAll().size();
         releveFacture.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(releveFacture))
-            .exchange()
-            .expectStatus()
-            .isEqualTo(405);
+        restReleveFactureMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(releveFacture))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the ReleveFacture in the database
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
-    void deleteReleveFacture() {
+    @Transactional
+    void deleteReleveFacture() throws Exception {
         // Initialize the database
-        releveFactureRepository.save(releveFacture).block();
+        releveFactureRepository.saveAndFlush(releveFacture);
 
-        int databaseSizeBeforeDelete = releveFactureRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeDelete = releveFactureRepository.findAll().size();
 
         // Delete the releveFacture
-        webTestClient
-            .delete()
-            .uri(ENTITY_API_URL_ID, releveFacture.getId())
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isNoContent();
+        restReleveFactureMockMvc
+            .perform(delete(ENTITY_API_URL_ID, releveFacture.getId()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll().collectList().block();
+        List<ReleveFacture> releveFactureList = releveFactureRepository.findAll();
         assertThat(releveFactureList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

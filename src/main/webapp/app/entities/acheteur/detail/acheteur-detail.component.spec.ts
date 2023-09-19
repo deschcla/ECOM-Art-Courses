@@ -1,38 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { AcheteurDetailComponent } from './acheteur-detail.component';
 
 describe('Acheteur Management Detail Component', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AcheteurDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+  let comp: AcheteurDetailComponent;
+  let fixture: ComponentFixture<AcheteurDetailComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [AcheteurDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: AcheteurDetailComponent,
-              resolve: { acheteur: () => of({ id: 123 }) },
-            },
-          ],
-          withComponentInputBinding()
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ acheteur: { id: 123 } }) },
+        },
       ],
     })
       .overrideTemplate(AcheteurDetailComponent, '')
       .compileComponents();
+    fixture = TestBed.createComponent(AcheteurDetailComponent);
+    comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load acheteur on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', AcheteurDetailComponent);
+    it('Should load acheteur on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.acheteur).toEqual(expect.objectContaining({ id: 123 }));
+      expect(comp.acheteur).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

@@ -1,7 +1,7 @@
 package com.ecom.art_courses.web.rest.vm;
 
 import com.ecom.art_courses.service.dto.AdminUserDTO;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.Size;
 
 /**
  * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.

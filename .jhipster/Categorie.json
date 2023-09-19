@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073711",
+  "changelogDate": "20230914223850",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "categorie",
   "fields": [
     {
@@ -16,17 +18,19 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "Categorie",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "sousCategorie",
       "otherEntityRelationshipName": "categorie",
       "relationshipName": "sousCategorie",
-      "relationshipSide": "left",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

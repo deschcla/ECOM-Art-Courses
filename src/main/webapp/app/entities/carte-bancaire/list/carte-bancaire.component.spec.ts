@@ -16,11 +16,8 @@ describe('CarteBancaire Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'carte-bancaire', component: CarteBancaireComponent }]),
-        HttpClientTestingModule,
-        CarteBancaireComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'carte-bancaire', component: CarteBancaireComponent }]), HttpClientTestingModule],
+      declarations: [CarteBancaireComponent],
       providers: [
         {
           provide: ActivatedRoute,

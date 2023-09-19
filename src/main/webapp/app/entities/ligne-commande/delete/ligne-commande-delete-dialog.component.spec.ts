@@ -18,7 +18,8 @@ describe('LigneCommande Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, LigneCommandeDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [LigneCommandeDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(LigneCommandeDeleteDialogComponent, '')

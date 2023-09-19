@@ -30,7 +30,8 @@ describe('Commande Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), CommandeUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [CommandeUpdateComponent],
       providers: [
         FormBuilder,
         {
@@ -58,10 +59,10 @@ describe('Commande Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Produit query and add missing value', () => {
       const commande: ICommande = { id: 456 };
-      const produits: IProduit[] = [{ id: 13423 }];
+      const produits: IProduit[] = [{ id: 97161 }];
       commande.produits = produits;
 
-      const produitCollection: IProduit[] = [{ id: 16435 }];
+      const produitCollection: IProduit[] = [{ id: 28744 }];
       jest.spyOn(produitService, 'query').mockReturnValue(of(new HttpResponse({ body: produitCollection })));
       const additionalProduits = [...produits];
       const expectedCollection: IProduit[] = [...additionalProduits, ...produitCollection];
@@ -80,10 +81,10 @@ describe('Commande Management Update Component', () => {
 
     it('Should call ReleveFacture query and add missing value', () => {
       const commande: ICommande = { id: 456 };
-      const releveFacture: IReleveFacture = { id: 17084 };
+      const releveFacture: IReleveFacture = { id: 39517 };
       commande.releveFacture = releveFacture;
 
-      const releveFactureCollection: IReleveFacture[] = [{ id: 22650 }];
+      const releveFactureCollection: IReleveFacture[] = [{ id: 28773 }];
       jest.spyOn(releveFactureService, 'query').mockReturnValue(of(new HttpResponse({ body: releveFactureCollection })));
       const additionalReleveFactures = [releveFacture];
       const expectedCollection: IReleveFacture[] = [...additionalReleveFactures, ...releveFactureCollection];
@@ -102,10 +103,10 @@ describe('Commande Management Update Component', () => {
 
     it('Should call Acheteur query and add missing value', () => {
       const commande: ICommande = { id: 456 };
-      const acheteur: IAcheteur = { id: 17257 };
+      const acheteur: IAcheteur = { id: 21401 };
       commande.acheteur = acheteur;
 
-      const acheteurCollection: IAcheteur[] = [{ id: 9592 }];
+      const acheteurCollection: IAcheteur[] = [{ id: 23863 }];
       jest.spyOn(acheteurService, 'query').mockReturnValue(of(new HttpResponse({ body: acheteurCollection })));
       const additionalAcheteurs = [acheteur];
       const expectedCollection: IAcheteur[] = [...additionalAcheteurs, ...acheteurCollection];
@@ -124,11 +125,11 @@ describe('Commande Management Update Component', () => {
 
     it('Should update editForm', () => {
       const commande: ICommande = { id: 456 };
-      const produit: IProduit = { id: 21508 };
+      const produit: IProduit = { id: 94032 };
       commande.produits = [produit];
-      const releveFacture: IReleveFacture = { id: 7805 };
+      const releveFacture: IReleveFacture = { id: 23697 };
       commande.releveFacture = releveFacture;
-      const acheteur: IAcheteur = { id: 19442 };
+      const acheteur: IAcheteur = { id: 55133 };
       commande.acheteur = acheteur;
 
       activatedRoute.data = of({ commande });

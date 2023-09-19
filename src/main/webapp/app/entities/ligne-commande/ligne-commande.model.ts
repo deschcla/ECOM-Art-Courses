@@ -11,7 +11,7 @@ export interface ILigneCommande {
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
   produit?: IProduit | null;
-  commande?: Pick<ICommande, 'id'> | null;
+  commande?: ICommande | null;
 }
 
 export type NewLigneCommande = Omit<ILigneCommande, 'id'> & { id: null };
