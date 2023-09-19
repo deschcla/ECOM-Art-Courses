@@ -65,7 +65,7 @@ public class Commande implements Serializable {
     @JsonIgnoreProperties(value = { "internalUser", "releveFactures", "commandes" }, allowSetters = true)
     private Acheteur acheteur;
 
-    @OneToMany(mappedBy = "commande")
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "produit", "commande" }, allowSetters = true)
     private Set<LigneCommande> ligneCommandes = new HashSet<>();

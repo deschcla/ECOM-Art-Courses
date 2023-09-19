@@ -1,6 +1,7 @@
 package com.ecom.art_courses.web.rest;
 
 import com.ecom.art_courses.domain.Commande;
+import com.ecom.art_courses.domain.LigneCommande;
 import com.ecom.art_courses.repository.CommandeRepository;
 import com.ecom.art_courses.service.CommandeService;
 import com.ecom.art_courses.web.rest.errors.BadRequestAlertException;
@@ -9,6 +10,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -171,5 +174,21 @@ public class CommandeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/commandes/{id}/ligne-commandes/unvalidated")
+    public ResponseEntity<List<LigneCommande>> getUnvalidatedLigneCommandesForCommande(@PathVariable Long id) {
+        log.debug("REST request to get unvalidated LigneCommande for Commande : {}", id);
+
+        Optional<Commande> commande = commandeService.findOne(id);
+
+        Set<LigneCommande> ligneCommandes = commande.get().getLigneCommandes();
+
+        List<LigneCommande> nonVerifieesLigneCommandes = ligneCommandes
+            .stream()
+            .filter(lc -> lc.getValidated() == 0)
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(nonVerifieesLigneCommandes);
     }
 }
