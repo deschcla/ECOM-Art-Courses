@@ -54,7 +54,11 @@
       "phone.label": "Phone",
       "phone.placeholder": "Your telephone number",
       "birthday.label": "Birth Date",
-      "birthday.placeholder": "Your own birth date"
+      "birthday.placeholder": "Your own birth date",
+      "first_name.label": "First name",
+      "first_name.placeholder": "Your first name",
+      "last_name.label": "Last name",
+      "last_name.placeholder": "Your last name"
     },
     "messages": {
       "info": {
@@ -97,6 +101,16 @@
         "birthday": {
           "required": "Your own birthday is required.",
           "invalid": "Your birthday is invalid."
+        },
+        "first_name": {
+          "required": "Your first name is required.",
+          "minlength": "Your first name is required to be at least 1 characters.",
+          "maxlength": "Your first name cannot be longer than 50 characters."
+        },
+        "last_name": {
+          "required": "Your last name is required.",
+          "minlength": "Your last name is required to be at least 1 characters.",
+          "maxlength": "Your last name cannot be longer than 50 characters."
         }
       }
     },
