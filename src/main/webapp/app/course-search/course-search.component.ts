@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LoginService } from '../login/login.service';
+import { SousCategorieService } from 'app/entities/sous-categorie/service/sous-categorie.service';
 
 @Component({
   selector: 'jhi-course-search',
@@ -25,7 +26,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private produitService: ProduitService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private sousCategorieService: SousCategorieService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       .subscribe(account => (this.account = account));
 
     this.produitService.query().subscribe({
-      next: value => (this.courses = value.body),
+      next: value => {
+        value.body?.forEach(element => {
+          this.sousCategorieService.find(element.souscategorie!.id).subscribe({
+            next: val => (element.souscategorie!['categorie'] = val.body?.categorie),
+          });
+        });
+        this.courses = value.body;
+      },
       error: error => console.log(error),
     });
   }
