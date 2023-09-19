@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { SharedModule } from 'app/shared/shared.module';
-import { HasAnyAuthorityDirective } from 'app/shared/auth/has-any-authority.directive';
 import { VERSION } from 'app/app.constants';
 import { LANGUAGES } from 'app/config/language.constants';
 import { ActiveMenuDirective } from './active-menu.directive';
@@ -22,7 +21,7 @@ import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angul
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [RouterModule, SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, SharedModule, FormsModule, ReactiveFormsModule, ActiveMenuDirective],
 })
 export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
@@ -53,6 +52,7 @@ export default class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.changeLanguage('fr');
     this.entitiesNavbarItems = EntityNavbarItems;
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;

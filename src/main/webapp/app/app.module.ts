@@ -45,6 +45,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavbarComponent,
     FontAwesomeModule,
     ReactiveFormsModule,
+    ActiveMenuDirective,
   ],
   providers: [
     Title,
@@ -59,7 +60,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     MainComponent,
     ErrorComponent,
     PageRibbonComponent,
-    ActiveMenuDirective,
     FooterComponent,
   ],
   bootstrap: [MainComponent],
