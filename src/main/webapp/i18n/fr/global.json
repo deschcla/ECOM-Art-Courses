@@ -46,7 +46,11 @@
       "phone.label": "Téléphone portable",
       "phone.placeholder": "Numéro de téléphone actuel",
       "birthday.label": "Date de naissance",
-      "birthday.placeholder": "Votre anniversaire"
+      "birthday.placeholder": "Votre anniversaire",
+      "first_name.label": "Prénom",
+      "first_name.placeholder": "Votre prénom",
+      "last_name.label": "Nom",
+      "last_name.placeholder": "Votre nom"
     },
     "messages": {
       "info": {
@@ -89,6 +93,16 @@
         "birthday": {
           "required": "Votre date de naissance est requis.",
           "invalid": "Votre date de naissance n'est pas valide"
+        },
+        "first_name": {
+          "required": "Votre prénom est requis.",
+          "minlength": "Votre prénom doit comporter au moins 1 caractères.",
+          "maxlength": "Votre prénom ne doit pas comporter plus de 50 caractères."
+        },
+        "last_name": {
+          "required": "Votre nom est requis.",
+          "minlength": "Votre nom doit comporter au moins 1 caractères.",
+          "maxlength": "Votre nom ne doit pas comporter plus de 50 caractères."
         }
       }
     },
