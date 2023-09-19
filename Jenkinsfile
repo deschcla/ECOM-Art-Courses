@@ -24,17 +24,17 @@ node {
             sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
         }
 
-//         stage('backend tests') {
-//             try {
-//                 sh "./mvnw -ntp verify -P-webapp"
-//                 sh "mvn test"
-//             } catch(err) {
-//                 throw err
-//             } finally {
-//                 junit '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
-//             }
-//         }
-//         stage('frontend tests') {
+        stage('backend test') {
+            try {
+                //sh "./mvnw -ntp verify -P-webapp"
+                sh "mvn clean test"
+            } catch(err) {
+                throw err
+            } finally {
+                junit '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
+            }
+        }
+//         stage('frontend build') {
 //             try {
 //                sh "npm install"
 //                sh "npm test"
@@ -45,11 +45,11 @@ node {
 //             }
 //         }
 
-        // stage('packaging') {
-        //     sh "./mvnw -ntp verify -P-webapp -Pprod -DskipTests"
-        //     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-        // }
-        stage('DockerHub login'){
+//         stage('packaging') {
+//             sh "./mvnw -ntp verify -P-webapp -Pprod -DskipTests"
+//             archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+//         }
+        stage('DockerHub setup'){
             withCredentials([usernamePassword(credentialsId: '6aa2882d-fb9f-4995-985e-5e737302ca68', usernameVariable: 'DOCKERHUB_USR', passwordVariable: 'DOCKERHUB_PSW')]) {
                 script {
                     sh '''
@@ -62,7 +62,7 @@ node {
         }
 
         stage('Deploy to dockerhub') {
-            sh "./mvnw package -Pprod verify -DskipTests jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
+            sh "./mvnw -Pprod clean package jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
 
         }
 
