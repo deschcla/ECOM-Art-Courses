@@ -23,7 +23,17 @@ node {
         stage('npm install') {
             sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
         }
-
+        stage('DockerHub setup'){
+            withCredentials([usernamePassword(credentialsId: '6aa2882d-fb9f-4995-985e-5e737302ca68', usernameVariable: 'DOCKERHUB_USR', passwordVariable: 'DOCKERHUB_PSW')]) {
+                script {
+                    sh '''
+                        echo $DOCKERHUB_USR
+                        echo "DOCKERHUB_USERNAME=${DOCKERHUB_USR}" > .env
+                        echo "DOCKERHUB_PASSWORD=${DOCKERHUB_PSW}" >> .env
+                    '''
+                }
+            }
+        }
         stage('backend test') {
             try {
                 sh "./mvnw -ntp clean test -P-webapp"
@@ -37,18 +47,6 @@ node {
             sh "npm install"
             sh "npm run build"
         }
-        stage('DockerHub setup'){
-            withCredentials([usernamePassword(credentialsId: '6aa2882d-fb9f-4995-985e-5e737302ca68', usernameVariable: 'DOCKERHUB_USR', passwordVariable: 'DOCKERHUB_PSW')]) {
-                script {
-                    sh '''
-                        echo $DOCKERHUB_USR
-                        echo "DOCKERHUB_USERNAME=${DOCKERHUB_USR}" > .env
-                        echo "DOCKERHUB_PASSWORD=${DOCKERHUB_PSW}" >> .env
-                    '''
-                }
-            }
-        }
-
         stage('Deploy to dockerhub') {
             sh "./mvnw -Pprod clean package verify -DskipTests jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
         }
