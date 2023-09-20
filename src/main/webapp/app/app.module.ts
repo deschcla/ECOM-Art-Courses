@@ -46,6 +46,7 @@ import { FactureComponent } from './facture/facture.component';
     NavbarComponent,
     FontAwesomeModule,
     ReactiveFormsModule,
+    ActiveMenuDirective,
   ],
   providers: [
     Title,
@@ -60,7 +61,6 @@ import { FactureComponent } from './facture/facture.component';
     MainComponent,
     ErrorComponent,
     PageRibbonComponent,
-    ActiveMenuDirective,
     FooterComponent,
     FactureComponent,
   ],
