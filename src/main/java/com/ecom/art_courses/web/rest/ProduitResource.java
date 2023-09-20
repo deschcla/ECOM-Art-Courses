@@ -1,7 +1,7 @@
 package com.ecom.art_courses.web.rest;
 
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ecom.art_courses.domain.Produit;
+import com.ecom.art_courses.domain.S3Resource;
 import com.ecom.art_courses.repository.ProduitRepository;
 import com.ecom.art_courses.service.ProduitService;
 import com.ecom.art_courses.service.impl.S3ServiceImpl;
@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Blob;
 import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -18,10 +17,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -191,46 +188,17 @@ public class ProduitResource {
         return file;
     }
 
-    //    public void uploadFileToS3Bucket(String fileName, File file) {
-    //        s3ImageUploadService.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
-    //    }
-
-    public String uploadBase64Image(String base64Image) {
-        String fileUrl = "";
-        try {
-            File file = convertBase64StringToFile(base64Image);
-            //String fileName = generateFileName();
-            //fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
-            s3ImageUploadService.uploadImage(file);
-            file.delete();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return fileUrl;
-    }
-
-    //    public String deleteFileFromS3Bucket(String fileUrl) {
-    //        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-    //        s3ImageUploadService.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
-    //        return "Successfully deleted";
-    //    }
     @PostMapping("/produits/upload")
-    public ResponseEntity<String> uploadImage(@RequestBody String file) {
-        this.uploadBase64Image(file);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Image uploaded successfully");
-        //        try {
-        //            File convertedFile = convertMultipartFileToFile(file);
-        //            //log.debug("file : {}", convertedFile);
-        //            s3ImageUploadService.uploadImage(file);
-        //            return ResponseEntity.status(HttpStatus.CREATED).body("Image uploaded successfully");
-        //        } catch (IOException e) {
-        //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
-        //        }
+    public ResponseEntity<S3Resource> uploadImage(@RequestBody String file) {
+        String fileUrl = "";
+        Optional<S3Resource> response = null;
+        try {
+            File trueFile = this.convertBase64StringToFile(file);
+            s3ImageUploadService.uploadImage(trueFile);
+            fileUrl = "images/" + trueFile.getName();
+            trueFile.delete();
+            response = Optional.of(new S3Resource(fileUrl));
+        } catch (IOException e) {}
+        return ResponseUtil.wrapOrNotFound(response);
     }
-    // Helper method to convert MultipartFile to File
-    //    private File convertMultipartFileToFile(MultipartFile file) throws IOException {
-    //        File convertedFile = new File(file.getOriginalFilename());
-    //        file.transferTo(convertedFile);
-    //        return convertedFile;
-    //    }
 }

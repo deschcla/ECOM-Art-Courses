@@ -1,54 +1,41 @@
 import { Injectable } from '@angular/core';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { environment } from '../../../../environments/environment';
-
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class S3Service {
-  private s3Client: S3Client;
-  private EXPIRATION_IN_SECONDS = 43200; //12 hours
-  constructor() {
-    this.s3Client = new S3Client({
-      region: environment.S3_REGION,
-      credentials: {
-        accessKeyId: environment.S3_ACCESS_KEY,
-        secretAccessKey: environment.S3_SECRET_KEY,
-      },
+  private key: string;
+  constructor(private httpClient: HttpClient) {}
+
+  async uploadToS3(file: File, selectedFile: string): Promise<Observable<any>> {
+    try {
+      const binaryData = await this.loadImageAsBinary(file);
+      selectedFile = btoa(binaryData);
+      return this.httpClient.post<any>('api/produits/upload', selectedFile);
+    } catch (error) {
+      this.key = 'Error: ' + error;
+      throw error;
+    }
+  }
+
+  private loadImageAsBinary(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = event => {
+        const result = event.target?.result;
+        if (typeof result === 'string') {
+          resolve(result);
+        } else {
+          reject(new Error('Failed to read image data'));
+        }
+      };
+      reader.onerror = () => {
+        reject(new Error('Error reading the image file'));
+      };
+
+      reader.readAsBinaryString(file);
     });
-  }
-
-  async uploadImage(file: File): Promise<void> {
-    const params = {
-      Bucket: environment.S3_BUCKET,
-      Key: 'upload/' + file.name,
-      Body: file,
-      ACL: 'public-read',
-    };
-    try {
-      await this.s3Client.send(new PutObjectCommand(params));
-      console.log(`File uploaded successfully to ${environment.S3_BUCKET}/${file.name}`);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      throw error;
-    }
-  }
-
-  async generatePresignedGetObjectUrl(key: String): Promise<String> {
-    try {
-      const imgUrl = await getSignedUrl(
-        this.s3Client,
-        new GetObjectCommand({
-          Bucket: environment.S3_BUCKET,
-          Key: key.toString(),
-        }),
-        { expiresIn: this.EXPIRATION_IN_SECONDS }
-      );
-      return imgUrl;
-    } catch (error) {
-      console.error('Error generating pre-signed URL for getObject:', error);
-      throw error;
-    }
   }
 }
