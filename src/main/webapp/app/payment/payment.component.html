@@ -4,7 +4,7 @@
       <h4 class="my-0">Paiement carte bancaire</h4>
       <p class="fs-6 text-muted">Afin de finaliser votre commande, veuillez compléter vos coordonnées de paiement.</p>
 
-      <ul class="list-group mb-0 shadow-lg bg-body rounded h-86" id="list-payment">
+      <ul class="list-group mb-0 shadow-lg bg-body rounded" id="list-payment">
         <li class="list-group-item d-flex justify-content-between lh-sm border-item-bottom">
           <div class="form-check d-flex align-items-center">
             <input class="form-check-input" type="radio" disabled />
@@ -92,7 +92,17 @@
                 <span class="input-group-text">
                   <fa-icon [icon]="faCalendarAlt"></fa-icon>
                 </span>
-                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" formControlName="date_exp" />
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-expiration"
+                  name="cc-expiration"
+                  placeholder="MM/YY"
+                  formControlName="date_exp"
+                  data-cy="date_exp"
+                  [(ngModel)]="model_date_expiration"
+                />
               </div>
               <div
                 class="msg-invalid"
@@ -129,7 +139,7 @@
       </ul>
     </div>
 
-    <div class="col-md-6 col-lg-4 order-md-last">
+    <div class="col-md-6 col-lg-4 order-md-last" id="list-summary">
       <h4 class="d-flex justify-content-between align-items-center margin-sommaire">
         <span class="text-primary">Sommaire</span>
         <span class="badge bg-primary rounded-pill">{{ quantite }}</span>
@@ -169,20 +179,15 @@
       </ul>
 
       <ul class="list-group mb-3 shadow-lg bg-body" id="list-prices">
-        <li class="col align-items-center list-group-item border-item-bottom py-3">
+        <li class="list-group-item py-3">
           <div class="d-flex justify-content-between">
-            <span class="fw-bold">Sous-total</span>
-            <strong class="fw-bold">{{ calcMontant().toFixed(2) }} €</strong>
+            <span class="h5 fw-bold">Total TTC (EUR)</span>
+            <strong class="h5 fw-bold text-red">{{ calcMontant().toFixed(2) }} €</strong>
           </div>
           <div class="d-flex justify-content-between">
-            <span class="fw-bold">TVA</span>
-            <strong class="fw-bold">{{ (calcMontant() * 0.2).toFixed(2) }} €</strong>
+            <span class="text-muted">dont TVA</span>
+            <strong class="text-muted">{{ (calcMontant() * 0.2).toFixed(2) }} €</strong>
           </div>
-        </li>
-
-        <li class="list-group-item d-flex justify-content-between py-3">
-          <span class="h5 fw-bold">Total TTC (EUR)</span>
-          <strong class="h5 fw-bold text-red">{{ (calcMontant() * 1.2).toFixed(2) }} €</strong>
         </li>
 
         <li class="list-group-item d-flex py-3">

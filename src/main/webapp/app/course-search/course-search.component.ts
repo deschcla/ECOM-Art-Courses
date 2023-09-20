@@ -7,6 +7,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LoginService } from '../login/login.service';
+import { NotificationService } from '../core/util/notification.service';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-course-search',
@@ -24,19 +27,35 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private produitService: ProduitService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private ntfService: NotificationService,
+    private titleService: Title,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.translateService.get('course-search.title').subscribe(title => this.titleService.setTitle(title));
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => (this.account = account));
 
-    this.produitService.query().subscribe({
-      next: value => (this.courses = value.body),
-      error: error => console.log(error),
+    this.getProducts();
+    this.cartService.courseChange.subscribe({
+      next: value => (this.courses = value),
+      complete: () => this.getProducts(),
     });
+  }
+
+  getProducts(): void {
+    if (this.courses?.length === 0) {
+      this.produitService.query().subscribe({
+        next: value => {
+          this.cartService.fillCourses(value.body!);
+        },
+        error: error => console.log(error),
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -49,10 +68,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course: IProduit, event: Event): void {
+    console.log(event);
+
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1);
+      course.clicked = true;
     } else {
       this.display = 'block';
+      this.ntfService.notifyBanner('Error', "Échec de l'ajout au panier, veuillez réssayer");
     }
     event.stopPropagation();
   }

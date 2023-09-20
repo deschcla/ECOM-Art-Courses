@@ -1,3 +1,4 @@
+<jhi-notification></jhi-notification>
 <div class="row">
   <div class="col-md-2"></div>
 
@@ -11,7 +12,9 @@
             <h5 class="card-title">{{ course.nomProduit }}</h5>
 
             <p class="card-text quantity" [ngClass]="{ 'text-danger': course.quantiteDispo! < 0.15 * course.quantiteTotale! }">
-              {{ course.quantiteDispo }} places disponibles
+              {{ course.quantiteDispo }} place{{ course?.quantiteDispo! > 1 ? 's' : '' }} disponible{{
+                course?.quantiteDispo! > 1 ? 's' : ''
+              }}
             </p>
 
             <div class="progress">
@@ -29,7 +32,7 @@
             <div class="card-text moreInfo">
               <span>{{ course.date!.format('DD/MM/YYYY') }}</span> ·
               <span>{{ course.date!.format('HH') }}h{{ course.date!.format('mm') }}</span> ·
-              <span>{{ course.duree }} heures</span>
+              <span>{{ course.duree }} heure{{ +course?.duree! > 1 ? 's' : '' }}</span>
             </div>
 
             <div class="text-center price-div">
@@ -42,11 +45,17 @@
               </span>
               <button
                 type="button"
-                class="btn btn-primary cart"
+                class="btn btn-primary cartStyle"
                 (click)="addToCart(course, $event)"
                 [ngClass]="{ disabled: course.quantiteDispo! == 0 }"
               >
+                <!--
+                [disabled]="course.clicked"
+              > -->
                 <fa-icon icon="cart-plus"></fa-icon>
+
+                <!-- <fa-icon icon="cart-plus" *ngIf="!course.clicked"></fa-icon> -->
+                <!-- <fa-icon icon="check" *ngIf="course.clicked"></fa-icon> -->
               </button>
             </div>
           </div>
@@ -69,6 +78,7 @@
     </div>
   </div>
 </div>
+<div *ngIf="courses?.length == 0" class="noCours">Aucun cours trouvé.</div>
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{ display: display }">
   <div class="modal-dialog modal-dialog-centered" role="document">

@@ -2,6 +2,7 @@ package com.ecom.art_courses.domain;
 
 import com.ecom.art_courses.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -81,6 +82,16 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+
+    @OneToMany(mappedBy = "user")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "commandes", "acheteur" }, allowSetters = true)
+    private Set<ReleveFacture> releveFactures = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
+    private Set<Commande> commandes = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany
@@ -180,6 +191,68 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setResetDate(Instant resetDate) {
         this.resetDate = resetDate;
+    }
+
+    public Set<ReleveFacture> getReleveFactures() {
+        return this.releveFactures;
+    }
+
+    public void setReleveFactures(Set<ReleveFacture> releveFactures) {
+        if (this.releveFactures != null) {
+            this.releveFactures.forEach(i -> i.setUser(null));
+        }
+        if (releveFactures != null) {
+            releveFactures.forEach(i -> i.setUser(this));
+        }
+        this.releveFactures = releveFactures;
+    }
+
+    public User releveFactures(Set<ReleveFacture> releveFactures) {
+        this.setReleveFactures(releveFactures);
+        return this;
+    }
+
+    public User addReleveFacture(ReleveFacture releveFacture) {
+        this.releveFactures.add(releveFacture);
+        releveFacture.setUser(this);
+        return this;
+    }
+
+    public User removeReleveFacture(ReleveFacture releveFacture) {
+        this.releveFactures.remove(releveFacture);
+        releveFacture.setUser(null);
+        return this;
+    }
+
+    public Set<Commande> getCommandes() {
+        return this.commandes;
+    }
+
+    public void setCommandes(Set<Commande> commandes) {
+        if (this.commandes != null) {
+            this.commandes.forEach(i -> i.setUser(null));
+        }
+        if (commandes != null) {
+            commandes.forEach(i -> i.setUser(this));
+        }
+        this.commandes = commandes;
+    }
+
+    public User commandes(Set<Commande> commandes) {
+        this.setCommandes(commandes);
+        return this;
+    }
+
+    public User addCommande(Commande commande) {
+        this.commandes.add(commande);
+        commande.setUser(this);
+        return this;
+    }
+
+    public User removeCommande(Commande commande) {
+        this.commandes.remove(commande);
+        commande.setUser(null);
+        return this;
     }
 
     public String getLangKey() {

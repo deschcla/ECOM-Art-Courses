@@ -6,6 +6,7 @@ import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model
 import { AccountService } from '../auth/account.service';
 import { Account } from '../auth/account.model';
 import dayjs from 'dayjs/esm';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +15,18 @@ export class CartService {
   counter: number = 0;
   cart: ILigneCommande[] = [];
   account: Account | null;
+  courses: IProduit[] = [];
+  courseChange: Subject<IProduit[]> = new Subject<IProduit[]>();
+  // ligneCommande: NewLigneCommande;
 
   counterChange: Subject<number> = new Subject<number>();
+  searchChange: Subject<string> = new Subject<string>();
 
-  constructor(private ligneCommandeService: LigneCommandeService, private accountService: AccountService) {}
+  constructor(
+    private ligneCommandeService: LigneCommandeService,
+    private accountService: AccountService,
+    private ntfService: NotificationService
+  ) {}
 
   addToCart(course: IProduit, num: number): void {
     // this.cart.push({
@@ -66,6 +75,7 @@ export class CartService {
         this.counterChange.next((this.counter -= commandeChoosen.quantite!));
       }
     });
+    this.ntfService.notifyBanner('Success', 'Produit ajouté au panier avec succès');
   }
 
   getCartProducts(): ILigneCommande[] {
@@ -77,5 +87,14 @@ export class CartService {
       res = this.cart;
     });
     return res;
+  }
+
+  fillCourses(courses: IProduit[]): void {
+    this.courses = courses;
+    this.courseChange.next(this.courses);
+  }
+
+  setSearchValue(value: string): void {
+    this.searchChange.next(value);
   }
 }
