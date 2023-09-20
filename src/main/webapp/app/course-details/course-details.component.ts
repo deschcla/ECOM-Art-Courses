@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -8,6 +8,7 @@ import { IProduit } from 'app/entities/produit/produit.model';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { LoginService } from '../login/login.service';
 import { Title } from '@angular/platform-browser';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'jhi-course-details',
@@ -20,6 +21,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   selectedAmount: number = 1;
   display = 'none';
+
+  @Input() searchForm: FormGroup;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -78,5 +81,9 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       this.loginService.logout();
     }
     this.router.navigateByUrl('/login');
+  }
+
+  searchCategory(cat: string): void {
+    this.cartService.setSearchValue(cat);
   }
 }

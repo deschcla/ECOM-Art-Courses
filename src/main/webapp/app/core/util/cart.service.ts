@@ -15,6 +15,7 @@ export class CartService {
   // ligneCommande: NewLigneCommande;
 
   counterChange: Subject<number> = new Subject<number>();
+  searchChange: Subject<string> = new Subject<string>();
 
   // constructor(private ligneCommandeService: LigneCommandeService) {}
 
@@ -48,8 +49,12 @@ export class CartService {
     return this.cart;
   }
 
-  fillCourses(courses: IProduit[]): void{
+  fillCourses(courses: IProduit[]): void {
     this.courses = courses;
     this.courseChange.next(this.courses);
+  }
+
+  setSearchValue(value: string): void {
+    this.searchChange.next(value);
   }
 }
