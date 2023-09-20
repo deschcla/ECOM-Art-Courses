@@ -29,6 +29,7 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FactureComponent } from './facture/facture.component';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PageRibbonComponent,
     ActiveMenuDirective,
     FooterComponent,
+    FactureComponent,
   ],
   bootstrap: [MainComponent],
 })
