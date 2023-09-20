@@ -1,8 +1,12 @@
 package com.ecom.art_courses.web.rest;
 
+//import com.ecom.art_courses.domain.Acheteur;
+import com.ecom.art_courses.domain.Commande;
 import com.ecom.art_courses.domain.User;
 import com.ecom.art_courses.repository.UserRepository;
 import com.ecom.art_courses.security.SecurityUtils;
+//import com.ecom.art_courses.service.AcheteurService;
+import com.ecom.art_courses.service.CommandeService;
 import com.ecom.art_courses.service.MailService;
 import com.ecom.art_courses.service.UserService;
 import com.ecom.art_courses.service.dto.AdminUserDTO;
@@ -44,10 +48,18 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final CommandeService commandeService;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        CommandeService commandeService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.commandeService = commandeService;
     }
 
     /**
@@ -65,7 +77,6 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        //        mailService.sendActivationEmail(user);
     }
 
     /**

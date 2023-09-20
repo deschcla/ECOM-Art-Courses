@@ -8,7 +8,7 @@ export interface IAcheteur {
   numTel?: string | null;
   createdAt?: dayjs.Dayjs | null;
   updateAt?: dayjs.Dayjs | null;
-  internalUser?: Pick<IUser, 'id'> | null;
+  internalUser?: IUser | null;
 }
 
 export type NewAcheteur = Omit<IAcheteur, 'id'> & { id: null };

@@ -6,13 +6,11 @@ import { navbarRoute } from './layouts/navbar/navbar.route';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/config/authority.constants';
 
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { PaymentComponent } from './payment/payment.component';
+import { FactureComponent } from './facture/facture.component';
 
 @NgModule({
   imports: [
@@ -29,7 +27,7 @@ import { PaymentComponent } from './payment/payment.component';
         {
           path: '',
           component: CourseSearchComponent,
-          title: 'course-search.title',
+          title: 'Home',
         },
         {
           path: 'account',
@@ -42,12 +40,15 @@ import { PaymentComponent } from './payment/payment.component';
         {
           path: 'course-details/:id',
           component: CourseDetailsComponent,
-          title: 'course-details.title',
         },
         {
           path: 'payment',
           component: PaymentComponent,
-          title: 'payment.title',
+        },
+        {
+          path: 'facture',
+          component: FactureComponent,
+          title: 'facture.title',
         },
         {
           path: '',

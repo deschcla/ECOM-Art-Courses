@@ -50,9 +50,9 @@ public class CacheConfiguration {
             createCache(cm, User.class.getName());
             createCache(cm, Authority.class.getName());
             createCache(cm, User.class.getName() + ".authorities");
-            createCache(cm, Acheteur.class.getName());
-            createCache(cm, Acheteur.class.getName() + ".releveFactures");
-            createCache(cm, Acheteur.class.getName() + ".commandes");
+            //            createCache(cm, Acheteur.class.getName());
+            //            createCache(cm, Acheteur.class.getName() + ".releveFactures");
+            //            createCache(cm, Acheteur.class.getName() + ".commandes");
             createCache(cm, Produit.class.getName());
             createCache(cm, Produit.class.getName() + ".ligneCommandes");
             createCache(cm, Produit.class.getName() + ".commandes");
