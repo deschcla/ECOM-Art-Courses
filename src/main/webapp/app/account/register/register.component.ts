@@ -31,11 +31,11 @@ export class RegisterComponent implements AfterViewInit {
         Validators.pattern(/^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/),
       ],
     }),
-    first_name: new FormControl('', {
+    firstName: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
     }),
-    last_name: new FormControl('', {
+    lastName: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
     }),
@@ -48,19 +48,19 @@ export class RegisterComponent implements AfterViewInit {
         Validators.pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
       ],
     }),
-    phone: new FormControl('', {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.pattern(
-          /^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/
-        ),
-      ],
-    }),
-    birthday: new FormControl(new Date(), {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
+    // phone: new FormControl('', {
+    //   nonNullable: true,
+    //   validators: [
+    //     Validators.required,
+    //     Validators.pattern(
+    //       /^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/
+    //     ),
+    //   ],
+    // }),
+    // birthday: new FormControl(new Date(), {
+    //   nonNullable: true,
+    //   validators: [Validators.required],
+    // }),
     password: new FormControl('', {
       nonNullable: true,
       validators: [
@@ -100,9 +100,9 @@ export class RegisterComponent implements AfterViewInit {
     if (password !== confirmPassword) {
       this.doNotMatch = true;
     } else {
-      const { login, first_name, last_name, email, phone, birthday } = this.registerForm.getRawValue();
+      const { login, firstName, lastName, email } = this.registerForm.getRawValue();
       this.registerService
-        .save({ login, first_name, last_name, email, phone, password, birthday, langKey: this.translateService.currentLang })
+        .save({ login, firstName, lastName, email, password, langKey: this.translateService.currentLang })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }

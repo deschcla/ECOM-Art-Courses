@@ -38,13 +38,13 @@ public class ReleveFacture implements Serializable {
 
     @OneToMany(mappedBy = "releveFacture")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "user", "ligneCommandes" }, allowSetters = true)
     private Set<Commande> commandes = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "internalUser", "releveFactures", "commandes" }, allowSetters = true)
-    private Acheteur acheteur;
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -131,16 +131,29 @@ public class ReleveFacture implements Serializable {
         return this;
     }
 
-    public Acheteur getAcheteur() {
-        return this.acheteur;
+    //    public Acheteur getAcheteur() {
+    //        return this.acheteur;
+    //    }
+    //
+    //    public void setAcheteur(Acheteur acheteur) {
+    //        this.acheteur = acheteur;
+    //    }
+    //
+    //    public ReleveFacture acheteur(Acheteur acheteur) {
+    //        this.setAcheteur(acheteur);
+    //        return this;
+    //    }
+
+    public User getUser() {
+        return this.user;
     }
 
-    public void setAcheteur(Acheteur acheteur) {
-        this.acheteur = acheteur;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public ReleveFacture acheteur(Acheteur acheteur) {
-        this.setAcheteur(acheteur);
+    public ReleveFacture user(User user) {
+        this.setUser(user);
         return this;
     }
 
