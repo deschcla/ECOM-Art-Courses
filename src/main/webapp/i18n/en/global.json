@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "ECOM-Art-Courses",
+    "title": "Grenoble Art Institute",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
@@ -77,20 +77,20 @@
       },
       "validate": {
         "newpassword": {
-          "pattern": "Your password is required, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
-          "minlength": "Your password is required to be at least 4 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+          "pattern": "Your password is required, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
+          "minlength": "Your password is required to be at least 4 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
           "maxlength": "Your password cannot be longer than 50 characters.",
           "strength": "Password strength:"
         },
         "confirmpassword": {
-          "required": "Your confirmation password is required, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
-          "minlength": "Your confirmation password is required to be at least 4 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+          "required": "Your confirmation password is required, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
+          "minlength": "Your confirmation password is required to be at least 4 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
           "maxlength": "Your confirmation password cannot be longer than 50 characters.",
           "validation": "The passwords are not identical."
         },
         "email": {
           "required": "Your email is required.",
-          "invalid": "Invalid email format",
+          "invalid": "Invalid email format.",
           "minlength": "Your email is required to be at least 5 characters.",
           "maxlength": "Your email cannot be longer than 50 characters."
         },

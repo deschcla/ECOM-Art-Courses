@@ -3,6 +3,10 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   login?: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string;
+  numTel?: string;
 }
 
 export class User implements IUser {

@@ -61,6 +61,12 @@
   .input-group {
     justify-content: center;
   }
+  .divPriceBuy {
+    display: block !important;
+  }
+  .divTitle {
+    flex-direction: column;
+  }
 }
 
 .modal {
@@ -76,4 +82,46 @@
 
 .close:hover {
   color: black;
+}
+
+.price {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.pricePromo {
+  font-size: larger;
+  margin-right: 5px;
+}
+
+.promo {
+  font-size: x-large;
+}
+
+.divPriceBuy {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.divPay {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.input-group {
+  width: auto !important;
+}
+
+.divTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cartStyle:active {
+  background-color: grey;
+  border-color: gray;
 }

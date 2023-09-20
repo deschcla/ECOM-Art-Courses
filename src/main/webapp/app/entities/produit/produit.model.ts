@@ -19,6 +19,8 @@ export interface IProduit {
   version?: number | null;
   souscategorie?: ISousCategorie | null;
   commandes?: Pick<ICommande, 'id'>[] | null;
+  clicked?: boolean;
+  promo?: number;
 }
 
 export type NewProduit = Omit<IProduit, 'id'> & { id: null };

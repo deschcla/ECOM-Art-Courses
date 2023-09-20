@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "ECOM-Art-Courses",
+    "title": "Institut d'Art de Grenoble",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
     "menu": {
       "home": "Accueil",
@@ -83,7 +83,7 @@
           "strength": "Robustesse du mot de passe :"
         },
         "confirmpassword": {
-          "required": "Votre confirmation du mot de passe est requise, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
+          "required": "Votre confirmation du mot de passe est requise, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
           "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
           "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères.",
           "validation": "Les mots de passe ne sont pas identiques."
@@ -100,7 +100,7 @@
         },
         "birthday": {
           "required": "Votre date de naissance est requis.",
-          "invalid": "Votre date de naissance n'est pas valide"
+          "invalid": "Votre date de naissance n'est pas valide."
         },
         "first_name": {
           "required": "Votre prénom est requis.",
