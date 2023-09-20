@@ -29,7 +29,7 @@
     <div class="col-md-8">
       <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success" novalidate>
         <div class="mb-3">
-          <label class="form-label" for="login" jhiTranslate="global.form.username.label">Username</label>
+          <label class="form-label required" for="login" jhiTranslate="global.form.username.label">Username</label>
           <input
             type="text"
             class="form-control"
@@ -77,7 +77,7 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="first_name" jhiTranslate="global.form.first_name.label">First name</label>
+          <label class="form-label required" for="first_name" jhiTranslate="global.form.first_name.label">First name</label>
           <input
             type="text"
             class="form-control"
@@ -88,7 +88,11 @@
             data-cy="first_name"
           />
 
-          <div *ngIf="registerForm.get('first_name')!.invalid && (registerForm.get('first_name')!.dirty || registerForm.get('first_name')!.touched)">
+          <div
+            *ngIf="
+              registerForm.get('first_name')!.invalid && (registerForm.get('first_name')!.dirty || registerForm.get('first_name')!.touched)
+            "
+          >
             <small
               class="form-text text-danger"
               *ngIf="registerForm.get('first_name')?.errors?.required"
@@ -116,7 +120,7 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="last_name" jhiTranslate="global.form.last_name.label">Last name</label>
+          <label class="form-label required" for="last_name" jhiTranslate="global.form.last_name.label">Last name</label>
           <input
             type="text"
             class="form-control"
@@ -127,7 +131,11 @@
             data-cy="last_name"
           />
 
-          <div *ngIf="registerForm.get('last_name')!.invalid && (registerForm.get('last_name')!.dirty || registerForm.get('last_name')!.touched)">
+          <div
+            *ngIf="
+              registerForm.get('last_name')!.invalid && (registerForm.get('last_name')!.dirty || registerForm.get('last_name')!.touched)
+            "
+          >
             <small
               class="form-text text-danger"
               *ngIf="registerForm.get('last_name')?.errors?.required"
@@ -155,7 +163,7 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="email" jhiTranslate="global.form.email.label">Email</label>
+          <label class="form-label required" for="email" jhiTranslate="global.form.email.label">Email</label>
           <input
             type="email"
             class="form-control"
@@ -201,8 +209,8 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="phone" jhiTranslate="global.form.phone.label">Phone</label>
+        <!-- <div class="mb-3">
+          <label class="form-label required" for="phone" jhiTranslate="global.form.phone.label">Phone</label>
           <input
             type="text"
             class="form-control"
@@ -227,10 +235,10 @@
             >
             </small>
           </div>
-        </div>
+        </div> -->
 
-        <div class="mb-3">
-          <label class="form-label" for="birthday" jhiTranslate="global.form.birthday.label">Birthday</label>
+        <!-- <div class="mb-3">
+          <label class="form-label required" for="birthday" jhiTranslate="global.form.birthday.label">Birthday</label>
           <input
             type="date"
             class="form-control"
@@ -258,10 +266,10 @@
             >
             </small>
           </div>
-        </div>
+        </div> -->
 
         <div class="mb-3">
-          <label class="form-label" for="password" jhiTranslate="global.form.newpassword.label">New password</label>
+          <label class="form-label required" for="password" jhiTranslate="global.form.newpassword.label">New password</label>
           <input
             type="password"
             class="form-control"
@@ -304,7 +312,9 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="confirmPassword" jhiTranslate="global.form.confirmpassword.label">New password confirmation</label>
+          <label class="form-label required" for="confirmPassword" jhiTranslate="global.form.confirmpassword.label"
+            >New password confirmation</label
+          >
           <input
             type="password"
             class="form-control"

@@ -9,6 +9,7 @@ import { RegisterService } from './register.service';
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
@@ -32,19 +33,11 @@ export class RegisterComponent implements AfterViewInit {
     }),
     first_name: new FormControl('', {
       nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(50),
-      ],
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
     }),
     last_name: new FormControl('', {
       nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(50),
-      ],
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
     }),
     email: new FormControl('', {
       nonNullable: true,
@@ -59,14 +52,14 @@ export class RegisterComponent implements AfterViewInit {
       nonNullable: true,
       validators: [
         Validators.required,
-        Validators.pattern(/^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/),
+        Validators.pattern(
+          /^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/
+        ),
       ],
     }),
     birthday: new FormControl(new Date(), {
       nonNullable: true,
-      validators: [
-        Validators.required,
-      ],
+      validators: [Validators.required],
     }),
     password: new FormControl('', {
       nonNullable: true,
@@ -74,7 +67,7 @@ export class RegisterComponent implements AfterViewInit {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(50),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,#';^_")(+=@$!%*?/&<>-])[A-Za-z\d.,#';^_")(+=@$!%*?/&<>-]{4,}$/)
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,#';^_")(+=@$!%*?/&<>-])[A-Za-z\d.,#';^_")(+=@$!%*?/&<>-]{4,}$/),
         // Minimum 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial
       ],
     }),
@@ -84,7 +77,7 @@ export class RegisterComponent implements AfterViewInit {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(50),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,#';^_")(+=@$!%*?/&<>-])[A-Za-z\d.,#';^_")(+=@$!%*?/&<>-]{4,}$/)
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.,#';^_")(+=@$!%*?/&<>-])[A-Za-z\d.,#';^_")(+=@$!%*?/&<>-]{4,}$/),
       ],
     }),
   });
@@ -114,7 +107,7 @@ export class RegisterComponent implements AfterViewInit {
     }
   }
 
-  getMaxDate(): string{
+  getMaxDate(): string {
     return new Date().toLocaleDateString('en-ca');
   }
 
