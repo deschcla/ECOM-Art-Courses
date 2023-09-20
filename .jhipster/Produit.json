@@ -1,0 +1,90 @@
+{
+  "applications": "*",
+  "changelogDate": "20230914223849",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "produit",
+  "fields": [
+    {
+      "fieldName": "nomProduit",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "desc",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tarifUnit",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "duree",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lienImg",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "quantiteTotale",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "quantiteDispo",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "nomProf",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "Promotion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "Version",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Produit",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "sousCategorie",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "souscategorie",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "ligneCommande",
+      "otherEntityRelationshipName": "produit",
+      "relationshipName": "ligneCommande",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "produit",
+      "ownerSide": false,
+      "relationshipName": "commande",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}

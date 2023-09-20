@@ -1,0 +1,183 @@
+<div>
+  <h2 id="page-heading" data-cy="ProduitHeading">
+    <span jhiTranslate="ecomArtCoursesApp.produit.home.title">Produits</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="ecomArtCoursesApp.produit.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-produit"
+        [routerLink]="['/produit/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="ecomArtCoursesApp.produit.home.createLabel"> Create a new Produit </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="produits?.length === 0">
+    <span jhiTranslate="ecomArtCoursesApp.produit.home.notFound">No Produits found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="produits && produits.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="nomProduit">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.nomProduit">Nom Produit</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="desc">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.desc">Desc</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="tarifUnit">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.tarifUnit">Tarif Unit</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="date">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.date">Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="duree">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.duree">Duree</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lienImg">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.lienImg">Lien Img</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="quantiteTotale">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.quantiteTotale">Quantite Totale</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="quantiteDispo">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.quantiteDispo">Quantite Dispo</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdAt">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.createdAt">Created At</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="updateAt">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.updateAt">Update At</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="nomProf">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.nomProf">Nom Professeur</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="promotion">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.promotion">Promotion</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="version">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.version">Version</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="souscategorie.id">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.souscategorie">Souscategorie</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produit of produits; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/produit', produit.id, 'view']">{{ produit.id }}</a>
+          </td>
+          <td>{{ produit.nomProduit }}</td>
+          <td>{{ produit.desc }}</td>
+          <td>{{ produit.tarifUnit }}</td>
+          <td>{{ produit.date | formatMediumDatetime }}</td>
+          <td>{{ produit.duree }}</td>
+          <td>{{ produit.lienImg }}</td>
+          <td>{{ produit.quantiteTotale }}</td>
+          <td>{{ produit.quantiteDispo }}</td>
+          <td>{{ produit.createdAt | formatMediumDatetime }}</td>
+          <td>{{ produit.updateAt | formatMediumDatetime }}</td>
+          <td>{{ produit.nomProf }}</td>
+          <td>{{ produit.promotion }}</td>
+          <td>{{ produit.version }}</td>
+          <td>
+            <div *ngIf="produit.souscategorie">
+              <a [routerLink]="['/sous-categorie', produit.souscategorie.id, 'view']">{{ produit.souscategorie.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/produit', produit.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/produit', produit.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(produit)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

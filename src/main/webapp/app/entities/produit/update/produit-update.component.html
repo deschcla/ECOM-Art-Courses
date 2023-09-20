@@ -1,0 +1,182 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-produit-heading" data-cy="ProduitCreateUpdateHeading" jhiTranslate="ecomArtCoursesApp.produit.home.createOrEditLabel">
+        Create or edit a Produit
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.nomProduit" for="field_nomProduit">Nom Produit</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nomProduit"
+            id="field_nomProduit"
+            data-cy="nomProduit"
+            formControlName="nomProduit"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.desc" for="field_desc">Desc</label>
+          <input type="text" class="form-control" name="desc" id="field_desc" data-cy="desc" formControlName="desc" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.tarifUnit" for="field_tarifUnit">Tarif Unit</label>
+          <input type="number" class="form-control" name="tarifUnit" id="field_tarifUnit" data-cy="tarifUnit" formControlName="tarifUnit" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.date" for="field_date">Date</label>
+          <div class="d-flex">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="datetime-local"
+              class="form-control"
+              name="date"
+              formControlName="date"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.duree" for="field_duree">Duree</label>
+          <input type="text" class="form-control" name="duree" id="field_duree" data-cy="duree" formControlName="duree" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.lienImg" for="field_lienImg">Lien Img</label>
+          <input type="text" class="form-control" name="lienImg" id="field_lienImg" data-cy="lienImg" formControlName="lienImg" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.quantiteTotale" for="field_quantiteTotale"
+            >Quantite Totale</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="quantiteTotale"
+            id="field_quantiteTotale"
+            data-cy="quantiteTotale"
+            formControlName="quantiteTotale"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.quantiteDispo" for="field_quantiteDispo">Quantite Dispo</label>
+          <input
+            type="number"
+            class="form-control"
+            name="quantiteDispo"
+            id="field_quantiteDispo"
+            data-cy="quantiteDispo"
+            formControlName="quantiteDispo"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.createdAt" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.updateAt" for="field_updateAt">Update At</label>
+          <div class="d-flex">
+            <input
+              id="field_updateAt"
+              data-cy="updateAt"
+              type="datetime-local"
+              class="form-control"
+              name="updateAt"
+              formControlName="updateAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.nomProf" for="field_nomProf">Nom Professeur</label>
+          <input type="text" class="form-control" name="nomProf" id="field_nomProf" data-cy="nomProf" formControlName="nomProf" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.promotion" for="field_promotion">Promotion</label>
+          <input type="text" class="form-control" name="promotion" id="field_promotion" data-cy="promotion" formControlName="promotion" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.version" for="field_version">Version</label>
+          <input type="text" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.souscategorie" for="field_souscategorie">Souscategorie</label>
+          <select
+            class="form-control"
+            id="field_souscategorie"
+            data-cy="souscategorie"
+            name="souscategorie"
+            formControlName="souscategorie"
+            [compareWith]="compareSousCategorie"
+          >
+            <option *ngIf="editForm.get(['souscategorie'])!.value == null" [ngValue]="null" selected></option>
+            <option [ngValue]="sousCategorieOption" *ngFor="let sousCategorieOption of sousCategoriesSharedCollection">
+              {{ sousCategorieOption.id }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['souscategorie'])!.invalid && (editForm.get(['souscategorie'])!.dirty || editForm.get(['souscategorie'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['souscategorie'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

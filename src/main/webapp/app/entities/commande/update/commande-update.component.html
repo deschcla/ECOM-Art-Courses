@@ -1,0 +1,152 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-commande-heading" data-cy="CommandeCreateUpdateHeading" jhiTranslate="ecomArtCoursesApp.commande.home.createOrEditLabel">
+        Create or edit a Commande
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.montant" for="field_montant">Montant</label>
+          <input type="number" class="form-control" name="montant" id="field_montant" data-cy="montant" formControlName="montant" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.validated" for="field_validated">Validated</label>
+          <input type="number" class="form-control" name="validated" id="field_validated" data-cy="validated" formControlName="validated" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.createdAt" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+            <input
+              id="field_createdAt"
+              data-cy="createdAt"
+              type="datetime-local"
+              class="form-control"
+              name="createdAt"
+              formControlName="createdAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.updateAt" for="field_updateAt">Update At</label>
+          <div class="d-flex">
+            <input
+              id="field_updateAt"
+              data-cy="updateAt"
+              type="datetime-local"
+              class="form-control"
+              name="updateAt"
+              formControlName="updateAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label jhiTranslate="ecomArtCoursesApp.commande.produit" for="field_produits">Produit</label>
+          <select
+            class="form-control"
+            id="field_produits"
+            data-cy="produit"
+            multiple
+            name="produits"
+            formControlName="produits"
+            [compareWith]="compareProduit"
+          >
+            <option [ngValue]="produitOption" *ngFor="let produitOption of produitsSharedCollection">{{ produitOption.id }}</option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['produits'])!.invalid && (editForm.get(['produits'])!.dirty || editForm.get(['produits'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['produits'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.releveFacture" for="field_releveFacture">Releve Facture</label>
+          <select
+            class="form-control"
+            id="field_releveFacture"
+            data-cy="releveFacture"
+            name="releveFacture"
+            formControlName="releveFacture"
+            [compareWith]="compareReleveFacture"
+          >
+            <option *ngIf="editForm.get(['releveFacture'])!.value == null" [ngValue]="null" selected></option>
+            <option [ngValue]="releveFactureOption" *ngFor="let releveFactureOption of releveFacturesSharedCollection">
+              {{ releveFactureOption.id }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['releveFacture'])!.invalid && (editForm.get(['releveFacture'])!.dirty || editForm.get(['releveFacture'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['releveFacture'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.acheteur" for="field_acheteur">Acheteur</label>
+          <select
+            class="form-control"
+            id="field_acheteur"
+            data-cy="acheteur"
+            name="acheteur"
+            formControlName="acheteur"
+            [compareWith]="compareAcheteur"
+          >
+            <option *ngIf="editForm.get(['acheteur'])!.value == null" [ngValue]="null" selected></option>
+            <option [ngValue]="acheteurOption" *ngFor="let acheteurOption of acheteursSharedCollection">{{ acheteurOption.id }}</option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['acheteur'])!.invalid && (editForm.get(['acheteur'])!.dirty || editForm.get(['acheteur'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['acheteur'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

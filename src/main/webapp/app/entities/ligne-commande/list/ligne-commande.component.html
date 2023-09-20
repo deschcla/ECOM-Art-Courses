@@ -1,0 +1,145 @@
+<div>
+  <h2 id="page-heading" data-cy="LigneCommandeHeading">
+    <span jhiTranslate="ecomArtCoursesApp.ligneCommande.home.title">Ligne Commandes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="ecomArtCoursesApp.ligneCommande.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-ligne-commande"
+        [routerLink]="['/ligne-commande/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="ecomArtCoursesApp.ligneCommande.home.createLabel"> Create a new Ligne Commande </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="ligneCommandes?.length === 0">
+    <span jhiTranslate="ecomArtCoursesApp.ligneCommande.home.notFound">No Ligne Commandes found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="ligneCommandes && ligneCommandes.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="quantite">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.quantite">Quantite</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="montant">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.montant">Montant</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="validated">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.validated">Validated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="nomParticipant">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.nomParticipant">Nom Participant</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdAt">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.createdAt">Created At</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="updateAt">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.updateAt">Update At</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="produit.id">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.produit">Produit</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="commande.id">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.ligneCommande.commande">Commande</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ligneCommande of ligneCommandes; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/ligne-commande', ligneCommande.id, 'view']">{{ ligneCommande.id }}</a>
+          </td>
+          <td>{{ ligneCommande.quantite }}</td>
+          <td>{{ ligneCommande.montant }}</td>
+          <td>{{ ligneCommande.validated }}</td>
+          <td>{{ ligneCommande.nomParticipant }}</td>
+          <td>{{ ligneCommande.createdAt | formatMediumDatetime }}</td>
+          <td>{{ ligneCommande.updateAt | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="ligneCommande.produit">
+              <a [routerLink]="['/produit', ligneCommande.produit.id, 'view']">{{ ligneCommande.produit.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="ligneCommande.commande">
+              <a [routerLink]="['/commande', ligneCommande.commande.id, 'view']">{{ ligneCommande.commande.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/ligne-commande', ligneCommande.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/ligne-commande', ligneCommande.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(ligneCommande)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

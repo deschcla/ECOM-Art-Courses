@@ -1,0 +1,86 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="produit">
+      <h2 data-cy="produitDetailsHeading"><span jhiTranslate="ecomArtCoursesApp.produit.detail.title">Produit</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ produit.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.nomProduit">Nom Produit</span></dt>
+        <dd>
+          <span>{{ produit.nomProduit }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.desc">Desc</span></dt>
+        <dd>
+          <span>{{ produit.desc }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.tarifUnit">Tarif Unit</span></dt>
+        <dd>
+          <span>{{ produit.tarifUnit }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.date">Date</span></dt>
+        <dd>
+          <span>{{ produit.date | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.duree">Duree</span></dt>
+        <dd>
+          <span>{{ produit.duree }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.lienImg">Lien Img</span></dt>
+        <dd>
+          <span>{{ produit.lienImg }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.quantiteTotale">Quantite Totale</span></dt>
+        <dd>
+          <span>{{ produit.quantiteTotale }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.quantiteDispo">Quantite Dispo</span></dt>
+        <dd>
+          <span>{{ produit.quantiteDispo }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ produit.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.updateAt">Update At</span></dt>
+        <dd>
+          <span>{{ produit.updateAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.nomProf">Nom Professeur</span></dt>
+        <dd>
+          <span>{{ produit.nomProf }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.promotion">Promotion</span></dt>
+        <dd>
+          <span>{{ produit.promotion }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.version">Version</span></dt>
+        <dd>
+          <span>{{ produit.version }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.produit.souscategorie">Souscategorie</span></dt>
+        <dd>
+          <div *ngIf="produit.souscategorie">
+            <a [routerLink]="['/sous-categorie', produit.souscategorie.id, 'view']">{{ produit.souscategorie.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/produit', produit.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

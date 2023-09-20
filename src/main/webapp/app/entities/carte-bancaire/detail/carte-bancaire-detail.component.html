@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="carteBancaire">
+      <h2 data-cy="carteBancaireDetailsHeading"><span jhiTranslate="ecomArtCoursesApp.carteBancaire.detail.title">Carte Bancaire</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ carteBancaire.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.carteBancaire.refCarte">Ref Carte</span></dt>
+        <dd>
+          <span>{{ carteBancaire.refCarte }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.carteBancaire.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ carteBancaire.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.carteBancaire.updateAt">Update At</span></dt>
+        <dd>
+          <span>{{ carteBancaire.updateAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="ecomArtCoursesApp.carteBancaire.commande">Commande</span></dt>
+        <dd>
+          <div *ngIf="carteBancaire.commande">
+            <a [routerLink]="['/commande', carteBancaire.commande.id, 'view']">{{ carteBancaire.commande.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/carte-bancaire', carteBancaire.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

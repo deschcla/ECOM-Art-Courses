@@ -1,0 +1,60 @@
+{
+  "applications": "*",
+  "changelogDate": "20230914223848",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "acheteur",
+  "fields": [
+    {
+      "fieldName": "adresse",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateNaiss",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "numTel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updateAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Acheteur",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "id": true,
+      "otherEntityName": "user",
+      "ownerSide": true,
+      "relationshipName": "internalUser",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required",
+      "useJPADerivedIdentifier": true
+    },
+    {
+      "otherEntityName": "releveFacture",
+      "otherEntityRelationshipName": "acheteur",
+      "relationshipName": "releveFacture",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "commande",
+      "otherEntityRelationshipName": "acheteur",
+      "relationshipName": "commande",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "serviceImpl"
+}
