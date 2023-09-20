@@ -54,14 +54,7 @@ export class CartService {
     this.courseChange.next(this.courses);
   }
 
-  // searchValue: string = '';
-
   setSearchValue(value: string): void {
-    console.log(value);
-    // this.searchValue = value;
     this.searchChange.next(value);
   }
-  // getSearchValue(): string{
-  //   return this.searchValue;
-  // }
 }

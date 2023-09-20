@@ -84,7 +84,6 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
   }
 
   searchCategory(cat: string): void {
-    // this.searchForm.controls.search.setValue(cat);
     this.cartService.setSearchValue(cat);
   }
 }
