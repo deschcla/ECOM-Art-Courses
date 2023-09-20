@@ -4,9 +4,9 @@ export class Registration {
     public firstName: string | null | undefined,
     public lastName: string | null | undefined,
     public email: string,
-    public phone: string,
+    // public phone: string,
     public password: string,
-    public birthday: Date,
+    // public birthday: Date,
     public langKey: string
   ) {}
 }

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.ecom.art_courses.domain.User;
 import com.ecom.art_courses.service.dto.AdminUserDTO;
 import com.ecom.art_courses.service.dto.UserDTO;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -129,5 +130,20 @@ class UserMapperTest {
     void testUserFromId() {
         Assertions.assertThat(userMapper.userFromId(DEFAULT_ID).getId()).isEqualTo(DEFAULT_ID);
         Assertions.assertThat(userMapper.userFromId(null)).isNull();
+    }
+
+    @Test
+    void assertThatUserGetsCorrectData() {
+        assertThat(user.getActivationKey()).isEqualTo(null);
+        assertThat(user.getResetKey()).isEqualTo(null);
+
+        user.setActivationKey(RandomStringUtils.randomAlphanumeric(60));
+        user.setResetKey(RandomStringUtils.randomAlphanumeric(60));
+        user.setResetDate(Instant.now());
+
+        assertThat(user.getPassword()).isNotNull();
+        assertThat(user.getActivationKey()).isNotNull();
+        assertThat(user.getResetKey()).isNotNull();
+        assertThat(user.getResetDate()).isNotNull();
     }
 }
