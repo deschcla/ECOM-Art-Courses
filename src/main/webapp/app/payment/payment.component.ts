@@ -6,6 +6,8 @@ import { CartService } from 'app/core/util/cart.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-payment',
@@ -60,7 +62,24 @@ export class PaymentComponent implements OnInit {
   }
 
   public validatePayment(): void {
-    alert(this.paymentForm.status);
+    // alert(this.paymentForm.status);
+    const releveFacture: IReleveFacture = {
+      id: 1,
+      montant: +(this.calcMontant() * 1.2).toFixed(2),
+      createdAt: dayjs('2023-09-12T08:00:22Z'),
+      acheteur: {
+        id: 1,
+        internalUser: {
+          id: 1,
+          firstName: 'John',
+          lastName: 'Doe',
+          email: 'john@doe.com',
+          numTel: '+33769289876',
+        },
+      },
+    };
+    console.log(releveFacture);
+    this.router.navigateByUrl('/facture', { state: releveFacture });
   }
 
   viewDetails(courseId: number): void {
