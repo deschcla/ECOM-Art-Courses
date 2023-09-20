@@ -3,12 +3,12 @@ package com.ecom.art_courses.service.impl;
 import com.ecom.art_courses.domain.LigneCommande;
 import com.ecom.art_courses.repository.LigneCommandeRepository;
 import com.ecom.art_courses.service.LigneCommandeService;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Service Implementation for managing {@link LigneCommande}.
@@ -26,19 +26,19 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
     }
 
     @Override
-    public Mono<LigneCommande> save(LigneCommande ligneCommande) {
+    public LigneCommande save(LigneCommande ligneCommande) {
         log.debug("Request to save LigneCommande : {}", ligneCommande);
         return ligneCommandeRepository.save(ligneCommande);
     }
 
     @Override
-    public Mono<LigneCommande> update(LigneCommande ligneCommande) {
+    public LigneCommande update(LigneCommande ligneCommande) {
         log.debug("Request to update LigneCommande : {}", ligneCommande);
         return ligneCommandeRepository.save(ligneCommande);
     }
 
     @Override
-    public Mono<LigneCommande> partialUpdate(LigneCommande ligneCommande) {
+    public Optional<LigneCommande> partialUpdate(LigneCommande ligneCommande) {
         log.debug("Request to partially update LigneCommande : {}", ligneCommande);
 
         return ligneCommandeRepository
@@ -65,30 +65,26 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
 
                 return existingLigneCommande;
             })
-            .flatMap(ligneCommandeRepository::save);
+            .map(ligneCommandeRepository::save);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Flux<LigneCommande> findAll() {
+    public List<LigneCommande> findAll() {
         log.debug("Request to get all LigneCommandes");
         return ligneCommandeRepository.findAll();
     }
 
-    public Mono<Long> countAll() {
-        return ligneCommandeRepository.count();
-    }
-
     @Override
     @Transactional(readOnly = true)
-    public Mono<LigneCommande> findOne(Long id) {
+    public Optional<LigneCommande> findOne(Long id) {
         log.debug("Request to get LigneCommande : {}", id);
         return ligneCommandeRepository.findById(id);
     }
 
     @Override
-    public Mono<Void> delete(Long id) {
+    public void delete(Long id) {
         log.debug("Request to delete LigneCommande : {}", id);
-        return ligneCommandeRepository.deleteById(id);
+        ligneCommandeRepository.deleteById(id);
     }
 }

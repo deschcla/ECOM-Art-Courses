@@ -4,9 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { LigneCommandeFormService, LigneCommandeFormGroup } from './ligne-commande-form.service';
 import { ILigneCommande } from '../ligne-commande.model';
 import { LigneCommandeService } from '../service/ligne-commande.service';
@@ -16,10 +13,8 @@ import { ICommande } from 'app/entities/commande/commande.model';
 import { CommandeService } from 'app/entities/commande/service/commande.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-ligne-commande-update',
   templateUrl: './ligne-commande-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class LigneCommandeUpdateComponent implements OnInit {
   isSaving = false;

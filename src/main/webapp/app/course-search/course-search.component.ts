@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LoginService } from '../login/login.service';
+import { SousCategorieService } from 'app/entities/sous-categorie/service/sous-categorie.service';
 
 @Component({
   selector: 'jhi-course-search',
@@ -56,8 +57,11 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course: IProduit, event: Event): void {
+    console.log(event);
+
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1);
+      course.clicked = true;
     } else {
       this.display = 'block';
     }

@@ -8,17 +8,17 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.acheteur.adresse" for="field_adresse">Adresse</label>
           <input type="text" class="form-control" name="adresse" id="field_adresse" data-cy="adresse" formControlName="adresse" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.acheteur.dateNaiss" for="field_dateNaiss">Date Naiss</label>
           <div class="input-group">
             <input
@@ -35,12 +35,12 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.acheteur.numTel" for="field_numTel">Num Tel</label>
           <input type="text" class="form-control" name="numTel" id="field_numTel" data-cy="numTel" formControlName="numTel" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.acheteur.createdAt" for="field_createdAt">Created At</label>
           <div class="d-flex">
             <input
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.acheteur.updateAt" for="field_updateAt">Update At</label>
           <div class="d-flex">
             <input
@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.acheteur.internalUser" for="field_internalUser">Internal User</label>
           <select
             class="form-control"

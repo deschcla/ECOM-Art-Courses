@@ -18,7 +18,8 @@ describe('Produit Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ProduitDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [ProduitDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(ProduitDeleteDialogComponent, '')

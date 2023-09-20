@@ -1,44 +1,36 @@
 package com.ecom.art_courses.web.rest.errors;
 
-import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedAnnotation;
-
+import com.ecom.art_courses.service.UsernameAlreadyUsedException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
-import org.springframework.lang.Nullable;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.ErrorResponseException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.zalando.problem.DefaultProblem;
+import org.zalando.problem.Problem;
+import org.zalando.problem.ProblemBuilder;
+import org.zalando.problem.Status;
+import org.zalando.problem.StatusType;
+import org.zalando.problem.spring.web.advice.ProblemHandling;
+import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
+import org.zalando.problem.violations.ConstraintViolationProblem;
 import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.web.rest.errors.ExceptionTranslation;
-import tech.jhipster.web.rest.errors.ProblemDetailWithCause;
-import tech.jhipster.web.rest.errors.ProblemDetailWithCause.ProblemDetailWithCauseBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 
 /**
@@ -46,13 +38,12 @@ import tech.jhipster.web.util.HeaderUtil;
  * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
  */
 @ControllerAdvice
-@Component("jhiExceptionTranslator")
-public class ExceptionTranslator extends ResponseEntityExceptionHandler implements ExceptionTranslation {
+public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
     private static final String PATH_KEY = "path";
-    private static final boolean CASUAL_CHAIN_ENABLED = false;
+    private static final String VIOLATIONS_KEY = "violations";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -63,110 +54,46 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler implemen
         this.env = env;
     }
 
-    @ExceptionHandler
+    /**
+     * Post-process the Problem payload to add the message key for the front-end if needed.
+     */
     @Override
-    public Mono<ResponseEntity<Object>> handleAnyException(Throwable ex, ServerWebExchange request) {
-        ProblemDetailWithCause pdCause = wrapAndCustomizeProblem(ex, request);
-        return handleExceptionInternal(
-            (Exception) ex,
-            pdCause,
-            buildHeaders(ex, request),
-            HttpStatusCode.valueOf(pdCause.getStatus()),
-            request
-        );
+    public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, NativeWebRequest request) {
+        if (entity == null) {
+            return null;
+        }
+        Problem problem = entity.getBody();
+        if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
+            return entity;
+        }
+
+        HttpServletRequest nativeRequest = request.getNativeRequest(HttpServletRequest.class);
+        String requestUri = nativeRequest != null ? nativeRequest.getRequestURI() : StringUtils.EMPTY;
+        ProblemBuilder builder = Problem
+            .builder()
+            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
+            .withStatus(problem.getStatus())
+            .withTitle(problem.getTitle())
+            .with(PATH_KEY, requestUri);
+
+        if (problem instanceof ConstraintViolationProblem) {
+            builder
+                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
+                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
+        } else {
+            builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
+            problem.getParameters().forEach(builder::with);
+            if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
+                builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
+            }
+        }
+        return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
     }
 
-    @Nullable
     @Override
-    protected Mono<ResponseEntity<Object>> handleExceptionInternal(
-        Exception ex,
-        @Nullable Object body,
-        HttpHeaders headers,
-        HttpStatusCode statusCode,
-        ServerWebExchange request
-    ) {
-        body = body == null ? wrapAndCustomizeProblem((Throwable) ex, (ServerWebExchange) request) : body;
-        if (request.getResponse().isCommitted()) {
-            return Mono.error(ex);
-        }
-        return Mono.just(
-            new ResponseEntity<>(body, updateContentType(headers), HttpStatusCode.valueOf(((ProblemDetailWithCause) body).getStatus()))
-        );
-    }
-
-    protected ProblemDetailWithCause wrapAndCustomizeProblem(Throwable ex, ServerWebExchange request) {
-        return customizeProblem(getProblemDetailWithCause(ex), ex, request);
-    }
-
-    private ProblemDetailWithCause getProblemDetailWithCause(Throwable ex) {
-        if (
-            ex instanceof com.ecom.art_courses.service.EmailAlreadyUsedException ||
-            ex instanceof com.ecom.art_courses.service.UsernameAlreadyUsedException
-        ) {
-            // return 201 - CREATED on purpose to not reveal information to potential attackers
-            // see https://github.com/jhipster/generator-jhipster/issues/21731
-            return ProblemDetailWithCauseBuilder.instance().withStatus(201).build();
-        }
-        if (
-            ex instanceof com.ecom.art_courses.service.InvalidPasswordException
-        ) return (ProblemDetailWithCause) new InvalidPasswordException().getBody();
-
-        if (ex instanceof AuthenticationException) {
-            // Ensure no information about existing users is revealed via failed authentication attempts
-            return ProblemDetailWithCauseBuilder
-                .instance()
-                .withStatus(toStatus(ex).value())
-                .withTitle("Unauthorized")
-                .withDetail("Invalid credentials")
-                .build();
-        }
-        if (
-            ex instanceof ErrorResponseException exp && exp.getBody() instanceof ProblemDetailWithCause
-        ) return (ProblemDetailWithCause) exp.getBody();
-        return ProblemDetailWithCauseBuilder.instance().withStatus(toStatus(ex).value()).build();
-    }
-
-    protected ProblemDetailWithCause customizeProblem(ProblemDetailWithCause problem, Throwable err, ServerWebExchange request) {
-        if (problem.getStatus() <= 0) problem.setStatus(toStatus(err));
-
-        if (problem.getType() == null || problem.getType().equals(URI.create("about:blank"))) problem.setType(getMappedType(err));
-
-        // higher precedence to Custom/ResponseStatus types
-        String title = extractTitle(err, problem.getStatus());
-        String problemTitle = problem.getTitle();
-        if (problemTitle == null || !problemTitle.equals(title)) {
-            problem.setTitle(title);
-        }
-
-        if (problem.getDetail() == null) {
-            // higher precedence to cause
-            problem.setDetail(getCustomizedErrorDetails(err));
-        }
-
-        Map<String, Object> problemProperties = problem.getProperties();
-        if (problemProperties == null || !problemProperties.containsKey(MESSAGE_KEY)) problem.setProperty(
-            MESSAGE_KEY,
-            getMappedMessageKey(err) != null ? getMappedMessageKey(err) : "error.http." + problem.getStatus()
-        );
-
-        if (problemProperties == null || !problemProperties.containsKey(PATH_KEY)) problem.setProperty(PATH_KEY, getPathValue(request));
-
-        if (
-            (err instanceof WebExchangeBindException) && (problemProperties == null || !problemProperties.containsKey(FIELD_ERRORS_KEY))
-        ) problem.setProperty(FIELD_ERRORS_KEY, getFieldErrors((WebExchangeBindException) err));
-
-        problem.setCause(buildCause(err.getCause(), request).orElse(null));
-
-        return problem;
-    }
-
-    private String extractTitle(Throwable err, int statusCode) {
-        return getCustomizedTitle(err) != null ? getCustomizedTitle(err) : extractTitleForResponseStatus(err, statusCode);
-    }
-
-    private List<FieldErrorVM> getFieldErrors(WebExchangeBindException ex) {
-        return ex
-            .getBindingResult()
+    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
+        BindingResult result = ex.getBindingResult();
+        List<FieldErrorVM> fieldErrors = result
             .getFieldErrors()
             .stream()
             .map(f ->
@@ -176,122 +103,118 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler implemen
                     StringUtils.isNotBlank(f.getDefaultMessage()) ? f.getDefaultMessage() : f.getCode()
                 )
             )
-            .toList();
+            .collect(Collectors.toList());
+
+        Problem problem = Problem
+            .builder()
+            .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
+            .withTitle("Method argument not valid")
+            .withStatus(defaultConstraintViolationStatus())
+            .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
+            .with(FIELD_ERRORS_KEY, fieldErrors)
+            .build();
+        return create(ex, problem, request);
     }
 
-    private String extractTitleForResponseStatus(Throwable err, int statusCode) {
-        ResponseStatus specialStatus = extractResponseStatus(err);
-        return specialStatus == null ? HttpStatus.valueOf(statusCode).getReasonPhrase() : specialStatus.reason();
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleEmailAlreadyUsedException(
+        com.ecom.art_courses.service.EmailAlreadyUsedException ex,
+        NativeWebRequest request
+    ) {
+        EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
     }
 
-    private HttpStatus toStatus(final Throwable throwable) {
-        // Let the ErrorResponse take this responsibility
-        if (throwable instanceof ErrorResponse err) return HttpStatus.valueOf(err.getBody().getStatus());
-
-        return Optional
-            .ofNullable(getMappedStatus(throwable))
-            .orElse(
-                Optional.ofNullable(resolveResponseStatus(throwable)).map(ResponseStatus::value).orElse(HttpStatus.INTERNAL_SERVER_ERROR)
-            );
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(UsernameAlreadyUsedException ex, NativeWebRequest request) {
+        LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
     }
 
-    private ResponseStatus extractResponseStatus(final Throwable throwable) {
-        return Optional.ofNullable(resolveResponseStatus(throwable)).orElse(null);
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(
+        com.ecom.art_courses.service.InvalidPasswordException ex,
+        NativeWebRequest request
+    ) {
+        return create(new InvalidPasswordException(), request);
     }
 
-    private ResponseStatus resolveResponseStatus(final Throwable type) {
-        final ResponseStatus candidate = findMergedAnnotation(type.getClass(), ResponseStatus.class);
-        return candidate == null && type.getCause() != null ? resolveResponseStatus(type.getCause()) : candidate;
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
+        return create(
+            ex,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
+        );
     }
 
-    private URI getMappedType(Throwable err) {
-        if (err instanceof MethodArgumentNotValidException exp) return ErrorConstants.CONSTRAINT_VIOLATION_TYPE;
-        return ErrorConstants.DEFAULT_TYPE;
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
+        return create(ex, problem, request);
     }
 
-    private String getMappedMessageKey(Throwable err) {
-        if (err instanceof MethodArgumentNotValidException) return ErrorConstants.ERR_VALIDATION; else if (
-            err instanceof ConcurrencyFailureException || err.getCause() != null && err.getCause() instanceof ConcurrencyFailureException
-        ) return ErrorConstants.ERR_CONCURRENCY_FAILURE; else if (
-            err instanceof WebExchangeBindException
-        ) return ErrorConstants.ERR_VALIDATION;
-        return null;
-    }
-
-    private String getCustomizedTitle(Throwable err) {
-        if (err instanceof MethodArgumentNotValidException exp) return "Method argument not valid";
-        return null;
-    }
-
-    private String getCustomizedErrorDetails(Throwable err) {
+    @Override
+    public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+
         if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
-            if (err instanceof HttpMessageConversionException) return "Unable to convert http message";
-            if (err instanceof DataAccessException) return "Failure during data access";
-            if (containsPackageName(err.getMessage())) return "Unexpected runtime exception";
+            if (throwable instanceof HttpMessageConversionException) {
+                return Problem
+                    .builder()
+                    .withType(type)
+                    .withTitle(status.getReasonPhrase())
+                    .withStatus(status)
+                    .withDetail("Unable to convert http message")
+                    .withCause(
+                        Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
+                    );
+            }
+            if (throwable instanceof DataAccessException) {
+                return Problem
+                    .builder()
+                    .withType(type)
+                    .withTitle(status.getReasonPhrase())
+                    .withStatus(status)
+                    .withDetail("Failure during data access")
+                    .withCause(
+                        Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
+                    );
+            }
+            if (containsPackageName(throwable.getMessage())) {
+                return Problem
+                    .builder()
+                    .withType(type)
+                    .withTitle(status.getReasonPhrase())
+                    .withStatus(status)
+                    .withDetail("Unexpected runtime exception")
+                    .withCause(
+                        Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
+                    );
+            }
         }
-        return err.getCause() != null ? err.getCause().getMessage() : err.getMessage();
-    }
 
-    private HttpStatus getMappedStatus(Throwable err) {
-        // Where we disagree with Spring defaults
-        if (err instanceof AccessDeniedException) return HttpStatus.FORBIDDEN;
-        if (err instanceof ConcurrencyFailureException) return HttpStatus.CONFLICT;
-        if (err instanceof BadCredentialsException) return HttpStatus.UNAUTHORIZED;
-        if (err instanceof UsernameNotFoundException) return HttpStatus.UNAUTHORIZED;
-        return null;
-    }
-
-    private URI getPathValue(ServerWebExchange request) {
-        if (request == null) return URI.create("about:blank");
-        return request.getRequest().getURI();
-    }
-
-    private HttpHeaders buildHeaders(Throwable err, ServerWebExchange request) {
-        return err instanceof BadRequestAlertException
-            ? HeaderUtil.createFailureAlert(
-                applicationName,
-                true,
-                ((BadRequestAlertException) err).getEntityName(),
-                ((BadRequestAlertException) err).getErrorKey(),
-                ((BadRequestAlertException) err).getMessage()
-            )
-            : null;
-    }
-
-    private HttpHeaders updateContentType(HttpHeaders headers) {
-        if (headers == null) {
-            headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
-        }
-        return headers;
-    }
-
-    public Optional<ProblemDetailWithCause> buildCause(final Throwable throwable, ServerWebExchange request) {
-        if (throwable != null && isCasualChainEnabled()) {
-            return Optional.of(customizeProblem(getProblemDetailWithCause(throwable), throwable, request));
-        }
-        return Optional.ofNullable(null);
-    }
-
-    private boolean isCasualChainEnabled() {
-        // Customize as per the needs
-        return CASUAL_CHAIN_ENABLED;
+        return Problem
+            .builder()
+            .withType(type)
+            .withTitle(status.getReasonPhrase())
+            .withStatus(status)
+            .withDetail(throwable.getMessage())
+            .withCause(
+                Optional.ofNullable(throwable.getCause()).filter(cause -> isCausalChainsEnabled()).map(this::toProblem).orElse(null)
+            );
     }
 
     private boolean containsPackageName(String message) {
         // This list is for sure not complete
-        return StringUtils.containsAny(
-            message,
-            "org.",
-            "java.",
-            "net.",
-            "jakarta.",
-            "javax.",
-            "com.",
-            "io.",
-            "de.",
-            "com.ecom.art_courses"
-        );
+        return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "com.ecom.art_courses");
     }
 }

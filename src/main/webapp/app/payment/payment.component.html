@@ -152,18 +152,18 @@
             <h6 class="my-0 pointer" (click)="viewDetails(commande.produit?.id!)">{{ commande.produit?.nomProduit }}</h6>
             <small class="text-muted">Quantité: {{ commande.quantite }}</small>
           </div>
-          <div class="col">
-            <!-- <h6 *ngIf="commande.produit.promo" [ngClass]="{ 'text-decoration-line-through': commande.produit.promo }">
+          <!-- <div class="col"> 
+             <h6 *ngIf="commande.produit.promo" [ngClass]="{ 'text-decoration-line-through': commande.produit.promo }">
               {{ (commande.produit.tarifUnit * commande.quantite).toFixed(2) }}€
             </h6>
             <span *ngIf="commande.produit.promo; else montantWithoutPromo" class="text-danger">
               {{
                 ((commande.produit.tarifUnit - (commande.produit.tarifUnit * commande.produit.promo) / 100) * commande.quantite).toFixed(2)
               }}€
-            </span> -->
-          </div>
+            </span> 
+           </div> -->
           <!-- <ng-template #montantWithoutPromo>  -->
-          {{ (commande.produit?.tarifUnit! * commande.quantite!).toFixed(2) }}€
+          <span>{{ (commande.produit?.tarifUnit! * commande.quantite!).toFixed(2) }}€</span>
           <!-- </ng-template> -->
         </li>
       </ul>

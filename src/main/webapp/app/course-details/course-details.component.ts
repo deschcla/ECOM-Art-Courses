@@ -40,7 +40,9 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.idProduit = params['id'];
       this.produitService.find(this.idProduit).subscribe({
-        next: value => (this.course = value.body),
+        next: value => {
+          this.course = value.body;
+        },
       });
     });
   }

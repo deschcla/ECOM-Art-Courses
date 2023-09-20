@@ -15,17 +15,10 @@
     "importHelpers": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false,
-    "target": "es2022",
+    "target": "es2020",
     "module": "es2020",
-    "types": [],
     "lib": ["es2018", "dom"]
   },
-  "references": [
-    {
-      "path": "tsconfig.spec.json"
-    }
-  ],
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

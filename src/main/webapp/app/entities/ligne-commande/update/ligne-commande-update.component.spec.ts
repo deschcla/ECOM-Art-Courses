@@ -27,7 +27,8 @@ describe('LigneCommande Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), LigneCommandeUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [LigneCommandeUpdateComponent],
       providers: [
         FormBuilder,
         {
@@ -54,10 +55,10 @@ describe('LigneCommande Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Produit query and add missing value', () => {
       const ligneCommande: ILigneCommande = { id: 456 };
-      const produit: IProduit = { id: 675 };
+      const produit: IProduit = { id: 52900 };
       ligneCommande.produit = produit;
 
-      const produitCollection: IProduit[] = [{ id: 17246 }];
+      const produitCollection: IProduit[] = [{ id: 88647 }];
       jest.spyOn(produitService, 'query').mockReturnValue(of(new HttpResponse({ body: produitCollection })));
       const additionalProduits = [produit];
       const expectedCollection: IProduit[] = [...additionalProduits, ...produitCollection];
@@ -76,10 +77,10 @@ describe('LigneCommande Management Update Component', () => {
 
     it('Should call Commande query and add missing value', () => {
       const ligneCommande: ILigneCommande = { id: 456 };
-      const commande: ICommande = { id: 25083 };
+      const commande: ICommande = { id: 7874 };
       ligneCommande.commande = commande;
 
-      const commandeCollection: ICommande[] = [{ id: 12025 }];
+      const commandeCollection: ICommande[] = [{ id: 78715 }];
       jest.spyOn(commandeService, 'query').mockReturnValue(of(new HttpResponse({ body: commandeCollection })));
       const additionalCommandes = [commande];
       const expectedCollection: ICommande[] = [...additionalCommandes, ...commandeCollection];
@@ -98,9 +99,9 @@ describe('LigneCommande Management Update Component', () => {
 
     it('Should update editForm', () => {
       const ligneCommande: ILigneCommande = { id: 456 };
-      const produit: IProduit = { id: 11580 };
+      const produit: IProduit = { id: 18297 };
       ligneCommande.produit = produit;
-      const commande: ICommande = { id: 16024 };
+      const commande: ICommande = { id: 45253 };
       ligneCommande.commande = commande;
 
       activatedRoute.data = of({ ligneCommande });

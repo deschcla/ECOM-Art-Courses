@@ -1,48 +1,50 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A ReleveFacture.
  */
-@Table("releve_facture")
+@Entity
+@Table(name = "releve_facture")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ReleveFacture implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("montant")
+    @Column(name = "montant")
     private Float montant;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @OneToMany(mappedBy = "releveFacture")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
     private Set<Commande> commandes = new HashSet<>();
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "internalUser", "releveFactures", "commandes" }, allowSetters = true)
     private Acheteur acheteur;
-
-    @Column("acheteur_id")
-    private Long acheteurId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -135,20 +137,11 @@ public class ReleveFacture implements Serializable {
 
     public void setAcheteur(Acheteur acheteur) {
         this.acheteur = acheteur;
-        this.acheteurId = acheteur != null ? acheteur.getId() : null;
     }
 
     public ReleveFacture acheteur(Acheteur acheteur) {
         this.setAcheteur(acheteur);
         return this;
-    }
-
-    public Long getAcheteurId() {
-        return this.acheteurId;
-    }
-
-    public void setAcheteurId(Long acheteur) {
-        this.acheteurId = acheteur;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

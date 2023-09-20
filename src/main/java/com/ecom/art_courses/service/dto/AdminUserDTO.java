@@ -3,11 +3,11 @@ package com.ecom.art_courses.service.dto;
 import com.ecom.art_courses.config.Constants;
 import com.ecom.art_courses.domain.Authority;
 import com.ecom.art_courses.domain.User;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.constraints.*;
 
 /**
  * A DTO representing a user, with his authorities.

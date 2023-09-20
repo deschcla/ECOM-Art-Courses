@@ -16,11 +16,8 @@ describe('Commande Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'commande', component: CommandeComponent }]),
-        HttpClientTestingModule,
-        CommandeComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'commande', component: CommandeComponent }]), HttpClientTestingModule],
+      declarations: [CommandeComponent],
       providers: [
         {
           provide: ActivatedRoute,

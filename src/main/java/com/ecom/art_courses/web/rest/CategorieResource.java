@@ -4,27 +4,23 @@ import com.ecom.art_courses.domain.Categorie;
 import com.ecom.art_courses.repository.CategorieRepository;
 import com.ecom.art_courses.service.CategorieService;
 import com.ecom.art_courses.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.reactive.ResponseUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.ecom.art_courses.domain.Categorie}.
+ * REST controller for managing {@link Categorie}.
  */
 @RestController
 @RequestMapping("/api")
@@ -54,23 +50,16 @@ public class CategorieResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/categories")
-    public Mono<ResponseEntity<Categorie>> createCategorie(@Valid @RequestBody Categorie categorie) throws URISyntaxException {
+    public ResponseEntity<Categorie> createCategorie(@Valid @RequestBody Categorie categorie) throws URISyntaxException {
         log.debug("REST request to save Categorie : {}", categorie);
         if (categorie.getId() != null) {
             throw new BadRequestAlertException("A new categorie cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        return categorieService
-            .save(categorie)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/categories/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        Categorie result = categorieService.save(categorie);
+        return ResponseEntity
+            .created(new URI("/api/categories/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -84,7 +73,7 @@ public class CategorieResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/categories/{id}")
-    public Mono<ResponseEntity<Categorie>> updateCategorie(
+    public ResponseEntity<Categorie> updateCategorie(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Categorie categorie
     ) throws URISyntaxException {
@@ -96,23 +85,15 @@ public class CategorieResource {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        return categorieRepository
-            .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+        if (!categorieRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
 
-                return categorieService
-                    .update(categorie)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(result ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                            .body(result)
-                    );
-            });
+        Categorie result = categorieService.update(categorie);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categorie.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -127,7 +108,7 @@ public class CategorieResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/categories/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<Categorie>> partialUpdateCategorie(
+    public ResponseEntity<Categorie> partialUpdateCategorie(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Categorie categorie
     ) throws URISyntaxException {
@@ -139,24 +120,16 @@ public class CategorieResource {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        return categorieRepository
-            .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+        if (!categorieRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
 
-                Mono<Categorie> result = categorieService.partialUpdate(categorie);
+        Optional<Categorie> result = categorieService.partialUpdate(categorie);
 
-                return result
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(res ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
-                            .body(res)
-                    );
-            });
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categorie.getId().toString())
+        );
     }
 
     /**
@@ -164,19 +137,9 @@ public class CategorieResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
      */
-    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<Categorie>> getAllCategories() {
+    @GetMapping("/categories")
+    public List<Categorie> getAllCategories() {
         log.debug("REST request to get all Categories");
-        return categorieService.findAll().collectList();
-    }
-
-    /**
-     * {@code GET  /categories} : get all the categories as a stream.
-     * @return the {@link Flux} of categories.
-     */
-    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<Categorie> getAllCategoriesAsStream() {
-        log.debug("REST request to get all Categories as a stream");
         return categorieService.findAll();
     }
 
@@ -187,9 +150,9 @@ public class CategorieResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the categorie, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/categories/{id}")
-    public Mono<ResponseEntity<Categorie>> getCategorie(@PathVariable Long id) {
+    public ResponseEntity<Categorie> getCategorie(@PathVariable Long id) {
         log.debug("REST request to get Categorie : {}", id);
-        Mono<Categorie> categorie = categorieService.findOne(id);
+        Optional<Categorie> categorie = categorieService.findOne(id);
         return ResponseUtil.wrapOrNotFound(categorie);
     }
 
@@ -200,17 +163,12 @@ public class CategorieResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/categories/{id}")
-    public Mono<ResponseEntity<Void>> deleteCategorie(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCategorie(@PathVariable Long id) {
         log.debug("REST request to delete Categorie : {}", id);
-        return categorieService
-            .delete(id)
-            .then(
-                Mono.just(
-                    ResponseEntity
-                        .noContent()
-                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                        .build()
-                )
-            );
+        categorieService.delete(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

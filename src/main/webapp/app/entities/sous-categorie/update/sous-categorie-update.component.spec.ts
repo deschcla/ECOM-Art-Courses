@@ -24,7 +24,8 @@ describe('SousCategorie Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), SousCategorieUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [SousCategorieUpdateComponent],
       providers: [
         FormBuilder,
         {
@@ -50,10 +51,10 @@ describe('SousCategorie Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Categorie query and add missing value', () => {
       const sousCategorie: ISousCategorie = { id: 456 };
-      const categorie: ICategorie = { id: 9291 };
+      const categorie: ICategorie = { id: 79852 };
       sousCategorie.categorie = categorie;
 
-      const categorieCollection: ICategorie[] = [{ id: 28195 }];
+      const categorieCollection: ICategorie[] = [{ id: 56112 }];
       jest.spyOn(categorieService, 'query').mockReturnValue(of(new HttpResponse({ body: categorieCollection })));
       const additionalCategories = [categorie];
       const expectedCollection: ICategorie[] = [...additionalCategories, ...categorieCollection];
@@ -72,7 +73,7 @@ describe('SousCategorie Management Update Component', () => {
 
     it('Should update editForm', () => {
       const sousCategorie: ISousCategorie = { id: 456 };
-      const categorie: ICategorie = { id: 5233 };
+      const categorie: ICategorie = { id: 84690 };
       sousCategorie.categorie = categorie;
 
       activatedRoute.data = of({ sousCategorie });

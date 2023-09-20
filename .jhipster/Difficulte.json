@@ -1,7 +1,0 @@
-{
-  "applications": "*",
-  "entityTableName": "difficulte",
-  "fields": [],
-  "name": "Difficulte",
-  "relationships": []
-}

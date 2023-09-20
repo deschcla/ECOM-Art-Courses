@@ -1,39 +1,42 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Categorie.
  */
-@Table("categorie")
+@Entity
+@Table(name = "categorie")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Categorie implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("type_categorie")
+    @Column(name = "type_categorie")
     private String typeCategorie;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @OneToMany(mappedBy = "categorie")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "produits", "categorie" }, allowSetters = true)
     private Set<SousCategorie> sousCategories = new HashSet<>();
 

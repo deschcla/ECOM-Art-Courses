@@ -21,7 +21,8 @@ describe('Categorie Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), CategorieUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [CategorieUpdateComponent],
       providers: [
         FormBuilder,
         {
