@@ -178,5 +178,11 @@
       "not.image": "Le fichier doit être une image et non du type \"{{ fileType }}\""
     }
   },
+  "course-search": {
+    "title": "Page d'Accueil"
+  },
+  "payment": {
+    "title": "Page de Paiement"
+  },
   "footer": "Ceci est votre pied de page"
 }

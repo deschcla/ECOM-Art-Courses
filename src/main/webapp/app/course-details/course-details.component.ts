@@ -7,6 +7,7 @@ import { CartService } from 'app/core/util/cart.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { LoginService } from '../login/login.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'jhi-course-details',
@@ -28,7 +29,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private produitService: ProduitService,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       this.produitService.find(this.idProduit).subscribe({
         next: value => {
           this.course = value.body;
+          this.titleService.setTitle(this.course?.nomProduit ? this.course.nomProduit : 'global.title');
         },
       });
     });

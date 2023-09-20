@@ -7,6 +7,6 @@ export class Registration {
     public phone: string,
     public password: string,
     public birthday: Date,
-    public langKey: string,
+    public langKey: string
   ) {}
 }

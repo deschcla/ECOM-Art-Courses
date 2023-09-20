@@ -3,8 +3,9 @@ import { faCreditCardAlt, faCalendarAlt, faLock } from '@fortawesome/free-solid-
 import { FormControl, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
 import { CartService } from 'app/core/util/cart.service';
-import { IProduit } from 'app/entities/produit/produit.model';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
 import dayjs from 'dayjs/esm';
 
@@ -38,9 +39,15 @@ export class PaymentComponent implements OnInit {
 
   commandes: ILigneCommande[] = [];
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private titleService: Title,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
+    this.translateService.get('payment.title').subscribe(title => this.titleService.setTitle(title));
     this.commandes = this.cartService.getCartProducts();
     this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0));
   }

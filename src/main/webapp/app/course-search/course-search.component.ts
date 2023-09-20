@@ -7,7 +7,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LoginService } from '../login/login.service';
-import { SousCategorieService } from 'app/entities/sous-categorie/service/sous-categorie.service';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-course-search',
@@ -25,10 +26,13 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private produitService: ProduitService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private titleService: Title,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.translateService.get('course-search.title').subscribe(title => this.titleService.setTitle(title));
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
