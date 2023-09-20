@@ -18,7 +18,8 @@ describe('Commande Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CommandeDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [CommandeDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(CommandeDeleteDialogComponent, '')

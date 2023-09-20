@@ -1,38 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CommandeDetailComponent } from './commande-detail.component';
 
 describe('Commande Management Detail Component', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CommandeDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+  let comp: CommandeDetailComponent;
+  let fixture: ComponentFixture<CommandeDetailComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CommandeDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: CommandeDetailComponent,
-              resolve: { commande: () => of({ id: 123 }) },
-            },
-          ],
-          withComponentInputBinding()
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ commande: { id: 123 } }) },
+        },
       ],
     })
       .overrideTemplate(CommandeDetailComponent, '')
       .compileComponents();
+    fixture = TestBed.createComponent(CommandeDetailComponent);
+    comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load commande on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', CommandeDetailComponent);
+    it('Should load commande on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.commande).toEqual(expect.objectContaining({ id: 123 }));
+      expect(comp.commande).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

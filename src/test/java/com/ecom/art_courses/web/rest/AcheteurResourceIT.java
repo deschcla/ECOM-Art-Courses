@@ -2,7 +2,8 @@ package com.ecom.art_courses.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.ecom.art_courses.IntegrationTest;
 import com.ecom.art_courses.domain.Acheteur;
@@ -10,8 +11,6 @@ import com.ecom.art_courses.domain.Commande;
 import com.ecom.art_courses.domain.ReleveFacture;
 import com.ecom.art_courses.domain.User;
 import com.ecom.art_courses.repository.AcheteurRepository;
-import com.ecom.art_courses.repository.EntityManager;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -19,20 +18,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for the {@link AcheteurResource} REST controller.
  */
 @IntegrationTest
-@AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
+@AutoConfigureMockMvc
 @WithMockUser
 class AcheteurResourceIT {
 
@@ -64,7 +64,7 @@ class AcheteurResourceIT {
     private EntityManager em;
 
     @Autowired
-    private WebTestClient webTestClient;
+    private MockMvc restAcheteurMockMvc;
 
     private Acheteur acheteur;
 
@@ -82,15 +82,29 @@ class AcheteurResourceIT {
             .createdAt(DEFAULT_CREATED_AT)
             .updateAt(DEFAULT_UPDATE_AT);
         // Add required entity
-        User user = em.insert(UserResourceIT.createEntity(em)).block();
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
         acheteur.setInternalUser(user);
         // Add required entity
         ReleveFacture releveFacture;
-        releveFacture = em.insert(ReleveFactureResourceIT.createEntity(em)).block();
+        if (TestUtil.findAll(em, ReleveFacture.class).isEmpty()) {
+            releveFacture = ReleveFactureResourceIT.createEntity(em);
+            em.persist(releveFacture);
+            em.flush();
+        } else {
+            releveFacture = TestUtil.findAll(em, ReleveFacture.class).get(0);
+        }
         acheteur.getReleveFactures().add(releveFacture);
         // Add required entity
         Commande commande;
-        commande = em.insert(CommandeResourceIT.createEntity(em)).block();
+        if (TestUtil.findAll(em, Commande.class).isEmpty()) {
+            commande = CommandeResourceIT.createEntity(em);
+            em.persist(commande);
+            em.flush();
+        } else {
+            commande = TestUtil.findAll(em, Commande.class).get(0);
+        }
         acheteur.getCommandes().add(commande);
         return acheteur;
     }
@@ -109,56 +123,41 @@ class AcheteurResourceIT {
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
         // Add required entity
-        User user = em.insert(UserResourceIT.createEntity(em)).block();
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
         acheteur.setInternalUser(user);
         // Add required entity
         ReleveFacture releveFacture;
-        releveFacture = em.insert(ReleveFactureResourceIT.createUpdatedEntity(em)).block();
+        releveFacture = ReleveFactureResourceIT.createUpdatedEntity(em);
+        em.persist(releveFacture);
+        em.flush();
         acheteur.getReleveFactures().add(releveFacture);
         // Add required entity
         Commande commande;
-        commande = em.insert(CommandeResourceIT.createUpdatedEntity(em)).block();
+        commande = CommandeResourceIT.createUpdatedEntity(em);
+        em.persist(commande);
+        em.flush();
         acheteur.getCommandes().add(commande);
         return acheteur;
     }
 
-    public static void deleteEntities(EntityManager em) {
-        try {
-            em.deleteAll(Acheteur.class).block();
-        } catch (Exception e) {
-            // It can fail, if other entities are still referring this - it will be removed later.
-        }
-        UserResourceIT.deleteEntities(em);
-        ReleveFactureResourceIT.deleteEntities(em);
-        CommandeResourceIT.deleteEntities(em);
-    }
-
-    @AfterEach
-    public void cleanup() {
-        deleteEntities(em);
-    }
-
     @BeforeEach
     public void initTest() {
-        deleteEntities(em);
         acheteur = createEntity(em);
     }
 
     @Test
+    @Transactional
     void createAcheteur() throws Exception {
-        int databaseSizeBeforeCreate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeCreate = acheteurRepository.findAll().size();
         // Create the Acheteur
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isCreated();
+        restAcheteurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(acheteur)))
+            .andExpect(status().isCreated());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeCreate + 1);
         Acheteur testAcheteur = acheteurList.get(acheteurList.size() - 1);
         assertThat(testAcheteur.getAdresse()).isEqualTo(DEFAULT_ADRESSE);
@@ -166,141 +165,124 @@ class AcheteurResourceIT {
         assertThat(testAcheteur.getNumTel()).isEqualTo(DEFAULT_NUM_TEL);
         assertThat(testAcheteur.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testAcheteur.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
+        // Validate the id for MapsId, the ids must be same
+        //        assertThat(testAcheteur.getId()).isEqualTo(testAcheteur.getUser().getId());
     }
 
     @Test
+    @Transactional
     void createAcheteurWithExistingId() throws Exception {
         // Create the Acheteur with an existing ID
         acheteur.setId(1L);
 
-        int databaseSizeBeforeCreate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeCreate = acheteurRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        webTestClient
-            .post()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restAcheteurMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(acheteur)))
+            .andExpect(status().isBadRequest());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
-    void getAllAcheteursAsStream() {
+    @Transactional
+    void updateAcheteurMapsIdAssociationWithNewId() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
+        int databaseSizeBeforeCreate = acheteurRepository.findAll().size();
+        // Add a new parent entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
 
-        List<Acheteur> acheteurList = webTestClient
-            .get()
-            .uri(ENTITY_API_URL)
-            .accept(MediaType.APPLICATION_NDJSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentTypeCompatibleWith(MediaType.APPLICATION_NDJSON)
-            .returnResult(Acheteur.class)
-            .getResponseBody()
-            .filter(acheteur::equals)
-            .collectList()
-            .block(Duration.ofSeconds(5));
+        // Load the acheteur
+        Acheteur updatedAcheteur = acheteurRepository.findById(acheteur.getId()).get();
+        assertThat(updatedAcheteur).isNotNull();
+        // Disconnect from session so that the updates on updatedAcheteur are not directly saved in db
+        em.detach(updatedAcheteur);
 
-        assertThat(acheteurList).isNotNull();
-        assertThat(acheteurList).hasSize(1);
-        Acheteur testAcheteur = acheteurList.get(0);
-        assertThat(testAcheteur.getAdresse()).isEqualTo(DEFAULT_ADRESSE);
-        assertThat(testAcheteur.getDateNaiss()).isEqualTo(DEFAULT_DATE_NAISS);
-        assertThat(testAcheteur.getNumTel()).isEqualTo(DEFAULT_NUM_TEL);
-        assertThat(testAcheteur.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testAcheteur.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
+        // Update the User with new association value
+        //        updatedAcheteur.setUser(user);
+
+        // Update the entity
+        restAcheteurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedAcheteur.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedAcheteur))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Acheteur in the database
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
+        assertThat(acheteurList).hasSize(databaseSizeBeforeCreate);
+        Acheteur testAcheteur = acheteurList.get(acheteurList.size() - 1);
+        // Validate the id for MapsId, the ids must be same
+        // Uncomment the following line for assertion. However, please note that there is a known issue and uncommenting will fail the test.
+        // Please look at https://github.com/jhipster/generator-jhipster/issues/9100. You can modify this test as necessary.
+        // assertThat(testAcheteur.getId()).isEqualTo(testAcheteur.getUser().getId());
     }
 
     @Test
-    void getAllAcheteurs() {
+    @Transactional
+    void getAllAcheteurs() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
 
         // Get all the acheteurList
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL + "?sort=id,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .expectBody()
-            .jsonPath("$.[*].id")
-            .value(hasItem(acheteur.getId().intValue()))
-            .jsonPath("$.[*].adresse")
-            .value(hasItem(DEFAULT_ADRESSE))
-            .jsonPath("$.[*].dateNaiss")
-            .value(hasItem(DEFAULT_DATE_NAISS.toString()))
-            .jsonPath("$.[*].numTel")
-            .value(hasItem(DEFAULT_NUM_TEL))
-            .jsonPath("$.[*].createdAt")
-            .value(hasItem(DEFAULT_CREATED_AT.toString()))
-            .jsonPath("$.[*].updateAt")
-            .value(hasItem(DEFAULT_UPDATE_AT.toString()));
+        restAcheteurMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(acheteur.getId().intValue())))
+            .andExpect(jsonPath("$.[*].adresse").value(hasItem(DEFAULT_ADRESSE)))
+            .andExpect(jsonPath("$.[*].dateNaiss").value(hasItem(DEFAULT_DATE_NAISS.toString())))
+            .andExpect(jsonPath("$.[*].numTel").value(hasItem(DEFAULT_NUM_TEL)))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updateAt").value(hasItem(DEFAULT_UPDATE_AT.toString())));
     }
 
     @Test
-    void getAcheteur() {
+    @Transactional
+    void getAcheteur() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
 
         // Get the acheteur
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL_ID, acheteur.getId())
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .expectBody()
-            .jsonPath("$.id")
-            .value(is(acheteur.getId().intValue()))
-            .jsonPath("$.adresse")
-            .value(is(DEFAULT_ADRESSE))
-            .jsonPath("$.dateNaiss")
-            .value(is(DEFAULT_DATE_NAISS.toString()))
-            .jsonPath("$.numTel")
-            .value(is(DEFAULT_NUM_TEL))
-            .jsonPath("$.createdAt")
-            .value(is(DEFAULT_CREATED_AT.toString()))
-            .jsonPath("$.updateAt")
-            .value(is(DEFAULT_UPDATE_AT.toString()));
+        restAcheteurMockMvc
+            .perform(get(ENTITY_API_URL_ID, acheteur.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id").value(acheteur.getId().intValue()))
+            .andExpect(jsonPath("$.adresse").value(DEFAULT_ADRESSE))
+            .andExpect(jsonPath("$.dateNaiss").value(DEFAULT_DATE_NAISS.toString()))
+            .andExpect(jsonPath("$.numTel").value(DEFAULT_NUM_TEL))
+            .andExpect(jsonPath("$.createdAt").value(DEFAULT_CREATED_AT.toString()))
+            .andExpect(jsonPath("$.updateAt").value(DEFAULT_UPDATE_AT.toString()));
     }
 
     @Test
-    void getNonExistingAcheteur() {
+    @Transactional
+    void getNonExistingAcheteur() throws Exception {
         // Get the acheteur
-        webTestClient
-            .get()
-            .uri(ENTITY_API_URL_ID, Long.MAX_VALUE)
-            .accept(MediaType.APPLICATION_PROBLEM_JSON)
-            .exchange()
-            .expectStatus()
-            .isNotFound();
+        restAcheteurMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
+    @Transactional
     void putExistingAcheteur() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
 
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
 
         // Update the acheteur
-        Acheteur updatedAcheteur = acheteurRepository.findById(acheteur.getId()).block();
+        Acheteur updatedAcheteur = acheteurRepository.findById(acheteur.getId()).get();
+        // Disconnect from session so that the updates on updatedAcheteur are not directly saved in db
+        em.detach(updatedAcheteur);
         updatedAcheteur
             .adresse(UPDATED_ADRESSE)
             .dateNaiss(UPDATED_DATE_NAISS)
@@ -308,17 +290,16 @@ class AcheteurResourceIT {
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, updatedAcheteur.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(updatedAcheteur))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restAcheteurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedAcheteur.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedAcheteur))
+            )
+            .andExpect(status().isOk());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
         Acheteur testAcheteur = acheteurList.get(acheteurList.size() - 1);
         assertThat(testAcheteur.getAdresse()).isEqualTo(UPDATED_ADRESSE);
@@ -329,104 +310,101 @@ class AcheteurResourceIT {
     }
 
     @Test
+    @Transactional
     void putNonExistingAcheteur() throws Exception {
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
         acheteur.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, acheteur.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restAcheteurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, acheteur.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(acheteur))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void putWithIdMismatchAcheteur() throws Exception {
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
         acheteur.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL_ID, count.incrementAndGet())
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restAcheteurMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(acheteur))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void putWithMissingIdPathParamAcheteur() throws Exception {
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
         acheteur.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .put()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isEqualTo(405);
+        restAcheteurMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(acheteur)))
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void partialUpdateAcheteurWithPatch() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
 
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
 
         // Update the acheteur using partial update
         Acheteur partialUpdatedAcheteur = new Acheteur();
         partialUpdatedAcheteur.setId(acheteur.getId());
 
-        partialUpdatedAcheteur.dateNaiss(UPDATED_DATE_NAISS).numTel(UPDATED_NUM_TEL);
+        partialUpdatedAcheteur.createdAt(UPDATED_CREATED_AT).updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, partialUpdatedAcheteur.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(partialUpdatedAcheteur))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restAcheteurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedAcheteur.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedAcheteur))
+            )
+            .andExpect(status().isOk());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
         Acheteur testAcheteur = acheteurList.get(acheteurList.size() - 1);
         assertThat(testAcheteur.getAdresse()).isEqualTo(DEFAULT_ADRESSE);
-        assertThat(testAcheteur.getDateNaiss()).isEqualTo(UPDATED_DATE_NAISS);
-        assertThat(testAcheteur.getNumTel()).isEqualTo(UPDATED_NUM_TEL);
-        assertThat(testAcheteur.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testAcheteur.getUpdateAt()).isEqualTo(DEFAULT_UPDATE_AT);
+        assertThat(testAcheteur.getDateNaiss()).isEqualTo(DEFAULT_DATE_NAISS);
+        assertThat(testAcheteur.getNumTel()).isEqualTo(DEFAULT_NUM_TEL);
+        assertThat(testAcheteur.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
+        assertThat(testAcheteur.getUpdateAt()).isEqualTo(UPDATED_UPDATE_AT);
     }
 
     @Test
+    @Transactional
     void fullUpdateAcheteurWithPatch() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
 
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
 
         // Update the acheteur using partial update
         Acheteur partialUpdatedAcheteur = new Acheteur();
@@ -439,17 +417,16 @@ class AcheteurResourceIT {
             .createdAt(UPDATED_CREATED_AT)
             .updateAt(UPDATED_UPDATE_AT);
 
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, partialUpdatedAcheteur.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(partialUpdatedAcheteur))
-            .exchange()
-            .expectStatus()
-            .isOk();
+        restAcheteurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedAcheteur.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedAcheteur))
+            )
+            .andExpect(status().isOk());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
         Acheteur testAcheteur = acheteurList.get(acheteurList.size() - 1);
         assertThat(testAcheteur.getAdresse()).isEqualTo(UPDATED_ADRESSE);
@@ -460,83 +437,76 @@ class AcheteurResourceIT {
     }
 
     @Test
+    @Transactional
     void patchNonExistingAcheteur() throws Exception {
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
         acheteur.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, acheteur.getId())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restAcheteurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, acheteur.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(acheteur))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void patchWithIdMismatchAcheteur() throws Exception {
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
         acheteur.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL_ID, count.incrementAndGet())
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
+        restAcheteurMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(acheteur))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
+    @Transactional
     void patchWithMissingIdPathParamAcheteur() throws Exception {
-        int databaseSizeBeforeUpdate = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeUpdate = acheteurRepository.findAll().size();
         acheteur.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        webTestClient
-            .patch()
-            .uri(ENTITY_API_URL)
-            .contentType(MediaType.valueOf("application/merge-patch+json"))
-            .bodyValue(TestUtil.convertObjectToJsonBytes(acheteur))
-            .exchange()
-            .expectStatus()
-            .isEqualTo(405);
+        restAcheteurMockMvc
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(acheteur)))
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Acheteur in the database
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
-    void deleteAcheteur() {
+    @Transactional
+    void deleteAcheteur() throws Exception {
         // Initialize the database
-        acheteurRepository.save(acheteur).block();
+        acheteurRepository.saveAndFlush(acheteur);
 
-        int databaseSizeBeforeDelete = acheteurRepository.findAll().collectList().block().size();
+        int databaseSizeBeforeDelete = acheteurRepository.findAll().size();
 
         // Delete the acheteur
-        webTestClient
-            .delete()
-            .uri(ENTITY_API_URL_ID, acheteur.getId())
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isNoContent();
+        restAcheteurMockMvc
+            .perform(delete(ENTITY_API_URL_ID, acheteur.getId()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Acheteur> acheteurList = acheteurRepository.findAll().collectList().block();
+        List<Acheteur> acheteurList = acheteurRepository.findAll();
         assertThat(acheteurList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

@@ -1,8 +1,8 @@
 package com.ecom.art_courses.service;
 
 import com.ecom.art_courses.domain.Categorie;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link Categorie}.
@@ -14,7 +14,7 @@ public interface CategorieService {
      * @param categorie the entity to save.
      * @return the persisted entity.
      */
-    Mono<Categorie> save(Categorie categorie);
+    Categorie save(Categorie categorie);
 
     /**
      * Updates a categorie.
@@ -22,7 +22,7 @@ public interface CategorieService {
      * @param categorie the entity to update.
      * @return the persisted entity.
      */
-    Mono<Categorie> update(Categorie categorie);
+    Categorie update(Categorie categorie);
 
     /**
      * Partially updates a categorie.
@@ -30,21 +30,14 @@ public interface CategorieService {
      * @param categorie the entity to update partially.
      * @return the persisted entity.
      */
-    Mono<Categorie> partialUpdate(Categorie categorie);
+    Optional<Categorie> partialUpdate(Categorie categorie);
 
     /**
      * Get all the categories.
      *
      * @return the list of entities.
      */
-    Flux<Categorie> findAll();
-
-    /**
-     * Returns the number of categories available.
-     * @return the number of entities in the database.
-     *
-     */
-    Mono<Long> countAll();
+    List<Categorie> findAll();
 
     /**
      * Get the "id" categorie.
@@ -52,13 +45,12 @@ public interface CategorieService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Mono<Categorie> findOne(Long id);
+    Optional<Categorie> findOne(Long id);
 
     /**
      * Delete the "id" categorie.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
-    Mono<Void> delete(Long id);
+    void delete(Long id);
 }

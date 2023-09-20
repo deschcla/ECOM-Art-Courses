@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
-import PasswordResetInitComponent from './password-reset-init.component';
+import { PasswordResetInitComponent } from './password-reset-init.component';
 import { PasswordResetInitService } from './password-reset-init.service';
 
 describe('PasswordResetInitComponent', () => {
@@ -13,7 +13,8 @@ describe('PasswordResetInitComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, PasswordResetInitComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [PasswordResetInitComponent],
       providers: [FormBuilder],
     })
       .overrideTemplate(PasswordResetInitComponent, '')

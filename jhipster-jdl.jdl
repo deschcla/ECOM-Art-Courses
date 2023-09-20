@@ -65,7 +65,7 @@ relationship ManyToMany {
     Commande{produit required} to Produit{commande required}
 }
 relationship OneToOne {
-    Acheteur{internalUser required} to User  with builtInEntity
+    Acheteur{internalUser required} to User  with jpaDerivedIdentifier
 }
 
 // defining multiple OneToMany relationships with comments

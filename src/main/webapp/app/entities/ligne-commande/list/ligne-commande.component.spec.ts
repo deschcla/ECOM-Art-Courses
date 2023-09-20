@@ -16,11 +16,8 @@ describe('LigneCommande Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'ligne-commande', component: LigneCommandeComponent }]),
-        HttpClientTestingModule,
-        LigneCommandeComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'ligne-commande', component: LigneCommandeComponent }]), HttpClientTestingModule],
+      declarations: [LigneCommandeComponent],
       providers: [
         {
           provide: ActivatedRoute,

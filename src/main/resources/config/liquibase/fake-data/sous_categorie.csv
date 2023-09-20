@@ -1,4 +1,4 @@
-id;type_sous_categorie;created_at;update_at;categorie_id
+﻿id;type_sous_categorie;created_at;update_at;categorie_id
 1;Piano;2023-09-11T22:08:44;2023-09-11T11:36:32;1
 2;Violon;2023-09-12T04:24:03;2023-09-11T08:15:07;1
 3;Batterie;2023-09-11T13:15:53;2023-09-11T12:45:40;1

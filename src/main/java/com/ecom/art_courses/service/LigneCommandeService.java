@@ -1,8 +1,8 @@
 package com.ecom.art_courses.service;
 
 import com.ecom.art_courses.domain.LigneCommande;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link LigneCommande}.
@@ -14,7 +14,7 @@ public interface LigneCommandeService {
      * @param ligneCommande the entity to save.
      * @return the persisted entity.
      */
-    Mono<LigneCommande> save(LigneCommande ligneCommande);
+    LigneCommande save(LigneCommande ligneCommande);
 
     /**
      * Updates a ligneCommande.
@@ -22,7 +22,7 @@ public interface LigneCommandeService {
      * @param ligneCommande the entity to update.
      * @return the persisted entity.
      */
-    Mono<LigneCommande> update(LigneCommande ligneCommande);
+    LigneCommande update(LigneCommande ligneCommande);
 
     /**
      * Partially updates a ligneCommande.
@@ -30,21 +30,14 @@ public interface LigneCommandeService {
      * @param ligneCommande the entity to update partially.
      * @return the persisted entity.
      */
-    Mono<LigneCommande> partialUpdate(LigneCommande ligneCommande);
+    Optional<LigneCommande> partialUpdate(LigneCommande ligneCommande);
 
     /**
      * Get all the ligneCommandes.
      *
      * @return the list of entities.
      */
-    Flux<LigneCommande> findAll();
-
-    /**
-     * Returns the number of ligneCommandes available.
-     * @return the number of entities in the database.
-     *
-     */
-    Mono<Long> countAll();
+    List<LigneCommande> findAll();
 
     /**
      * Get the "id" ligneCommande.
@@ -52,13 +45,12 @@ public interface LigneCommandeService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Mono<LigneCommande> findOne(Long id);
+    Optional<LigneCommande> findOne(Long id);
 
     /**
      * Delete the "id" ligneCommande.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
-    Mono<Void> delete(Long id);
+    void delete(Long id);
 }

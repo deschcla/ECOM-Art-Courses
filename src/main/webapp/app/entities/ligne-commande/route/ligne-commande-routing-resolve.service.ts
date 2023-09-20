@@ -1,29 +1,30 @@
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { of, EMPTY, Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { ILigneCommande } from '../ligne-commande.model';
 import { LigneCommandeService } from '../service/ligne-commande.service';
 
-export const ligneCommandeResolve = (route: ActivatedRouteSnapshot): Observable<null | ILigneCommande> => {
-  const id = route.params['id'];
-  if (id) {
-    return inject(LigneCommandeService)
-      .find(id)
-      .pipe(
+@Injectable({ providedIn: 'root' })
+export class LigneCommandeRoutingResolveService implements Resolve<ILigneCommande | null> {
+  constructor(protected service: LigneCommandeService, protected router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<ILigneCommande | null | never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
         mergeMap((ligneCommande: HttpResponse<ILigneCommande>) => {
           if (ligneCommande.body) {
             return of(ligneCommande.body);
           } else {
-            inject(Router).navigate(['404']);
+            this.router.navigate(['404']);
             return EMPTY;
           }
         })
       );
+    }
+    return of(null);
   }
-  return of(null);
-};
-
-export default ligneCommandeResolve;
+}

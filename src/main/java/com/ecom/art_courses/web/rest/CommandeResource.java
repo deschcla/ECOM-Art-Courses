@@ -1,30 +1,29 @@
 package com.ecom.art_courses.web.rest;
 
 import com.ecom.art_courses.domain.Commande;
+import com.ecom.art_courses.domain.LigneCommande;
 import com.ecom.art_courses.repository.CommandeRepository;
 import com.ecom.art_courses.service.CommandeService;
 import com.ecom.art_courses.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.reactive.ResponseUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.ecom.art_courses.domain.Commande}.
+ * REST controller for managing {@link Commande}.
  */
 @RestController
 @RequestMapping("/api")
@@ -54,23 +53,16 @@ public class CommandeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/commandes")
-    public Mono<ResponseEntity<Commande>> createCommande(@Valid @RequestBody Commande commande) throws URISyntaxException {
+    public ResponseEntity<Commande> createCommande(@Valid @RequestBody Commande commande) throws URISyntaxException {
         log.debug("REST request to save Commande : {}", commande);
         if (commande.getId() != null) {
             throw new BadRequestAlertException("A new commande cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        return commandeService
-            .save(commande)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/commandes/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        Commande result = commandeService.save(commande);
+        return ResponseEntity
+            .created(new URI("/api/commandes/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -84,7 +76,7 @@ public class CommandeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/commandes/{id}")
-    public Mono<ResponseEntity<Commande>> updateCommande(
+    public ResponseEntity<Commande> updateCommande(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Commande commande
     ) throws URISyntaxException {
@@ -96,23 +88,15 @@ public class CommandeResource {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        return commandeRepository
-            .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+        if (!commandeRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
 
-                return commandeService
-                    .update(commande)
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(result ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                            .body(result)
-                    );
-            });
+        Commande result = commandeService.update(commande);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, commande.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -127,7 +111,7 @@ public class CommandeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/commandes/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<Commande>> partialUpdateCommande(
+    public ResponseEntity<Commande> partialUpdateCommande(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Commande commande
     ) throws URISyntaxException {
@@ -139,24 +123,16 @@ public class CommandeResource {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        return commandeRepository
-            .existsById(id)
-            .flatMap(exists -> {
-                if (!exists) {
-                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
-                }
+        if (!commandeRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
 
-                Mono<Commande> result = commandeService.partialUpdate(commande);
+        Optional<Commande> result = commandeService.partialUpdate(commande);
 
-                return result
-                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
-                    .map(res ->
-                        ResponseEntity
-                            .ok()
-                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, res.getId().toString()))
-                            .body(res)
-                    );
-            });
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, commande.getId().toString())
+        );
     }
 
     /**
@@ -165,19 +141,9 @@ public class CommandeResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of commandes in body.
      */
-    @GetMapping(value = "/commandes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<Commande>> getAllCommandes(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    @GetMapping("/commandes")
+    public List<Commande> getAllCommandes(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Commandes");
-        return commandeService.findAll().collectList();
-    }
-
-    /**
-     * {@code GET  /commandes} : get all the commandes as a stream.
-     * @return the {@link Flux} of commandes.
-     */
-    @GetMapping(value = "/commandes", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public Flux<Commande> getAllCommandesAsStream() {
-        log.debug("REST request to get all Commandes as a stream");
         return commandeService.findAll();
     }
 
@@ -188,9 +154,9 @@ public class CommandeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the commande, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/commandes/{id}")
-    public Mono<ResponseEntity<Commande>> getCommande(@PathVariable Long id) {
+    public ResponseEntity<Commande> getCommande(@PathVariable Long id) {
         log.debug("REST request to get Commande : {}", id);
-        Mono<Commande> commande = commandeService.findOne(id);
+        Optional<Commande> commande = commandeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(commande);
     }
 
@@ -201,17 +167,28 @@ public class CommandeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/commandes/{id}")
-    public Mono<ResponseEntity<Void>> deleteCommande(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCommande(@PathVariable Long id) {
         log.debug("REST request to delete Commande : {}", id);
-        return commandeService
-            .delete(id)
-            .then(
-                Mono.just(
-                    ResponseEntity
-                        .noContent()
-                        .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                        .build()
-                )
-            );
+        commandeService.delete(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    @GetMapping("/commandes/{id}/ligne-commandes/unvalidated")
+    public ResponseEntity<List<LigneCommande>> getUnvalidatedLigneCommandesForCommande(@PathVariable Long id) {
+        log.debug("REST request to get unvalidated LigneCommande for Commande : {}", id);
+
+        Optional<Commande> commande = commandeService.findOne(id);
+
+        Set<LigneCommande> ligneCommandes = commande.get().getLigneCommandes();
+
+        List<LigneCommande> nonVerifieesLigneCommandes = ligneCommandes
+            .stream()
+            .filter(lc -> lc.getValidated() == 0)
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(nonVerifieesLigneCommandes);
     }
 }

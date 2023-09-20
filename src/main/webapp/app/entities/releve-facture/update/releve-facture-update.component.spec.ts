@@ -24,7 +24,8 @@ describe('ReleveFacture Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), ReleveFactureUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [ReleveFactureUpdateComponent],
       providers: [
         FormBuilder,
         {
@@ -50,10 +51,10 @@ describe('ReleveFacture Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Acheteur query and add missing value', () => {
       const releveFacture: IReleveFacture = { id: 456 };
-      const acheteur: IAcheteur = { id: 29017 };
+      const acheteur: IAcheteur = { id: 73693 };
       releveFacture.acheteur = acheteur;
 
-      const acheteurCollection: IAcheteur[] = [{ id: 9284 }];
+      const acheteurCollection: IAcheteur[] = [{ id: 66607 }];
       jest.spyOn(acheteurService, 'query').mockReturnValue(of(new HttpResponse({ body: acheteurCollection })));
       const additionalAcheteurs = [acheteur];
       const expectedCollection: IAcheteur[] = [...additionalAcheteurs, ...acheteurCollection];
@@ -72,7 +73,7 @@ describe('ReleveFacture Management Update Component', () => {
 
     it('Should update editForm', () => {
       const releveFacture: IReleveFacture = { id: 456 };
-      const acheteur: IAcheteur = { id: 14249 };
+      const acheteur: IAcheteur = { id: 82798 };
       releveFacture.acheteur = acheteur;
 
       activatedRoute.data = of({ releveFacture });

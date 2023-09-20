@@ -25,7 +25,8 @@ describe('Acheteur Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), AcheteurUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [AcheteurUpdateComponent],
       providers: [
         FormBuilder,
         {
@@ -51,10 +52,10 @@ describe('Acheteur Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call User query and add missing value', () => {
       const acheteur: IAcheteur = { id: 456 };
-      const internalUser: IUser = { id: 29565 };
+      const internalUser: IUser = { id: 13026 };
       acheteur.internalUser = internalUser;
 
-      const userCollection: IUser[] = [{ id: 9953 }];
+      const userCollection: IUser[] = [{ id: 24548 }];
       jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
       const additionalUsers = [internalUser];
       const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
@@ -73,7 +74,7 @@ describe('Acheteur Management Update Component', () => {
 
     it('Should update editForm', () => {
       const acheteur: IAcheteur = { id: 456 };
-      const internalUser: IUser = { id: 24760 };
+      const internalUser: IUser = { id: 28046 };
       acheteur.internalUser = internalUser;
 
       activatedRoute.data = of({ acheteur });
