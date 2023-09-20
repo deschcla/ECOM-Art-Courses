@@ -15,14 +15,6 @@ node {
         stage('nohttp') {
             sh "./mvnw -ntp checkstyle:check"
         }
-
-        stage('install tools') {
-            sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
-        }
-
-        stage('npm install') {
-            sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
-        }
         stage('DockerHub setup'){
             withCredentials([usernamePassword(credentialsId: 'dockerhubCredentials', usernameVariable: 'DOCKERHUB_USR', passwordVariable: 'DOCKERHUB_PSW')]) {
                 script {
@@ -33,6 +25,12 @@ node {
                     '''
                 }
             }
+        }
+        stage('install tools') {
+            sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:install-node-and-npm@install-node-and-npm"
+        }
+        stage('npm install') {
+            sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm"
         }
         stage('backend test') {
             try {
