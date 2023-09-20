@@ -25,12 +25,9 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.2.5</maven.version>
-<!--        <java.version>11</java.version>-->
-<!--        <node.version>v16.17.0</node.version>-->
-<!--        <npm.version>8.19.1</npm.version>-->
-        <java.version>17</java.version>
-        <node.version>v18.16.1</node.version>
-        <npm.version>9.8.0</npm.version>
+        <java.version>11</java.version>
+        <node.version>v16.17.0</node.version>
+        <npm.version>8.19.1</npm.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -91,7 +88,7 @@
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-
+        <s3-sdk-version>1.12.523</s3-sdk-version>
         <!-- jhipster-needle-maven-property -->
     </properties>
 
@@ -101,6 +98,13 @@
                 <groupId>tech.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-s3</artifactId>
+                <version>${s3-sdk-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -114,8 +118,17 @@
             <artifactId>jhipster-framework</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -296,11 +309,6 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
@@ -532,7 +540,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                      <javaVersion>${java.version}</javaVersion>
+                        <javaVersion>${java.version}</javaVersion>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -730,7 +738,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven-jar-plugin.version}</version>
-               </plugin>
+                </plugin>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
@@ -977,7 +985,7 @@
                                 <url>jdbc:postgresql://localhost:5432/ECOM-Art-Courses</url>
                                 <defaultSchemaName></defaultSchemaName>
                                 <username>ECOM-Art-Courses</username>
-                                <password>root</password>
+                                <password></password>
                                 <referenceUrl>hibernate:spring:com.ecom-art-courses.domain?dialect=tech.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                                 <verbose>true</verbose>
                                 <logging>debug</logging>
@@ -1077,7 +1085,7 @@
                                 <url>jdbc:postgresql://localhost:5432/ECOM-Art-Courses</url>
                                 <defaultSchemaName></defaultSchemaName>
                                 <username>ECOM-Art-Courses</username>
-                                <password>root</password>
+                                <password></password>
                                 <referenceUrl>hibernate:spring:com.ecom-art-courses.domain?dialect=tech.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                                 <verbose>true</verbose>
                                 <logging>debug</logging>
