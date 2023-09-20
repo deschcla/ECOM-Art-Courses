@@ -37,7 +37,7 @@ class ProduitTest {
         produit2.setDate(produit1.getDate());
         produit2.setQuantiteTotale(produit1.getQuantiteTotale());
         produit2.setQuantiteDispo(produit1.getQuantiteDispo());
-        produit2.setSouscategorieId(produit1.getSouscategorieId());
+        //        produit2.setSouscategorieId(produit1.getSouscategorieId());
 
         assertThat(produit1).isEqualTo(produit2);
         produit2.setId(2L);

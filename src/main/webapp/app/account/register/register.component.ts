@@ -48,19 +48,19 @@ export class RegisterComponent implements AfterViewInit {
         Validators.pattern(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/),
       ],
     }),
-    phone: new FormControl('', {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.pattern(
-          /^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/
-        ),
-      ],
-    }),
-    birthday: new FormControl(new Date(), {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
+    // phone: new FormControl('', {
+    //   nonNullable: true,
+    //   validators: [
+    //     Validators.required,
+    //     Validators.pattern(
+    //       /^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/
+    //     ),
+    //   ],
+    // }),
+    // birthday: new FormControl(new Date(), {
+    //   nonNullable: true,
+    //   validators: [Validators.required],
+    // }),
     password: new FormControl('', {
       nonNullable: true,
       validators: [
