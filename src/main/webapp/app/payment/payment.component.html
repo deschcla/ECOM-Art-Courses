@@ -103,7 +103,6 @@
                   data-cy="date_exp"
                   [(ngModel)]="model_date_expiration"
                 />
-
               </div>
               <div
                 class="msg-invalid"
@@ -180,16 +179,14 @@
       </ul>
 
       <ul class="list-group mb-3 shadow-lg bg-body" id="list-prices">
-
         <li class="list-group-item py-3">
           <div class="d-flex justify-content-between">
             <span class="h5 fw-bold">Total TTC (EUR)</span>
-            <strong class="h5 fw-bold text-red">{{ (calcMontant()).toFixed(2) }} €</strong>
+            <strong class="h5 fw-bold text-red">{{ calcMontant().toFixed(2) }} €</strong>
           </div>
           <div class="d-flex justify-content-between">
             <span class="text-muted">dont TVA</span>
             <strong class="text-muted">{{ (calcMontant() * 0.2).toFixed(2) }} €</strong>
-
           </div>
         </li>
 

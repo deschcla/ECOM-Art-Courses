@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LigneCommandeService } from 'app/entities/ligne-commande/service/ligne-commande.service';
 import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class CartService {
   counterChange: Subject<number> = new Subject<number>();
   searchChange: Subject<string> = new Subject<string>();
 
-  // constructor(private ligneCommandeService: LigneCommandeService) {}
+  constructor(private ntfService: NotificationService) {}
 
   // addToCart(course: IProduit, num: number): void {
   //   this.ligneCommande = {
@@ -43,6 +44,7 @@ export class CartService {
       quantite: num,
     });
     this.counterChange.next((this.counter += num));
+    this.ntfService.notifyBanner('Success', 'Produit ajouté au panier avec succès');
   }
 
   getCartProducts(): ILigneCommande[] {

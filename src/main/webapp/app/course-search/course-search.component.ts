@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LoginService } from '../login/login.service';
+import { NotificationService } from '../core/util/notification.service';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -27,6 +28,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private produitService: ProduitService,
     private loginService: LoginService,
+    private ntfService: NotificationService,
     private titleService: Title,
     private translateService: TranslateService
   ) {}
@@ -73,6 +75,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       course.clicked = true;
     } else {
       this.display = 'block';
+      this.ntfService.notifyBanner('Error', "Échec de l'ajout au panier, veuillez réssayer");
     }
     event.stopPropagation();
   }
