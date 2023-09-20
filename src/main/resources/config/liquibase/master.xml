@@ -1,32 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.1" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <property name="now" value="current_timestamp" dbms="postgresql"/>
     <property name="floatType" value="float4" dbms="postgresql"/>
-    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="clobType" value="longvarchar" dbms="postgresql"/>
     <property name="blobType" value="bytea" dbms="postgresql"/>
     <property name="uuidType" value="uuid" dbms="postgresql"/>
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073709_added_entity_Acheteur.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073710_added_entity_Produit.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073711_added_entity_Categorie.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073712_added_entity_SousCategorie.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073713_added_entity_Commande.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073714_added_entity_LigneCommande.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073715_added_entity_CarteBancaire.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073716_added_entity_ReleveFacture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223848_added_entity_Acheteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223849_added_entity_Produit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223850_added_entity_Categorie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223851_added_entity_SousCategorie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223855_added_entity_ReleveFacture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223852_added_entity_Commande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223853_added_entity_LigneCommande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223854_added_entity_CarteBancaire.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20230912073710_added_entity_constraints_Produit.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073712_added_entity_constraints_SousCategorie.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073713_added_entity_constraints_Commande.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073714_added_entity_constraints_LigneCommande.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073715_added_entity_constraints_CarteBancaire.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073716_added_entity_constraints_ReleveFacture.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20230912073709_added_entity_constraints_Acheteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223848_added_entity_constraints_Acheteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223849_added_entity_constraints_Produit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223851_added_entity_constraints_SousCategorie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223855_added_entity_constraints_ReleveFacture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223852_added_entity_constraints_Commande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223853_added_entity_constraints_LigneCommande.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230914223854_added_entity_constraints_CarteBancaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230915141630_updated_entity_Produit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230915141630_updated_with_version.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230919174200_updated_user_reference.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

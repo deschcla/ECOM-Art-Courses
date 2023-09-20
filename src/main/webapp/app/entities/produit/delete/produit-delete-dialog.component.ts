@@ -1,16 +1,12 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import SharedModule from 'app/shared/shared.module';
 import { IProduit } from '../produit.model';
 import { ProduitService } from '../service/produit.service';
 import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 
 @Component({
-  standalone: true,
   templateUrl: './produit-delete-dialog.component.html',
-  imports: [SharedModule, FormsModule],
 })
 export class ProduitDeleteDialogComponent {
   produit?: IProduit;

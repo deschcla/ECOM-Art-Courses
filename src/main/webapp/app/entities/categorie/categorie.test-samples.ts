@@ -3,18 +3,19 @@ import dayjs from 'dayjs/esm';
 import { ICategorie, NewCategorie } from './categorie.model';
 
 export const sampleWithRequiredData: ICategorie = {
-  id: 30006,
+  id: 37918,
 };
 
 export const sampleWithPartialData: ICategorie = {
-  id: 20945,
+  id: 82129,
+  createdAt: dayjs('2023-09-14T05:55'),
 };
 
 export const sampleWithFullData: ICategorie = {
-  id: 2824,
-  typeCategorie: 'gifted',
-  createdAt: dayjs('2023-09-11T12:55'),
-  updateAt: dayjs('2023-09-11T23:42'),
+  id: 4633,
+  typeCategorie: 'calculating Manager',
+  createdAt: dayjs('2023-09-14T02:01'),
+  updateAt: dayjs('2023-09-14T00:11'),
 };
 
 export const sampleWithNewData: NewCategorie = {

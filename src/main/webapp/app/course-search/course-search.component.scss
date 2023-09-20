@@ -67,3 +67,18 @@
     margin-top: 2%;
   }
 }
+
+.modal {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  border: none;
+  background: transparent;
+  font-size: x-large;
+  color: grey;
+}
+
+.close:hover {
+  color: black;
+}

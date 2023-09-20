@@ -8,22 +8,22 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.montant" for="field_montant">Montant</label>
           <input type="number" class="form-control" name="montant" id="field_montant" data-cy="montant" formControlName="montant" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.validated" for="field_validated">Validated</label>
           <input type="number" class="form-control" name="validated" id="field_validated" data-cy="validated" formControlName="validated" />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.createdAt" for="field_createdAt">Created At</label>
           <div class="d-flex">
             <input
@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.updateAt" for="field_updateAt">Update At</label>
           <div class="d-flex">
             <input
@@ -53,7 +53,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label jhiTranslate="ecomArtCoursesApp.commande.produit" for="field_produits">Produit</label>
           <select
             class="form-control"
@@ -77,7 +77,7 @@
           </small>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.releveFacture" for="field_releveFacture">Releve Facture</label>
           <select
             class="form-control"
@@ -107,7 +107,7 @@
           </small>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.commande.acheteur" for="field_acheteur">Acheteur</label>
           <select
             class="form-control"

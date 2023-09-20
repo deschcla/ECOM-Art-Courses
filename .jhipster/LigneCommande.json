@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073714",
+  "changelogDate": "20230914223853",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "ligne_commande",
   "fields": [
     {
@@ -28,13 +30,16 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "LigneCommande",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "produit",
       "otherEntityRelationshipName": "ligneCommande",
       "relationshipName": "produit",
-      "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
@@ -42,11 +47,9 @@
       "otherEntityName": "commande",
       "otherEntityRelationshipName": "ligneCommande",
       "relationshipName": "commande",
-      "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

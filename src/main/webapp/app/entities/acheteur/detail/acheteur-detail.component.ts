@@ -1,20 +1,22 @@
-import { Component, Input } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IAcheteur } from '../acheteur.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-acheteur-detail',
   templateUrl: './acheteur-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class AcheteurDetailComponent {
-  @Input() acheteur: IAcheteur | null = null;
+export class AcheteurDetailComponent implements OnInit {
+  acheteur: IAcheteur | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ acheteur }) => {
+      this.acheteur = acheteur;
+    });
+  }
 
   previousState(): void {
     window.history.back();

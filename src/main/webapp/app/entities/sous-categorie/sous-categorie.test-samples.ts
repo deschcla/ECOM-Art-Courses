@@ -3,20 +3,20 @@ import dayjs from 'dayjs/esm';
 import { ISousCategorie, NewSousCategorie } from './sous-categorie.model';
 
 export const sampleWithRequiredData: ISousCategorie = {
-  id: 9369,
+  id: 3007,
 };
 
 export const sampleWithPartialData: ISousCategorie = {
-  id: 29499,
-  createdAt: dayjs('2023-09-11T09:11'),
-  updateAt: dayjs('2023-09-11T19:05'),
+  id: 17236,
+  typeSousCategorie: 'bypass Granite',
+  updateAt: dayjs('2023-09-14T08:00'),
 };
 
 export const sampleWithFullData: ISousCategorie = {
-  id: 13659,
-  typeSousCategorie: 'Avon West Steel',
-  createdAt: dayjs('2023-09-11T20:35'),
-  updateAt: dayjs('2023-09-12T01:24'),
+  id: 71077,
+  typeSousCategorie: 'Web PCI Internal',
+  createdAt: dayjs('2023-09-14T05:34'),
+  updateAt: dayjs('2023-09-14T17:26'),
 };
 
 export const sampleWithNewData: NewSousCategorie = {

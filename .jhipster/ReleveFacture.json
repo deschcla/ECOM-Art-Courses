@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073716",
+  "changelogDate": "20230914223855",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "releve_facture",
   "fields": [
     {
@@ -16,13 +18,16 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "ReleveFacture",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "commande",
       "otherEntityRelationshipName": "releveFacture",
       "relationshipName": "commande",
-      "relationshipSide": "left",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
     },
@@ -30,11 +35,9 @@
       "otherEntityName": "acheteur",
       "otherEntityRelationshipName": "releveFacture",
       "relationshipName": "acheteur",
-      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

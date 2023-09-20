@@ -1,44 +1,54 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-10 mx-auto">
-      <h3 class="my-4">{{ course.nomProduit }}</h3>
+      <h3 class="my-4">{{ course?.nomProduit! }}</h3>
       <hr />
       <div class="row g-4">
         <!-- Image -->
         <div class="col-md-6 col-lg-6">
-          <img src="{{ course.lienImg }}" width="100%" class="rounded" alt="{{ course.nomProduit }}" />
+          <img src="{{ course?.lienImg! }}" width="100%" class="rounded" alt="{{ course?.nomProduit! }}" />
         </div>
 
         <!-- List -->
         <div class="col-md-6 col-lg-6">
           <p class="text-justify">
-            {{ course.desc }}
+            {{ course?.desc! }}
           </p>
           <ul>
             <li>
               Tarif unitaire:
-              <span [ngClass]="{ 'text-decoration-line-through fs-6': course.promo }">{{ course.tarifUnit }}€</span>
-              <span *ngIf="course.promo" class="text-danger fs-5 fw-bold"
-                >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% off)</span
-              >
+              <!-- <span [ngClass]="{ 'text-decoration-line-through fs-6': course.promo }">{{ course.tarifUnit }}€</span> -->
+              <span>{{ course?.tarifUnit! }}€</span>
+              <!-- <span *ngIf="course.promo" class="text-danger fs-5 fw-bold"
+                >{{ course.tarifUnit - (course.tarifUnit * course.promo) / 100 }}€ ({{ course.promo }}% de réduction)</span
+              > -->
             </li>
             <li class="fw-bold">
-              <span [ngClass]="{ 'text-danger': course.quantiteDispo < 0.15 * course.quantiteTotale }"
-                >{{ course.quantiteDispo }} places disponibles</span
+              <span [ngClass]="{ 'text-danger': course?.quantiteDispo! < 0.15 * course?.quantiteTotale! }"
+                >{{ course?.quantiteDispo! }} places disponibles</span
               >
             </li>
           </ul>
 
           <div class="input-group">
-            <select class="custom-select">
-              <option *ngFor="let item of counter(course.quantiteDispo); let i = index">
-                {{ i + 1 }}
-              </option>
+            <select class="custom-select" #amount (change)="onSelected(amount.value)" [disabled]="course?.quantiteDispo == 0">
+              <option *ngIf="course?.quantiteDispo == 0; else dispoPlace">0</option>
+              <ng-template #dispoPlace>
+                <option *ngFor="let item of counter(course?.quantiteDispo!); let i = index">
+                  {{ i + 1 }}
+                </option>
+              </ng-template>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary fontBig" id="btn-cart">
-                <fa-icon icon="cart-plus"></fa-icon>
-                <span class="addToCart">Ajouter au panier</span>
+              <button
+                type="button"
+                class="btn btn-primary fontBig"
+                id="btn-cart"
+                (click)="addToCart(course!, selectedAmount)"
+                [disabled]="course?.quantiteDispo == 0"
+              >
+                <span>Ajouter au panier</span>
+                <fa-icon icon="cart-plus" class="addToCart"></fa-icon>
               </button>
             </div>
           </div>
@@ -47,12 +57,13 @@
 
       <!-- Author info -->
       <div class="bg-mode rounded p-4 my-3 box-shadow-base">
-        <div class="my-3 d-flex justify-content-between">
+        <div class="my-3 d-flex justify-content-between infoDiv">
           <div class="text-center courseInfo">
             <fa-icon icon="person-chalkboard" class="fontBigger"></fa-icon>
             <span class="courseInfoTitle">
               <span class="title">Tuteur/Tutrice</span>
-              <span class="subtitle">{{ course.nomProf }}</span>
+              <!-- <span class="subtitle">{{ course.nomProf }}</span> -->
+              <span class="subtitle">Non attribué</span>
             </span>
           </div>
 
@@ -60,7 +71,8 @@
             <fa-icon icon="calendar-alt" class="fontBigger"></fa-icon>
             <span class="courseInfoTitle">
               <span class="title">Date</span>
-              <span class="subtitle">{{ course.dateTime | date : 'MMMM d, y à H:mm' }}</span>
+              <!-- <span class="subtitle">{{ course.date!.format('DD/MM/YYYY')  }}</span> -->
+              <span class="subtitle">{{ course?.date!.format('DD/MM/YYYY à HH') }}h{{ course?.date!.format('mm') }}</span>
             </span>
           </div>
 
@@ -68,7 +80,7 @@
             <fa-icon icon="clock" class="fontBigger"></fa-icon>
             <span class="courseInfoTitle">
               <span class="title">Durée</span>
-              <span class="subtitle">{{ course.duree }} heures</span>
+              <span class="subtitle">{{ course?.duree! }} heures</span>
             </span>
           </div>
         </div>
@@ -117,13 +129,33 @@
             <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Musique</a> </li>
             <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Peinture</a> </li>
             <li class="list-inline-item"> <a class="btn btn-light btn-sm mb-xl-0" href="#">Sculpture</a> </li>-->
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeu d'échec</a></li>
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Culture</a></li>
-            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeux</a></li>
+            <li class="list-inline-item">
+              <a class="btn btn-light btn-sm mb-xl-0" href="#">{{ course?.souscategorie?.typeSousCategorie }}</a>
+            </li>
+            <!-- <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Culture</a></li>
+            <li class="list-inline-item"><a class="btn btn-light btn-sm mb-xl-0" href="#">Jeux</a></li> -->
           </ul>
         </div>
       </div>
       <!-- Social links and END -->
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{ display: display }">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vous n'êtes pas connecté!</h5>
+        <button type="button" class="close" (click)="onCloseHandled()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Veuillez vous connecter pour ajouter à votre panier.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCloseHandled()">Fermer</button>
+        <button type="button" class="btn btn-primary" (click)="goToLogin()">Se Connecter</button>
+      </div>
     </div>
   </div>
 </div>

@@ -18,7 +18,8 @@ describe('ReleveFacture Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReleveFactureDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [ReleveFactureDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(ReleveFactureDeleteDialogComponent, '')

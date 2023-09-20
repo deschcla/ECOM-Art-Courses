@@ -52,3 +52,28 @@
 .addToCart {
   margin-left: 5px;
 }
+
+@media only screen and (max-width: 700px) {
+  .infoDiv {
+    flex-direction: column;
+    align-items: center;
+  }
+  .input-group {
+    justify-content: center;
+  }
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  border: none;
+  background: transparent;
+  font-size: x-large;
+  color: grey;
+}
+
+.close:hover {
+  color: black;
+}
