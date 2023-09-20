@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073713",
+  "changelogDate": "20230914223852",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "commande",
   "fields": [
     {
@@ -20,21 +22,24 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "Commande",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "carteBancaire",
       "otherEntityRelationshipName": "commande",
       "relationshipName": "carteBancaire",
-      "relationshipSide": "left",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
     },
     {
       "otherEntityName": "produit",
       "otherEntityRelationshipName": "commande",
+      "ownerSide": true,
       "relationshipName": "produit",
-      "relationshipSide": "left",
       "relationshipType": "many-to-many",
       "relationshipValidateRules": "required"
     },
@@ -42,7 +47,6 @@
       "otherEntityName": "releveFacture",
       "otherEntityRelationshipName": "commande",
       "relationshipName": "releveFacture",
-      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
@@ -50,7 +54,6 @@
       "otherEntityName": "acheteur",
       "otherEntityRelationshipName": "commande",
       "relationshipName": "acheteur",
-      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     },
@@ -58,10 +61,8 @@
       "otherEntityName": "ligneCommande",
       "otherEntityRelationshipName": "commande",
       "relationshipName": "ligneCommande",
-      "relationshipSide": "right",
       "relationshipType": "one-to-many"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

@@ -1,46 +1,12 @@
 package com.ecom.art_courses.repository;
 
 import com.ecom.art_courses.domain.ReleveFacture;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.r2dbc.repository.Query;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
- * Spring Data R2DBC repository for the ReleveFacture entity.
+ * Spring Data JPA repository for the ReleveFacture entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ReleveFactureRepository extends ReactiveCrudRepository<ReleveFacture, Long>, ReleveFactureRepositoryInternal {
-    @Query("SELECT * FROM releve_facture entity WHERE entity.acheteur_id = :id")
-    Flux<ReleveFacture> findByAcheteur(Long id);
-
-    @Query("SELECT * FROM releve_facture entity WHERE entity.acheteur_id IS NULL")
-    Flux<ReleveFacture> findAllWhereAcheteurIsNull();
-
-    @Override
-    <S extends ReleveFacture> Mono<S> save(S entity);
-
-    @Override
-    Flux<ReleveFacture> findAll();
-
-    @Override
-    Mono<ReleveFacture> findById(Long id);
-
-    @Override
-    Mono<Void> deleteById(Long id);
-}
-
-interface ReleveFactureRepositoryInternal {
-    <S extends ReleveFacture> Mono<S> save(S entity);
-
-    Flux<ReleveFacture> findAllBy(Pageable pageable);
-
-    Flux<ReleveFacture> findAll();
-
-    Mono<ReleveFacture> findById(Long id);
-    // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
-    // Flux<ReleveFacture> findAllBy(Pageable pageable, Criteria criteria);
-}
+public interface ReleveFactureRepository extends JpaRepository<ReleveFacture, Long> {}

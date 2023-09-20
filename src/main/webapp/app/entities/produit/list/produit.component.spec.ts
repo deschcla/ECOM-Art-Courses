@@ -16,11 +16,8 @@ describe('Produit Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'produit', component: ProduitComponent }]),
-        HttpClientTestingModule,
-        ProduitComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'produit', component: ProduitComponent }]), HttpClientTestingModule],
+      declarations: [ProduitComponent],
       providers: [
         {
           provide: ActivatedRoute,

@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { ISousCategorie } from '../sous-categorie.model';
 import { SousCategorieService } from '../service/sous-categorie.service';
 
-import sousCategorieResolve from './sous-categorie-routing-resolve.service';
+import { SousCategorieRoutingResolveService } from './sous-categorie-routing-resolve.service';
 
 describe('SousCategorie routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: SousCategorieRoutingResolveService;
   let service: SousCategorieService;
   let resultSousCategorie: ISousCategorie | null | undefined;
 
@@ -33,6 +34,7 @@ describe('SousCategorie routing resolve service', () => {
     mockRouter = TestBed.inject(Router);
     jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
+    routingResolveService = TestBed.inject(SousCategorieRoutingResolveService);
     service = TestBed.inject(SousCategorieService);
     resultSousCategorie = undefined;
   });
@@ -44,12 +46,8 @@ describe('SousCategorie routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        sousCategorieResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultSousCategorie = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultSousCategorie = result;
       });
 
       // THEN
@@ -63,12 +61,8 @@ describe('SousCategorie routing resolve service', () => {
       mockActivatedRouteSnapshot.params = {};
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        sousCategorieResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultSousCategorie = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultSousCategorie = result;
       });
 
       // THEN
@@ -82,12 +76,8 @@ describe('SousCategorie routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        sousCategorieResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultSousCategorie = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultSousCategorie = result;
       });
 
       // THEN

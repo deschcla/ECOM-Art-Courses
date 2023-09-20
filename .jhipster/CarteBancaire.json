@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073715",
+  "changelogDate": "20230914223854",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "carte_bancaire",
   "fields": [
     {
@@ -16,17 +18,19 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "CarteBancaire",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "commande",
       "otherEntityRelationshipName": "carteBancaire",
       "relationshipName": "commande",
-      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

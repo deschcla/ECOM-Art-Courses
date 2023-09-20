@@ -8,7 +8,7 @@ import { Authority } from 'app/config/authority.constants';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 
-import UserManagementUpdateComponent from './user-management-update.component';
+import { UserManagementUpdateComponent } from './user-management-update.component';
 
 describe('User Management Update Component', () => {
   let comp: UserManagementUpdateComponent;
@@ -17,7 +17,8 @@ describe('User Management Update Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, UserManagementUpdateComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [UserManagementUpdateComponent],
       providers: [
         FormBuilder,
         {

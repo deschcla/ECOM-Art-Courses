@@ -1,6 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20230912073712",
+  "changelogDate": "20230914223851",
+  "dto": "no",
+  "embedded": false,
   "entityTableName": "sous_categorie",
   "fields": [
     {
@@ -16,13 +18,16 @@
       "fieldType": "Instant"
     }
   ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
   "name": "SousCategorie",
+  "pagination": "no",
+  "readOnly": false,
   "relationships": [
     {
       "otherEntityName": "produit",
       "otherEntityRelationshipName": "souscategorie",
       "relationshipName": "produit",
-      "relationshipSide": "left",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
     },
@@ -30,11 +35,9 @@
       "otherEntityName": "categorie",
       "otherEntityRelationshipName": "sousCategorie",
       "relationshipName": "categorie",
-      "relationshipSide": "right",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
     }
   ],
-  "searchEngine": "no",
   "service": "serviceImpl"
 }

@@ -24,7 +24,8 @@ describe('CarteBancaire Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), CarteBancaireUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [CarteBancaireUpdateComponent],
       providers: [
         FormBuilder,
         {
@@ -50,10 +51,10 @@ describe('CarteBancaire Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Commande query and add missing value', () => {
       const carteBancaire: ICarteBancaire = { id: 456 };
-      const commande: ICommande = { id: 26398 };
+      const commande: ICommande = { id: 84690 };
       carteBancaire.commande = commande;
 
-      const commandeCollection: ICommande[] = [{ id: 24968 }];
+      const commandeCollection: ICommande[] = [{ id: 24079 }];
       jest.spyOn(commandeService, 'query').mockReturnValue(of(new HttpResponse({ body: commandeCollection })));
       const additionalCommandes = [commande];
       const expectedCollection: ICommande[] = [...additionalCommandes, ...commandeCollection];
@@ -72,7 +73,7 @@ describe('CarteBancaire Management Update Component', () => {
 
     it('Should update editForm', () => {
       const carteBancaire: ICarteBancaire = { id: 456 };
-      const commande: ICommande = { id: 14894 };
+      const commande: ICommande = { id: 46000 };
       carteBancaire.commande = commande;
 
       activatedRoute.data = of({ carteBancaire });

@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import SharedModule from 'app/shared/shared.module';
-import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { FormsModule } from '@angular/forms';
 import { IReleveFacture } from '../releve-facture.model';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, ReleveFactureService } from '../service/releve-facture.service';
@@ -14,19 +10,8 @@ import { ReleveFactureDeleteDialogComponent } from '../delete/releve-facture-del
 import { SortService } from 'app/shared/sort/sort.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-releve-facture',
   templateUrl: './releve-facture.component.html',
-  imports: [
-    RouterModule,
-    FormsModule,
-    SharedModule,
-    SortDirective,
-    SortByDirective,
-    DurationPipe,
-    FormatMediumDatetimePipe,
-    FormatMediumDatePipe,
-  ],
 })
 export class ReleveFactureComponent implements OnInit {
   releveFactures?: IReleveFacture[];
@@ -105,7 +90,7 @@ export class ReleveFactureComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
     this.isLoading = true;
-    const queryObject: any = {
+    const queryObject = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
     return this.releveFactureService.query(queryObject).pipe(tap(() => (this.isLoading = false)));

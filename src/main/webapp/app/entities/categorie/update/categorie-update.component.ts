@@ -4,18 +4,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { CategorieFormService, CategorieFormGroup } from './categorie-form.service';
 import { ICategorie } from '../categorie.model';
 import { CategorieService } from '../service/categorie.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-categorie-update',
   templateUrl: './categorie-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class CategorieUpdateComponent implements OnInit {
   isSaving = false;

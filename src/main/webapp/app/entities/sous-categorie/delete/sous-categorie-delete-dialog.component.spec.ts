@@ -18,7 +18,8 @@ describe('SousCategorie Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SousCategorieDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [SousCategorieDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(SousCategorieDeleteDialogComponent, '')

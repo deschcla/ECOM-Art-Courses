@@ -1,8 +1,8 @@
 package com.ecom.art_courses.service;
 
 import com.ecom.art_courses.domain.Produit;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing {@link Produit}.
@@ -14,7 +14,7 @@ public interface ProduitService {
      * @param produit the entity to save.
      * @return the persisted entity.
      */
-    Mono<Produit> save(Produit produit);
+    Produit save(Produit produit);
 
     /**
      * Updates a produit.
@@ -22,7 +22,7 @@ public interface ProduitService {
      * @param produit the entity to update.
      * @return the persisted entity.
      */
-    Mono<Produit> update(Produit produit);
+    Produit update(Produit produit);
 
     /**
      * Partially updates a produit.
@@ -30,21 +30,14 @@ public interface ProduitService {
      * @param produit the entity to update partially.
      * @return the persisted entity.
      */
-    Mono<Produit> partialUpdate(Produit produit);
+    Optional<Produit> partialUpdate(Produit produit);
 
     /**
      * Get all the produits.
      *
      * @return the list of entities.
      */
-    Flux<Produit> findAll();
-
-    /**
-     * Returns the number of produits available.
-     * @return the number of entities in the database.
-     *
-     */
-    Mono<Long> countAll();
+    List<Produit> findAll();
 
     /**
      * Get the "id" produit.
@@ -52,13 +45,12 @@ public interface ProduitService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Mono<Produit> findOne(Long id);
+    Optional<Produit> findOne(Long id);
 
     /**
      * Delete the "id" produit.
      *
      * @param id the id of the entity.
-     * @return a Mono to signal the deletion
      */
-    Mono<Void> delete(Long id);
+    void delete(Long id);
 }

@@ -4,9 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { ReleveFactureFormService, ReleveFactureFormGroup } from './releve-facture-form.service';
 import { IReleveFacture } from '../releve-facture.model';
 import { ReleveFactureService } from '../service/releve-facture.service';
@@ -14,10 +11,8 @@ import { IAcheteur } from 'app/entities/acheteur/acheteur.model';
 import { AcheteurService } from 'app/entities/acheteur/service/acheteur.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-releve-facture-update',
   templateUrl: './releve-facture-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ReleveFactureUpdateComponent implements OnInit {
   isSaving = false;

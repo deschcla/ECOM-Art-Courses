@@ -28,6 +28,9 @@
       "quantiteDispo": "Quantite Dispo",
       "createdAt": "Created At",
       "updateAt": "Update At",
+      "nomProf": "Nom Prof",
+      "promotion": "Promotion",
+      "version": "Version,",
       "souscategorie": "Souscategorie",
       "ligneCommande": "Ligne Commande",
       "commande": "Commande"

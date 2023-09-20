@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import SharedModule from 'app/shared/shared.module';
-import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { FormsModule } from '@angular/forms';
 import { IAcheteur } from '../acheteur.model';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, AcheteurService } from '../service/acheteur.service';
@@ -14,19 +10,8 @@ import { AcheteurDeleteDialogComponent } from '../delete/acheteur-delete-dialog.
 import { SortService } from 'app/shared/sort/sort.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-acheteur',
   templateUrl: './acheteur.component.html',
-  imports: [
-    RouterModule,
-    FormsModule,
-    SharedModule,
-    SortDirective,
-    SortByDirective,
-    DurationPipe,
-    FormatMediumDatetimePipe,
-    FormatMediumDatePipe,
-  ],
 })
 export class AcheteurComponent implements OnInit {
   acheteurs?: IAcheteur[];
@@ -105,7 +90,7 @@ export class AcheteurComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
     this.isLoading = true;
-    const queryObject: any = {
+    const queryObject = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
     return this.acheteurService.query(queryObject).pipe(tap(() => (this.isLoading = false)));

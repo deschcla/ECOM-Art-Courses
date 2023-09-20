@@ -4,9 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { CarteBancaireFormService, CarteBancaireFormGroup } from './carte-bancaire-form.service';
 import { ICarteBancaire } from '../carte-bancaire.model';
 import { CarteBancaireService } from '../service/carte-bancaire.service';
@@ -14,10 +11,8 @@ import { ICommande } from 'app/entities/commande/commande.model';
 import { CommandeService } from 'app/entities/commande/service/commande.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-carte-bancaire-update',
   templateUrl: './carte-bancaire-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class CarteBancaireUpdateComponent implements OnInit {
   isSaving = false;

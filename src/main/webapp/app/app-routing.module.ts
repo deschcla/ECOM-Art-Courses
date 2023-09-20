@@ -2,59 +2,45 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { errorRoute } from './layouts/error/error.route';
+import { navbarRoute } from './layouts/navbar/navbar.route';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/config/authority.constants';
-
-import HomeComponent from './home/home.component';
-import NavbarComponent from './layouts/navbar/navbar.component';
-import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { PaymentComponent } from './payment/payment.component';
 import { AuthGuardService } from './entities/auth-guards/auth-guard.service';
+import { FactureComponent } from './facture/facture.component';
 
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
         {
-          path: 'home',
-          component: HomeComponent,
-          title: 'home.title',
-        },
-        {
-          path: '',
-          component: CourseSearchComponent,
-          title: 'course-search.title',
-        },
-        {
-          path: '',
-          component: NavbarComponent,
-          outlet: 'navbar',
-        },
-        {
           path: 'admin',
           data: {
             authorities: [Authority.ADMIN],
           },
           canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./admin/admin-routing.module'),
+          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
+        },
+        {
+          path: '',
+          component: CourseSearchComponent,
+          title: 'Home',
         },
         {
           path: 'account',
-          loadChildren: () => import('./account/account.route'),
+          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },
         {
           path: 'login',
-          component: LoginComponent,
-          title: 'login.title',
+          loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         },
         {
           path: 'course-details/:id',
           component: CourseDetailsComponent,
-          title: 'course-details.title',
         },
         {
           path: 'payment',
@@ -63,13 +49,18 @@ import { AuthGuardService } from './entities/auth-guards/auth-guard.service';
           canActivate: [AuthGuardService],
         },
         {
-          path: '',
-          loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
+          path: 'facture',
+          component: FactureComponent,
+          title: 'facture.title',
         },
-        // { path: '**', redirectTo: 'course-search' },
+        {
+          path: '',
+          loadChildren: () => import(`./entities/entity-routing.module`).then(m => m.EntityRoutingModule),
+        },
+        navbarRoute,
         ...errorRoute,
       ],
-      { enableTracing: DEBUG_INFO_ENABLED, bindToComponentInputs: true }
+      { enableTracing: DEBUG_INFO_ENABLED }
     ),
   ],
   exports: [RouterModule],

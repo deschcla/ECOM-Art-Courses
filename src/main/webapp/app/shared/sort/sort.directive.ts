@@ -1,10 +1,9 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
 
 @Directive({
-  standalone: true,
   selector: '[jhiSort]',
 })
-export default class SortDirective<T> {
+export class SortDirective<T> {
   @Input()
   get predicate(): T | undefined {
     return this._predicate;
