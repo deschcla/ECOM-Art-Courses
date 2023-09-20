@@ -6,10 +6,14 @@
         <div class="align-items-center">
           <ul class="list-inline mb-0">
             <li class="list-inline-item" *ngIf="course?.souscategorie?.categorieName">
-              <button class="btn btn-light btn-sm mb-xl-0">{{ course?.souscategorie?.categorieName }}</button>
+              <button class="btn btn-light btn-sm mb-xl-0" (click)="searchCategory(course?.souscategorie?.categorieName!)">
+                {{ course?.souscategorie?.categorieName }}
+              </button>
             </li>
             <li class="list-inline-item" *ngIf="course?.souscategorie?.typeSousCategorie">
-              <button class="btn btn-light btn-sm mb-xl-0">{{ course?.souscategorie?.typeSousCategorie }}</button>
+              <button class="btn btn-light btn-sm mb-xl-0" (click)="searchCategory(course?.souscategorie?.typeSousCategorie!)">
+                {{ course?.souscategorie?.typeSousCategorie }}
+              </button>
             </li>
           </ul>
         </div>

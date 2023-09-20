@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 import { StateStorageService } from 'app/core/auth/state-storage.service';
@@ -68,10 +68,21 @@ export default class NavbarComponent implements OnInit {
     this.cartService.counterChange.subscribe(value => {
       this.counter = value;
     });
+    this.cartService.searchChange.subscribe(value => {
+      this.searchForm.controls.search.setValue(value);
+      // this.search();
+    });
 
     this.produitService.query().subscribe({
       next: value => (this.courses = value.body),
       error: error => console.log(error),
+      complete: () => {
+        this.router.events.subscribe(() => {
+          if (this.searchForm.value.search !== '') {
+            this.onKeyUp();
+          }
+        });
+      },
     });
   }
 
@@ -96,6 +107,10 @@ export default class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  search(): void {
+    this.router.navigate(['']);
   }
 
   onKeyUp(): void {
