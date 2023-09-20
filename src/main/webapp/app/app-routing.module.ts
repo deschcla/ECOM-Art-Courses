@@ -10,6 +10,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { PaymentComponent } from './payment/payment.component';
+import { AuthGuardService } from './entities/auth-guards/auth-guard.service';
 import { FactureComponent } from './facture/facture.component';
 
 @NgModule({
@@ -44,11 +45,14 @@ import { FactureComponent } from './facture/facture.component';
         {
           path: 'payment',
           component: PaymentComponent,
+          title: 'payment.title',
+          canActivate: [AuthGuardService],
         },
         {
           path: 'facture',
           component: FactureComponent,
           title: 'facture.title',
+          canActivate: [AuthGuardService],
         },
         {
           path: '',
