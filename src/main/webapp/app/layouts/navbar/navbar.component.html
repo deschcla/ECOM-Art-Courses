@@ -20,8 +20,9 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <div class="mt-3 inputs">
         <fa-icon icon="search" class="searchIcon"></fa-icon>
-        <form [formGroup]="searchForm" (ngSubmit)="search()">
-          <input type="text" class="form-control" placeholder="Rechercher..." formControlName="search" />
+        <form [formGroup]="searchForm">
+          <!-- (ngSubmit)="search()" -->
+          <input (keyup)="onKeyUp()" type="text" class="form-control" placeholder="Rechercher..." formControlName="search" />
         </form>
       </div>
       <ul class="navbar-nav ms-auto">
