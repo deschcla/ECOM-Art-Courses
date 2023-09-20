@@ -52,6 +52,7 @@ import { FactureComponent } from './facture/facture.component';
           path: 'facture',
           component: FactureComponent,
           title: 'facture.title',
+          canActivate: [AuthGuardService],
         },
         {
           path: '',
