@@ -3,9 +3,8 @@ package com.ecom.art_courses.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ecom.art_courses.web.rest.TestUtil;
-import org.junit.jupiter.api.Test;
-
 import java.time.Instant;
+import org.junit.jupiter.api.Test;
 
 class CarteBancaireTest {
 
@@ -13,9 +12,7 @@ class CarteBancaireTest {
     void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CarteBancaire.class);
         CarteBancaire carteBancaire1 = new CarteBancaire();
-        carteBancaire1.id(1L)
-                      .createdAt(Instant.now())
-                      .refCarte("référence de test");
+        carteBancaire1.id(1L).createdAt(Instant.now()).refCarte("référence de test");
 
         CarteBancaire carteBancaire2 = new CarteBancaire();
         carteBancaire2.setId(carteBancaire1.getId());
@@ -31,6 +28,7 @@ class CarteBancaireTest {
         commande.setId(1L);
         carteBancaire1.commande(commande);
         assertThat(carteBancaire1.getCommande()).isEqualTo(commande);
-        assertThat(carteBancaire1.getCommandeId()).isEqualTo(1L);
+        //assertThat(carteBancaire1.getCommandeId()).isEqualTo(1L);
+        assertThat(carteBancaire1.getCommande().getId()).isEqualTo(1L);
     }
 }

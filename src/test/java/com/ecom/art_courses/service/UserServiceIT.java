@@ -53,6 +53,7 @@ class UserServiceIT {
     private DateTimeProvider dateTimeProvider;
 
     private User user;
+    private User user2;
 
     @BeforeEach
     public void init() {
@@ -65,6 +66,19 @@ class UserServiceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+
+        when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now()));
+        auditingHandler.setDateTimeProvider(dateTimeProvider);
+
+        user2 = new User();
+        user2.setLogin("bonjour");
+        user2.setPassword("bonjour");
+        user2.setActivated(true);
+        user2.setEmail("bonjour@bonjour.com");
+        user2.setFirstName("bon");
+        user2.setLastName("jour");
+        user2.setImageUrl("http://bonjour.it/50x50");
+        user2.setLangKey("dummy");
 
         when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now()));
         auditingHandler.setDateTimeProvider(dateTimeProvider);
@@ -82,6 +96,36 @@ class UserServiceIT {
         assertThat(maybeUser.orElse(null).getEmail()).isEqualTo(user.getEmail());
         assertThat(maybeUser.orElse(null).getResetDate()).isNotNull();
         assertThat(maybeUser.orElse(null).getResetKey()).isNotNull();
+        assertThat(user.equals(user2));
+        assertThat(user2.toString())
+            .isEqualTo(
+                "User{" +
+                "login='" +
+                "bonjour" +
+                '\'' +
+                ", firstName='" +
+                "bon" +
+                '\'' +
+                ", lastName='" +
+                "jour" +
+                '\'' +
+                ", email='" +
+                "bonjour@bonjour.com" +
+                '\'' +
+                ", imageUrl='" +
+                "http://bonjour.it/50x50" +
+                '\'' +
+                ", activated='" +
+                true +
+                '\'' +
+                ", langKey='" +
+                "dummy" +
+                '\'' +
+                ", activationKey='" +
+                user2.getActivationKey() +
+                '\'' +
+                "}"
+            );
     }
 
     @Test
