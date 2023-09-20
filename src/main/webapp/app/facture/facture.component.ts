@@ -17,7 +17,9 @@ export class FactureComponent implements OnInit {
   constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
-    this.commandes = this.cartService.getCartProducts();
+    this.cartService.panierChange.subscribe(value => {
+      this.commandes = value;
+    });
     this.releveFacture = window.history.state;
     this.date = '12/12/2012';
     console.log(this.releveFacture);

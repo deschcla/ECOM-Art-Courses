@@ -47,6 +47,7 @@ import { FactureComponent } from './facture/facture.component';
           path: 'cart',
           component: CartComponent,
           title: 'cart.title',
+          canActivate: [AuthGuardService],
         },
         {
           path: 'payment',

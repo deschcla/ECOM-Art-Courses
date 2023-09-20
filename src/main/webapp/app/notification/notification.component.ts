@@ -21,10 +21,12 @@ export class NotificationComponent implements OnInit {
     this.classMap.set(NotificationType.Error, 'error');
 
     this.service.notification.pipe(takeWhile(() => this._subscribed)).subscribe(notification => {
-      if (notification) this.render(notification);
+      if (notification) {
+        this.render(notification);
+      }
     });
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._subscribed = false;
   }
   private render(notification: INotification): void {

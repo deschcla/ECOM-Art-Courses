@@ -65,6 +65,9 @@ export default class NavbarComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
+    this.cartService.getCartProducts().subscribe(value => {
+      // this.counter = value;
+    });
     this.cartService.counterChange.subscribe(value => {
       this.counter = value;
     });

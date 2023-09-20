@@ -48,7 +48,9 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.translateService.get('payment.title').subscribe(title => this.titleService.setTitle(title));
-    this.commandes = this.cartService.getCartProducts();
+    this.cartService.panierChange.subscribe(value => {
+      this.commandes = value;
+    });
     this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0));
   }
 

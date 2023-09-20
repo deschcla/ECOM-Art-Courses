@@ -184,5 +184,8 @@
   "payment": {
     "title": "Page de Paiement"
   },
+  "cart": {
+    "title": "Panier"
+  },
   "footer": "Ceci est votre pied de page"
 }

@@ -4,15 +4,15 @@ import { CartService } from 'app/core/util/cart.service';
 import { Router } from '@angular/router';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit{
-
+export class CartComponent implements OnInit {
   quantite: number = 0;
   commandes: ILigneCommande[] = [];
   selectedAmount: number = 1;
@@ -20,16 +20,23 @@ export class CartComponent implements OnInit{
   faTrashCan = faTrashCan;
   protected readonly parseInt = parseInt;
   display = 'none';
+  selectedProduct: ILigneCommande;
 
   constructor(
     private cartService: CartService,
     private router: Router,
-    ) {
-  }
+    private titleService: Title,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
-    this.commandes = this.cartService.getCartProducts();
-    this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0));
+    this.translateService.get('cart.title').subscribe(title => this.titleService.setTitle(title));
+    this.cartService.getCartProducts().subscribe({
+      next: value => {
+        this.commandes = value;
+      },
+      complete: () => this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0)),
+    });
   }
 
   public calcMontant(): number {
@@ -52,26 +59,28 @@ export class CartComponent implements OnInit{
 
   onChanged(course: IProduit, value: number): void {
     this.selectedAmount = value;
-    this.cartService.changeToCart(course, value)
-    this.updateQuantity()
+    this.cartService.changeToCart(course, value);
+    this.updateQuantity();
   }
 
   counter(i: number): any[] {
     return new Array(i);
   }
 
-  removeILigneCommande(commandeChoosen: ILigneCommande): void{
-    this.cartService.deleteCartProducts(commandeChoosen)
-    this.updateQuantity()
+  removeILigneCommande(commandeChoosen: ILigneCommande): void {
+    console.log(commandeChoosen);
+    this.cartService.deleteCartProducts(commandeChoosen);
+    this.updateQuantity();
     this.display = 'none';
   }
 
-  updateQuantity(): void{
-    this.quantite = 0
+  updateQuantity(): void {
+    this.quantite = 0;
     this.commandes.forEach(commande => (this.quantite += commande.quantite!));
   }
 
-  onOpenHandled(): void{
+  onOpenHandled(product: ILigneCommande): void {
+    this.selectedProduct = product;
     this.display = 'block';
   }
 

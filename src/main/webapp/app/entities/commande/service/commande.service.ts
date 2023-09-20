@@ -58,6 +58,18 @@ export class CommandeService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  validate(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<RestCommande>(`${this.resourceUrl}/validate/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  getPanier(id: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestCommande[]>(`${this.resourceUrl}/${id}/ligne-commandes/unvalidated`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
