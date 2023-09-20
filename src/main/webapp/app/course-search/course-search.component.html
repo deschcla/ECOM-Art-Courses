@@ -72,6 +72,7 @@
     </div>
   </div>
 </div>
+<div *ngIf="courses?.length == 0" class="noCours">Aucun cours trouvé.</div>
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{ display: display }">
   <div class="modal-dialog modal-dialog-centered" role="document">
