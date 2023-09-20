@@ -28,6 +28,7 @@ class CarteBancaireTest {
         commande.setId(1L);
         carteBancaire1.commande(commande);
         assertThat(carteBancaire1.getCommande()).isEqualTo(commande);
-        //        assertThat(carteBancaire1.getCommandeId()).isEqualTo(1L);
+        //assertThat(carteBancaire1.getCommandeId()).isEqualTo(1L);
+        assertThat(carteBancaire1.getCommande().getId()).isEqualTo(1L);
     }
 }
