@@ -2,81 +2,106 @@ package com.ecom.art_courses.domain;
 
 import com.ecom.art_courses.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A user.
  */
-@Table("jhi_user")
+@Entity
+@Table(name = "jhi_user")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
+    @Column(length = 50, unique = true, nullable = false)
     private String login;
 
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
-    @Column("password_hash")
+    @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
     @Size(max = 50)
-    @Column("first_name")
+    @Column(name = "first_name", length = 50)
     private String firstName;
 
     @Size(max = 50)
-    @Column("last_name")
+    @Column(name = "last_name", length = 50)
     private String lastName;
 
     @Email
     @Size(min = 5, max = 254)
+    @Column(length = 254, unique = true)
     private String email;
 
     @NotNull
+    @Column(nullable = false)
     private boolean activated = false;
 
     @Size(min = 2, max = 10)
-    @Column("lang_key")
+    @Column(name = "lang_key", length = 10)
     private String langKey;
 
     @Size(max = 256)
-    @Column("image_url")
+    @Column(name = "image_url", length = 256)
     private String imageUrl;
 
     @Size(max = 20)
-    @Column("activation_key")
+    @Column(name = "activation_key", length = 20)
     @JsonIgnore
     private String activationKey;
 
     @Size(max = 20)
-    @Column("reset_key")
+    @Column(name = "reset_key", length = 20)
     @JsonIgnore
     private String resetKey;
 
-    @Column("reset_date")
+    @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    @OneToMany(mappedBy = "user")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "commandes", "acheteur" }, allowSetters = true)
+    private Set<ReleveFacture> releveFactures = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
+    private Set<Commande> commandes = new HashSet<>();
+
     @JsonIgnore
-    @Transient
+    @ManyToMany
+    @JoinTable(
+        name = "jhi_user_authority",
+        joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "authority_name", referencedColumnName = "name") }
+    )
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
     public Long getId() {
@@ -166,6 +191,68 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setResetDate(Instant resetDate) {
         this.resetDate = resetDate;
+    }
+
+    public Set<ReleveFacture> getReleveFactures() {
+        return this.releveFactures;
+    }
+
+    public void setReleveFactures(Set<ReleveFacture> releveFactures) {
+        if (this.releveFactures != null) {
+            this.releveFactures.forEach(i -> i.setUser(null));
+        }
+        if (releveFactures != null) {
+            releveFactures.forEach(i -> i.setUser(this));
+        }
+        this.releveFactures = releveFactures;
+    }
+
+    public User releveFactures(Set<ReleveFacture> releveFactures) {
+        this.setReleveFactures(releveFactures);
+        return this;
+    }
+
+    public User addReleveFacture(ReleveFacture releveFacture) {
+        this.releveFactures.add(releveFacture);
+        releveFacture.setUser(this);
+        return this;
+    }
+
+    public User removeReleveFacture(ReleveFacture releveFacture) {
+        this.releveFactures.remove(releveFacture);
+        releveFacture.setUser(null);
+        return this;
+    }
+
+    public Set<Commande> getCommandes() {
+        return this.commandes;
+    }
+
+    public void setCommandes(Set<Commande> commandes) {
+        if (this.commandes != null) {
+            this.commandes.forEach(i -> i.setUser(null));
+        }
+        if (commandes != null) {
+            commandes.forEach(i -> i.setUser(this));
+        }
+        this.commandes = commandes;
+    }
+
+    public User commandes(Set<Commande> commandes) {
+        this.setCommandes(commandes);
+        return this;
+    }
+
+    public User addCommande(Commande commande) {
+        this.commandes.add(commande);
+        commande.setUser(this);
+        return this;
+    }
+
+    public User removeCommande(Commande commande) {
+        this.commandes.remove(commande);
+        commande.setUser(null);
+        return this;
     }
 
     public String getLangKey() {

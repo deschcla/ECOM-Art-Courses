@@ -1,42 +1,43 @@
 package com.ecom.art_courses.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A CarteBancaire.
  */
-@Table("carte_bancaire")
+@Entity
+@Table(name = "carte_bancaire")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class CarteBancaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
-    @Column("ref_carte")
+    @Column(name = "ref_carte")
     private String refCarte;
 
-    @Column("created_at")
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column("update_at")
+    @Column(name = "update_at")
     private Instant updateAt;
 
-    @Transient
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "carteBancaires", "produits", "releveFacture", "acheteur", "ligneCommandes" }, allowSetters = true)
     private Commande commande;
-
-    @Column("commande_id")
-    private Long commandeId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -98,20 +99,11 @@ public class CarteBancaire implements Serializable {
 
     public void setCommande(Commande commande) {
         this.commande = commande;
-        this.commandeId = commande != null ? commande.getId() : null;
     }
 
     public CarteBancaire commande(Commande commande) {
         this.setCommande(commande);
         return this;
-    }
-
-    public Long getCommandeId() {
-        return this.commandeId;
-    }
-
-    public void setCommandeId(Long commande) {
-        this.commandeId = commande;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

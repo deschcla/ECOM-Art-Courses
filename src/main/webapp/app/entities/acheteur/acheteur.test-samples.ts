@@ -3,22 +3,22 @@ import dayjs from 'dayjs/esm';
 import { IAcheteur, NewAcheteur } from './acheteur.model';
 
 export const sampleWithRequiredData: IAcheteur = {
-  id: 7844,
+  id: 93347,
 };
 
 export const sampleWithPartialData: IAcheteur = {
-  id: 29824,
-  adresse: 'Borders Northeast Wooden',
-  createdAt: dayjs('2023-09-12T00:03'),
+  id: 80619,
+  dateNaiss: dayjs('2023-09-14'),
+  numTel: 'Steel Quality',
 };
 
 export const sampleWithFullData: IAcheteur = {
-  id: 12802,
-  adresse: 'South bypassing suspiciously',
-  dateNaiss: dayjs('2023-09-11'),
-  numTel: 'Cruiser modest',
-  createdAt: dayjs('2023-09-12T07:24'),
-  updateAt: dayjs('2023-09-11T22:06'),
+  id: 56030,
+  adresse: 'AI program Engineer',
+  dateNaiss: dayjs('2023-09-14'),
+  numTel: 'front-end Highway Assistant',
+  createdAt: dayjs('2023-09-14T09:44'),
+  updateAt: dayjs('2023-09-14T20:04'),
 };
 
 export const sampleWithNewData: NewAcheteur = {

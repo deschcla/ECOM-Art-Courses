@@ -98,6 +98,24 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="nomProf">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.nomProf">Nom Professeur</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="promotion">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.promotion">Promotion</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="version">
+            <div class="d-flex">
+              <span jhiTranslate="ecomArtCoursesApp.produit.version">Version</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="souscategorie.id">
             <div class="d-flex">
               <span jhiTranslate="ecomArtCoursesApp.produit.souscategorie">Souscategorie</span>
@@ -122,6 +140,9 @@
           <td>{{ produit.quantiteDispo }}</td>
           <td>{{ produit.createdAt | formatMediumDatetime }}</td>
           <td>{{ produit.updateAt | formatMediumDatetime }}</td>
+          <td>{{ produit.nomProf }}</td>
+          <td>{{ produit.promotion }}</td>
+          <td>{{ produit.version }}</td>
           <td>
             <div *ngIf="produit.souscategorie">
               <a [routerLink]="['/sous-categorie', produit.souscategorie.id, 'view']">{{ produit.souscategorie.id }}</a>

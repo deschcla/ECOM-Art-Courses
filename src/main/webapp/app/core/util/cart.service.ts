@@ -11,9 +11,12 @@ import { NotificationService } from './notification.service';
 export class CartService {
   counter: number = 0;
   cart: ILigneCommande[] = [];
+  courses: IProduit[] = [];
+  courseChange: Subject<IProduit[]> = new Subject<IProduit[]>();
   // ligneCommande: NewLigneCommande;
 
   counterChange: Subject<number> = new Subject<number>();
+  searchChange: Subject<string> = new Subject<string>();
 
   constructor(private ntfService: NotificationService) {}
 
@@ -46,5 +49,14 @@ export class CartService {
 
   getCartProducts(): ILigneCommande[] {
     return this.cart;
+  }
+
+  fillCourses(courses: IProduit[]): void {
+    this.courses = courses;
+    this.courseChange.next(this.courses);
+  }
+
+  setSearchValue(value: string): void {
+    this.searchChange.next(value);
   }
 }

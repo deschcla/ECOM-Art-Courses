@@ -18,7 +18,8 @@ describe('CarteBancaire Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CarteBancaireDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [CarteBancaireDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(CarteBancaireDeleteDialogComponent, '')

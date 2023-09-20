@@ -30,10 +30,19 @@ spring:
   jackson:
     serialization:
       indent-output: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/ECOM-Art-Courses
+    username: ECOM-Art-Courses
+    password: root
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
-    url: jdbc:postgresql://localhost:5432/ECOM-Art-Courses
   mail:
     host: localhost
     port: 25
@@ -41,10 +50,6 @@ spring:
     password:
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/ECOM-Art-Courses
-    username: ECOM-Art-Courses
-    password: root
   thymeleaf:
     cache: false
 
@@ -58,6 +63,10 @@ server:
 # ===================================================================
 
 jhipster:
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 100 # Number of objects in each cache entry
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
@@ -73,7 +82,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: MzYzMTFmMzZiYjJiNWFlNGNmZjE3MGRlNmU4MGUyY2Q4Zjc4NDIwYTAyOTUzYjdjZWZjNWY5MGJhZGZkY2FlNWUyYjM0ZTc1ZmQ1OWY1M2Y1OGVhZjYwMGNmNDkzZGE3NTA5ODRhYWE4MWYxMDdmYTY4MGUyZDg2NGI3OGUwMDY=
+        base64-secret: ZjFkYTRhMGNjZDg1YTFkNDc3NDM4ZjY2YjliY2RiMzY0NGVjNzJhYjAzYjk4ZGY0MDEyMGNmZDZmYzlhMjRkMTJmMzAyZGQ3MjQ3YmZkZjlmOGQ2NTJhZDY4ODNmNDI2MzI4NjRhNzMyNTkxZjE0MjQ3MDI4ZTAwZjcxOTU3MzY=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
@@ -85,7 +94,7 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
-      ring-buffer-size: 512
+      queue-size: 512
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

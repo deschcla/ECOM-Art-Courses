@@ -1,4 +1,4 @@
-id;montant;created_at;update_at;acheteur_id
+﻿id;montant;created_at;update_at;acheteur_id
 1;40;2023-09-12T10:00:22;2023-09-12T10:00:22;3
 2;40;2023-09-12T10:00:22;2023-09-12T10:00:22;2
 3;40;2023-09-12T10:00:22;2023-09-12T10:00:22;4

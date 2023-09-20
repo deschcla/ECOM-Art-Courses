@@ -16,11 +16,8 @@ describe('Acheteur Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([{ path: 'acheteur', component: AcheteurComponent }]),
-        HttpClientTestingModule,
-        AcheteurComponent,
-      ],
+      imports: [RouterTestingModule.withRoutes([{ path: 'acheteur', component: AcheteurComponent }]), HttpClientTestingModule],
+      declarations: [AcheteurComponent],
       providers: [
         {
           provide: ActivatedRoute,

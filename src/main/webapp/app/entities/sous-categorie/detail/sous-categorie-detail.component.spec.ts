@@ -1,38 +1,36 @@
-import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { SousCategorieDetailComponent } from './sous-categorie-detail.component';
 
 describe('SousCategorie Management Detail Component', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SousCategorieDetailComponent, RouterTestingModule.withRoutes([], { bindToComponentInputs: true })],
+  let comp: SousCategorieDetailComponent;
+  let fixture: ComponentFixture<SousCategorieDetailComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [SousCategorieDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: SousCategorieDetailComponent,
-              resolve: { sousCategorie: () => of({ id: 123 }) },
-            },
-          ],
-          withComponentInputBinding()
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ sousCategorie: { id: 123 } }) },
+        },
       ],
     })
       .overrideTemplate(SousCategorieDetailComponent, '')
       .compileComponents();
+    fixture = TestBed.createComponent(SousCategorieDetailComponent);
+    comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load sousCategorie on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', SousCategorieDetailComponent);
+    it('Should load sousCategorie on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.sousCategorie).toEqual(expect.objectContaining({ id: 123 }));
+      expect(comp.sousCategorie).toEqual(expect.objectContaining({ id: 123 }));
     });
   });
 });

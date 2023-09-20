@@ -18,7 +18,8 @@ describe('Acheteur Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AcheteurDeleteDialogComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [AcheteurDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
       .overrideTemplate(AcheteurDeleteDialogComponent, '')
