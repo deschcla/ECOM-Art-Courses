@@ -19,6 +19,14 @@ export class S3Service {
     }
   }
 
+  async getImageFromS3(key: String): Promise<Observable<any>> {
+    try {
+      return this.httpClient.post<any>('api/produits/images', key);
+    } catch (error) {
+      this.key = 'Error: ' + error;
+      throw error;
+    }
+  }
   private loadImageAsBinary(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

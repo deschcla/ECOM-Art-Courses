@@ -32,7 +32,7 @@ public class ProduitResource {
     private final Logger log = LoggerFactory.getLogger(ProduitResource.class);
 
     private static final String ENTITY_NAME = "produit";
-    private final S3ServiceImpl s3ImageUploadService;
+    private final S3ServiceImpl s3Service;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -44,7 +44,7 @@ public class ProduitResource {
     public ProduitResource(ProduitService produitService, ProduitRepository produitRepository, S3ServiceImpl s3ImageUploadService) {
         this.produitService = produitService;
         this.produitRepository = produitRepository;
-        this.s3ImageUploadService = s3ImageUploadService;
+        this.s3Service = s3ImageUploadService;
     }
 
     /**
@@ -189,16 +189,24 @@ public class ProduitResource {
     }
 
     @PostMapping("/produits/upload")
-    public ResponseEntity<S3Resource> uploadImage(@RequestBody String file) {
-        String fileUrl = "";
+    public ResponseEntity<S3Resource> uploadImage(@RequestBody String fileBase64) {
+        String fileUrl;
         Optional<S3Resource> response = null;
         try {
-            File trueFile = this.convertBase64StringToFile(file);
-            s3ImageUploadService.uploadImage(trueFile);
-            fileUrl = "images/" + trueFile.getName();
-            trueFile.delete();
+            File file = this.convertBase64StringToFile(fileBase64);
+            s3Service.uploadImage(file);
+            fileUrl = "images/" + file.getName();
+            file.delete();
             response = Optional.of(new S3Resource(fileUrl));
         } catch (IOException e) {}
+        return ResponseUtil.wrapOrNotFound(response);
+    }
+
+    @PostMapping("/produits/images")
+    public ResponseEntity<S3Resource> getImage(@RequestBody String key) {
+        Optional<S3Resource> response = null;
+        String url = s3Service.getPresignedURL(key);
+        response = Optional.of(new S3Resource(key, url));
         return ResponseUtil.wrapOrNotFound(response);
     }
 }

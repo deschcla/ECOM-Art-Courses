@@ -18,7 +18,9 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   display = 'none';
   private readonly destroy$ = new Subject<void>();
-  selectedFile?: string;
+  //selectedFile?: string;
+  imageURL: string = '';
+  imageKey: string = 'images/1695246743711.jpg';
   key?: string;
   constructor(
     private accountService: AccountService,
@@ -30,6 +32,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // this.getURL();
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
@@ -65,6 +68,23 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   //       console.log('No image selected.');
   //     }
   // }
+
+  // async getURL(){
+  //   (await this.s3Service.getImageFromS3(this.imageKey)).subscribe(res=>{
+  //     this.imageURL = res.body;
+  //   })
+  // }
+
+  // async getImageURL(key:string){
+  //   (await this.s3Service.getImageFromS3(key)).subscribe(response => {
+  //       this.key = response.key
+  //     },
+  //     error => {
+  //       console.error('Error:', error);
+  //     })
+  //
+  // }
+
   //  end
 
   addToCart(course: IProduit, event: Event): void {

@@ -3,11 +3,15 @@ package com.ecom.art_courses.domain;
 public class S3Resource {
 
     private String key;
-
-    public S3Resource() {}
+    private String body;
 
     public S3Resource(String key) {
         this.key = key;
+    }
+
+    public S3Resource(String key, String body) {
+        this.key = key;
+        this.body = body;
     }
 
     public String getKey() {
@@ -18,13 +22,16 @@ public class S3Resource {
         this.key = key;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "S3Resource{" + "key='" + key + '\'' + ", body='" + body + '\'' + '}';
     }
 }
