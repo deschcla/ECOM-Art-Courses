@@ -1,9 +1,9 @@
 package com.ecom.art_courses.service;
 
 import com.ecom.art_courses.config.Constants;
-import com.ecom.art_courses.domain.Authority;
-import com.ecom.art_courses.domain.User;
+import com.ecom.art_courses.domain.*;
 import com.ecom.art_courses.repository.AuthorityRepository;
+import com.ecom.art_courses.repository.CommandeRepository;
 import com.ecom.art_courses.repository.UserRepository;
 import com.ecom.art_courses.security.AuthoritiesConstants;
 import com.ecom.art_courses.security.SecurityUtils;
@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.hibernate.loader.entity.NaturalIdEntityJoinWalker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -35,6 +36,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final CommandeRepository commandeRepository;
+    private final CommandeService commandeService;
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -43,11 +46,15 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
+        CommandeRepository commandeRepository,
+        CommandeService commandeService,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
+        this.commandeRepository = commandeRepository;
+        this.commandeService = commandeService;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -132,6 +139,17 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        Commande newCommande = new Commande();
+        newCommande.setId(newUser.getId());
+        newCommande.setMontant(0F);
+        newCommande.setValidated(0);
+        newCommande.setCreatedAt(Instant.now());
+        newCommande.setUpdateAt(Instant.now());
+        newCommande.setUser(newUser);
+        commandeService.save(newCommande);
+        log.debug("Created Information for Commande: {}", newCommande);
+
         return newUser;
     }
 

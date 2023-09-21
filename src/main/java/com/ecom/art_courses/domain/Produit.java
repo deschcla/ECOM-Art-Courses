@@ -238,7 +238,7 @@ public class Produit implements Serializable {
     }
 
     public void setNomProf(String nomProf) {
-        this.nomProf = nomProduit;
+        this.nomProf = nomProf;
     }
 
     public String getPromotion() {

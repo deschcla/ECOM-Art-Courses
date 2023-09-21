@@ -7,11 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.ecom.art_courses.IntegrationTest;
-import com.ecom.art_courses.domain.Acheteur;
-import com.ecom.art_courses.domain.CarteBancaire;
-import com.ecom.art_courses.domain.Commande;
-import com.ecom.art_courses.domain.Produit;
-import com.ecom.art_courses.domain.ReleveFacture;
+//import com.ecom.art_courses.domain.Acheteur;
+import com.ecom.art_courses.domain.*;
 import com.ecom.art_courses.repository.CommandeRepository;
 import com.ecom.art_courses.service.CommandeService;
 import java.time.Instant;
@@ -122,15 +119,24 @@ class CommandeResourceIT {
         }
         commande.setReleveFacture(releveFacture);
         // Add required entity
-        Acheteur acheteur;
-        if (TestUtil.findAll(em, Acheteur.class).isEmpty()) {
-            acheteur = AcheteurResourceIT.createEntity(em);
-            em.persist(acheteur);
+        //        Acheteur acheteur;
+        //        if (TestUtil.findAll(em, Acheteur.class).isEmpty()) {
+        //            acheteur = AcheteurResourceIT.createEntity(em);
+        //            em.persist(acheteur);
+        //            em.flush();
+        //        } else {
+        //            acheteur = TestUtil.findAll(em, Acheteur.class).get(0);
+        //        }
+        //        commande.setAcheteur(acheteur);
+        User user;
+        if (TestUtil.findAll(em, User.class).isEmpty()) {
+            user = UserResourceIT.createEntity(em);
+            em.persist(user);
             em.flush();
         } else {
-            acheteur = TestUtil.findAll(em, Acheteur.class).get(0);
+            user = TestUtil.findAll(em, User.class).get(0);
         }
-        commande.setAcheteur(acheteur);
+        commande.setUser(user);
         return commande;
     }
 
@@ -177,15 +183,24 @@ class CommandeResourceIT {
         }
         commande.setReleveFacture(releveFacture);
         // Add required entity
-        Acheteur acheteur;
-        if (TestUtil.findAll(em, Acheteur.class).isEmpty()) {
-            acheteur = AcheteurResourceIT.createUpdatedEntity(em);
-            em.persist(acheteur);
+        //        Acheteur acheteur;
+        //        if (TestUtil.findAll(em, Acheteur.class).isEmpty()) {
+        //            acheteur = AcheteurResourceIT.createUpdatedEntity(em);
+        //            em.persist(acheteur);
+        //            em.flush();
+        //        } else {
+        //            acheteur = TestUtil.findAll(em, Acheteur.class).get(0);
+        //        }
+        //        commande.setAcheteur(acheteur);
+        User user;
+        if (TestUtil.findAll(em, User.class).isEmpty()) {
+            user = UserResourceIT.createEntity(em);
+            em.persist(user);
             em.flush();
         } else {
-            acheteur = TestUtil.findAll(em, Acheteur.class).get(0);
+            user = TestUtil.findAll(em, User.class).get(0);
         }
-        commande.setAcheteur(acheteur);
+        commande.setUser(user);
         return commande;
     }
 

@@ -19,7 +19,7 @@
     "enableHibernateCache": true,
     "enableSwaggerCodegen": false,
     "enableTranslation": true,
-    "entities": ["Acheteur", "Produit", "Categorie", "SousCategorie", "Commande", "LigneCommande", "CarteBancaire", "ReleveFacture"],
+    "entities": ["Produit", "Categorie", "SousCategorie", "Commande", "LigneCommande", "CarteBancaire", "ReleveFacture"],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.9.4",
