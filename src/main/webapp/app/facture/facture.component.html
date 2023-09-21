@@ -1,3 +1,4 @@
+<jhi-notification></jhi-notification>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
 <div class="centerDiv">
   <div class="container">
@@ -15,16 +16,14 @@
         <div class="invoice-header">
           <div class="invoice-to">
             <address class="m-t-5 m-b-5">
-              <strong class="text-inverse"
-                >{{ releveFacture.acheteur?.internalUser?.firstName }} {{ releveFacture.acheteur?.internalUser?.lastName }}</strong
+              <strong class="text-inverse">{{ releveFacture.user?.firstName }} {{ releveFacture.user?.lastName }}</strong
               ><br />
-              {{ releveFacture.acheteur?.internalUser?.email }} <br />
-              {{ releveFacture.acheteur?.internalUser?.numTel }}
+              {{ releveFacture.user?.email }}
             </address>
           </div>
           <div class="invoice-date">
             <small>Facture</small>
-            <div class="date text-inverse m-t-5">{{ date }}</div>
+            <div class="date text-inverse m-t-5">{{ date | date : 'dd/MM/YYYY' }}</div>
             <div class="invoice-detail">#{{ releveFacture.id }}</div>
           </div>
         </div>

@@ -11,9 +11,7 @@ export class AuthService {
   constructor(private cartService: CartService) {}
 
   public isAuthenticated(): boolean {
-    this.cartService.panierChange.subscribe(value => {
-      this.cart = value;
-    });
+    this.cart = this.cartService.getCartProducts();
     return this.cart.length !== 0;
   }
 }

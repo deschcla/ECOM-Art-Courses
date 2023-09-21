@@ -6,6 +6,8 @@ import { IProduit } from 'app/entities/produit/produit.model';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-cart',
@@ -17,6 +19,7 @@ export class CartComponent implements OnInit {
   commandes: ILigneCommande[] = [];
   selectedAmount: number = 1;
   course: IProduit | null = null;
+  account: Account | null;
   faTrashCan = faTrashCan;
   protected readonly parseInt = parseInt;
   display = 'none';
@@ -26,17 +29,14 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private titleService: Title,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
     this.translateService.get('cart.title').subscribe(title => this.titleService.setTitle(title));
-    this.cartService.getCartProducts().subscribe({
-      next: value => {
-        this.commandes = value;
-      },
-      complete: () => this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0)),
-    });
+    this.commandes = this.cartService.getCartProducts();
+    this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0));
   }
 
   public calcMontant(): number {
@@ -68,7 +68,6 @@ export class CartComponent implements OnInit {
   }
 
   removeILigneCommande(commandeChoosen: ILigneCommande): void {
-    console.log(commandeChoosen);
     this.cartService.deleteCartProducts(commandeChoosen);
     this.updateQuantity();
     this.display = 'none';

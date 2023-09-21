@@ -6,8 +6,12 @@ import { CartService } from 'app/core/util/cart.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
+import { NewReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
 import dayjs from 'dayjs/esm';
+import { AccountService } from 'app/core/auth/account.service';
+import { LigneCommandeService } from 'app/entities/ligne-commande/service/ligne-commande.service';
+import { ProduitService } from 'app/entities/produit/service/produit.service';
+import { ReleveFactureService } from 'app/entities/releve-facture/service/releve-facture.service';
 
 @Component({
   selector: 'jhi-payment',
@@ -43,14 +47,16 @@ export class PaymentComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private titleService: Title,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private accountService: AccountService,
+    private ligneCommandeService: LigneCommandeService,
+    private produitService: ProduitService,
+    private releveFactureService: ReleveFactureService
   ) {}
 
   ngOnInit(): void {
     this.translateService.get('payment.title').subscribe(title => this.titleService.setTitle(title));
-    this.cartService.panierChange.subscribe(value => {
-      this.commandes = value;
-    });
+    this.commandes = this.cartService.cart;
     this.commandes.forEach(commande => (this.quantite += commande.quantite != null ? commande.quantite : 0));
   }
 
@@ -69,24 +75,48 @@ export class PaymentComponent implements OnInit {
   }
 
   public validatePayment(): void {
-    // alert(this.paymentForm.status);
-    const releveFacture: IReleveFacture = {
-      id: 1,
-      montant: +(this.calcMontant() * 1.2).toFixed(2),
-      createdAt: dayjs('2023-09-12T08:00:22Z'),
-      acheteur: {
-        id: 1,
-        internalUser: {
-          id: 1,
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john@doe.com',
-          numTel: '+33769289876',
-        },
+    this.accountService.identity().subscribe({
+      next: account => {
+        const releveFacture: NewReleveFacture = {
+          id: null,
+          montant: +this.calcMontant().toFixed(2),
+          createdAt: dayjs(),
+          updateAt: dayjs(),
+          user: {
+            id: account?.id ? account.id : -1,
+            firstName: account?.firstName ? account.firstName : undefined,
+            lastName: account?.lastName ? account.lastName : undefined,
+            email: account?.email ? account.email : undefined,
+          },
+        };
+        this.commandes.forEach(commande => {
+          commande.validated = 1;
+          commande.updateAt = dayjs();
+          this.ligneCommandeService.update(commande).subscribe({
+            next: () => {
+              commande.produit!.quantiteDispo = commande.produit!.quantiteDispo! - commande.quantite!;
+              const dateOld = commande.produit?.date;
+              const createdAtOld = commande.produit?.createdAt;
+              const updateAtOld = commande.produit?.updateAt;
+              commande.produit!.date = dayjs(dateOld);
+              commande.produit!.createdAt = dayjs(createdAtOld);
+              commande.produit!.updateAt = dayjs(updateAtOld);
+              this.produitService.find(commande.produit!.id).subscribe({
+                next: value => {
+                  commande.produit!['souscategorie'] = value.body?.souscategorie ? value.body.souscategorie : null;
+                  this.produitService.update(commande.produit!).subscribe();
+                },
+              });
+            },
+          });
+        });
+        this.releveFactureService.create(releveFacture).subscribe({
+          next: val => {
+            this.router.navigateByUrl('/facture', { state: val.body! });
+          },
+        });
       },
-    };
-    console.log(releveFacture);
-    this.router.navigateByUrl('/facture', { state: releveFacture });
+    });
   }
 
   viewDetails(courseId: number): void {

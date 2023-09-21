@@ -43,7 +43,7 @@ export class NotificationComponent implements OnInit {
     const text = this.renderer.createText(notification.message);
     this.renderer.appendChild(content, text);
 
-    this.renderer.appendChild(this.container.nativeElement, notificationBox);
+    this.renderer.appendChild(document.querySelector('.notif'), notificationBox);
     this.renderer.appendChild(notificationBox, content);
 
     setTimeout(() => {

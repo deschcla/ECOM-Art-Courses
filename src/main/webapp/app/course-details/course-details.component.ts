@@ -68,7 +68,7 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
 
   addToCart(course: IProduit, amount: number): void {
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
-      this.cartService.addToCart(course, amount);
+      this.cartService.addToCart(course, amount, this.account);
     } else {
       this.display = 'block';
     }

@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
+import { Subject } from 'rxjs';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { LigneCommandeService } from 'app/entities/ligne-commande/service/ligne-commande.service';
 import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
-import { AccountService } from '../auth/account.service';
 import { Account } from '../auth/account.model';
 import dayjs from 'dayjs/esm';
 import { NotificationService } from './notification.service';
-import { CommandeService } from 'app/entities/commande/service/commande.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -22,52 +19,32 @@ export class CartService {
   panierChange: Subject<ILigneCommande[]> = new Subject<ILigneCommande[]>();
   counterChange: Subject<number> = new Subject<number>();
   searchChange: Subject<string> = new Subject<string>();
-  accountChange: Subject<Account> = new Subject<Account>();
+  accountChange: Subject<Account | null> = new Subject<Account | null>();
 
-  constructor(
-    private ligneCommandeService: LigneCommandeService,
-    private accountService: AccountService,
-    private ntfService: NotificationService,
-    private commandeService: CommandeService
-  ) {}
+  constructor(private ligneCommandeService: LigneCommandeService, private ntfService: NotificationService) {}
 
-  getUser(): Subject<Account> {
-    if (this.account == null) {
-      this.accountService
-        .identity()
-        .pipe()
-        .subscribe(account => {
-          console.log(account);
-          this.account = account;
-          this.accountChange.next(this.account!);
-        });
-    }
-    return this.accountChange;
-  }
-
-  addToCart(course: IProduit, num: number): void {
-    this.getUser().subscribe({
-      next: () => {
-        this.ligneCommandeService
-          .create({
-            id: null,
-            quantite: num,
-            montant: course.tarifUnit! * num,
-            validated: 0,
-            nomParticipant: this.account?.firstName?.concat(' ', this.account.lastName ? this.account.lastName : ''),
-            createdAt: dayjs(),
-            updateAt: dayjs(),
-            produit: course,
-            commande: {
-              id: this.account?.id ? this.account.id : -1,
-            },
-          })
-          .subscribe({
-            next: () => this.counterChange.next((this.counter += num)),
-            error: error => console.log(error),
-            complete: () => this.ntfService.notifyBanner('Success', 'Produit ajouté au panier avec succès'),
-          });
+  addToCart(course: IProduit, num: number, account: Account): void {
+    const newLigneCommande = {
+      id: null,
+      quantite: num,
+      montant: course.tarifUnit! * num,
+      validated: 0,
+      nomParticipant: account.firstName?.concat(' ', account.lastName ? account.lastName : ''),
+      createdAt: dayjs(),
+      updateAt: dayjs(),
+      produit: course,
+      commande: {
+        id: account.id ? account.id : -1,
       },
+    };
+    this.ligneCommandeService.create(newLigneCommande).subscribe({
+      next: value => {
+        this.cart.push(value.body!);
+        this.counterChange.next((this.counter += num));
+        this.panierChange.next(this.cart);
+      },
+      error: error => this.ntfService.notifyBanner('Error', error),
+      complete: () => this.ntfService.notifyBanner('Success', 'Produit ajouté au panier avec succès'),
     });
   }
 
@@ -81,17 +58,17 @@ export class CartService {
       next: () => {
         this.cart.forEach(commande => {
           if (course.produit === commande.produit) {
-            this.counterChange.next((this.counter = this.counter - commande.quantite! + num));
+            this.calculateQuantity();
             commande.quantite = num;
           }
         });
       },
-      error: err => console.log(err),
+      error: err => this.ntfService.notifyBanner('Error', err),
       complete: () => {
         if (num === 0) {
-          this.ntfService.notifyBanner('Success', 'item deleted');
+          this.ntfService.notifyBanner('Success', 'Ce produit a été supprimé de votre panier.');
         } else {
-          this.ntfService.notifyBanner('Success', 'item quantity updated to ' + num.toString());
+          this.ntfService.notifyBanner('Success', 'La quantité de ce produit a été mise à jour à ' + num.toString());
         }
       },
     });
@@ -99,48 +76,16 @@ export class CartService {
 
   deleteCartProducts(commandeChoosen: ILigneCommande): void {
     this.changeToCart(commandeChoosen, 0);
-    // this.ligneCommandeService.delete(commandeChoosen).subscribe({
-    //   next: value=>console.log("deleted"),
-    //   error: err => console.log(err)
-    // })
-    // this.cart.forEach((item, index) => {
-    //   if (item.id === commandeChoosen.id) {
-    //     this.cart.splice(index, 1);
-    //     this.counterChange.next((this.counter -= commandeChoosen.quantite!));
-    //   }
-    // });
+    this.cart.forEach((item, index) => {
+      if (item.id === commandeChoosen.id) {
+        this.cart.splice(index, 1);
+        this.calculateQuantity();
+      }
+    });
   }
 
-  getCartProducts(): Subject<ILigneCommande[]> {
-    // let res: ILigneCommande[] = [];
-    // this.cart.forEach(commande => {
-    //   if (commande.produit?.quantiteDispo == 0) {
-    //     this.deleteCartProducts(commande);
-    //   }
-    //   res = this.cart;
-    // });
-    // return res;
-    this.getUser().subscribe({
-      next: () => {
-        if (this.account?.id) {
-          this.commandeService
-            .getPanier(this.account.id)
-            .pipe(map((res: HttpResponse<ILigneCommande[]>) => res.body ?? []))
-
-            .subscribe({
-              next: (value: ILigneCommande[]) => {
-                this.cart = value;
-                this.panierChange.next(this.cart);
-              },
-              complete: () => {
-                this.calculateQuantity();
-              },
-            });
-        }
-      },
-    });
-    console.log(this.cart);
-    return this.panierChange;
+  getCartProducts(): ILigneCommande[] {
+    return this.cart;
   }
 
   calculateQuantity(): void {
