@@ -184,5 +184,8 @@
   "payment": {
     "title": "Payment Page"
   },
+  "cart": {
+    "title": "Basket"
+  },
   "footer": "This is your footer"
 }

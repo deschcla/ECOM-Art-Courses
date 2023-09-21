@@ -29,6 +29,7 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CartComponent } from './cart/cart.component';
 import { NotificationComponent } from './notification/notification.component';
 import { FactureComponent } from './facture/facture.component';
 
@@ -63,6 +64,7 @@ import { FactureComponent } from './facture/facture.component';
     ErrorComponent,
     PageRibbonComponent,
     FooterComponent,
+    CartComponent,
     FactureComponent,
     NotificationComponent,
   ],

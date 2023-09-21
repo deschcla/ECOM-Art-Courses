@@ -209,6 +209,7 @@ public class CommandeResource {
         List<LigneCommande> nonVerifieesLigneCommandes = ligneCommandes
             .stream()
             .filter(lc -> lc.getValidated() == 0)
+            .filter(lc -> lc.getQuantite() > 0)
             .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(nonVerifieesLigneCommandes);

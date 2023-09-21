@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 import { StateStorageService } from 'app/core/auth/state-storage.service';
@@ -17,6 +17,7 @@ import { CartService } from 'app/core/util/cart.service';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IProduit } from '../../entities/produit/produit.model';
 import { ProduitService } from '../../entities/produit/service/produit.service';
+import { NotificationService } from 'app/core/util/notification.service';
 
 @Component({
   standalone: true,
@@ -48,7 +49,8 @@ export default class NavbarComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router,
     private cartService: CartService,
-    private produitService: ProduitService
+    private produitService: ProduitService,
+    private ntfService: NotificationService
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -70,12 +72,11 @@ export default class NavbarComponent implements OnInit {
     });
     this.cartService.searchChange.subscribe(value => {
       this.searchForm.controls.search.setValue(value);
-      // this.search();
     });
 
     this.produitService.query().subscribe({
       next: value => (this.courses = value.body),
-      error: error => console.log(error),
+      error: error => this.ntfService.notifyBanner('Error', error),
       complete: () => {
         this.router.events.subscribe(() => {
           if (this.searchForm.value.search !== '') {

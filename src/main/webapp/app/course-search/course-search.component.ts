@@ -59,7 +59,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
           this.updateCourses(value.body!);
           this.cartService.fillCourses(value.body!);
         },
-        error: error => console.log(error),
+        error: error => this.ntfService.notifyBanner('Error', error),
       });
     }
   }
@@ -95,7 +95,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   }
   addToCart(course: IProduit, event: Event): void {
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
-      this.cartService.addToCart(course, 1);
+      this.cartService.addToCart(course, 1, this.account);
       course.clicked = true;
     } else {
       this.display = 'block';

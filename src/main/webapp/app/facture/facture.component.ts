@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'app/core/util/cart.service';
+import { NotificationService } from 'app/core/util/notification.service';
 import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model';
 import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model';
 
@@ -12,15 +13,17 @@ import { IReleveFacture } from 'app/entities/releve-facture/releve-facture.model
 export class FactureComponent implements OnInit {
   commandes: ILigneCommande[] = [];
   releveFacture: IReleveFacture;
-  date: string;
+  date: Date;
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(private cartService: CartService, private router: Router, private ntfService: NotificationService) {}
 
   ngOnInit(): void {
-    this.commandes = this.cartService.getCartProducts();
+    this.commandes = this.cartService.cart;
     this.releveFacture = window.history.state;
-    this.date = '12/12/2012';
-    console.log(this.releveFacture);
+    this.cartService.counterChange.next(0);
+    this.cartService.cart = [];
+    this.date = new Date();
+    this.ntfService.notifyBanner('Success', 'Achat finalisé!');
   }
 
   public calcMontant(): number {

@@ -39,7 +39,7 @@
           [routerLinkActiveOptions]="{ exact: true }"
           *ngSwitchCase="account?.authorities?.includes('ROLE_USER') && !account?.authorities?.includes('ROLE_ADMIN')"
         >
-          <a class="nav-link" routerLink="/payment" (click)="collapseNavbar()" [class.disabled]="counter == 0">
+          <a class="nav-link" routerLink="/cart" (click)="collapseNavbar()" [class.disabled]="counter == 0">
             <span>
               <fa-icon icon="cart-shopping"></fa-icon>
               <span class="badge bg-danger cartCounter">{{ counter }}</span>
