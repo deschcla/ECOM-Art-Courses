@@ -30,6 +30,9 @@
     <include file="config/liquibase/changelog/20230915141630_updated_entity_Produit.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230915141630_updated_with_version.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/20230919174200_updated_user_reference.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230921141630_updated_entity_Produit.xml" relativeToChangelogFile="false"/>
+
+
 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
