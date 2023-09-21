@@ -44,7 +44,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
     this.getProducts();
     this.cartService.courseChange.subscribe({
       next: value => {
-        console.log(this.courses);
         this.courses = value;
         this.getProducts();
       },
