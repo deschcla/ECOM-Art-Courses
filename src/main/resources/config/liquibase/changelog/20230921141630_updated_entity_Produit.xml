@@ -19,6 +19,12 @@
         </loadUpdateData>
     </changeSet>
 
+    <changeSet id="2023092114160-8" author="mgradvohl">
+        <modifyDataType  columnName="lien_img"
+                         newDataType="varchar(1000)"
+                         tableName="produit"/>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
