@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {
-        path: 'acheteur',
-        data: { pageTitle: 'ecomArtCoursesApp.acheteur.home.title' },
-        loadChildren: () => import('./acheteur/acheteur.module').then(m => m.AcheteurModule),
-      },
+      // {
+      //   path: 'acheteur',
+      //   data: { pageTitle: 'ecomArtCoursesApp.acheteur.home.title' },
+      //   loadChildren: () => import('./acheteur/acheteur.module').then(m => m.AcheteurModule),
+      // },
       {
         path: 'produit',
         data: { pageTitle: 'ecomArtCoursesApp.produit.home.title' },

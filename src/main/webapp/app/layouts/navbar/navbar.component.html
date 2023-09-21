@@ -3,7 +3,7 @@
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
       <span jhiTranslate="global.title" class="navbar-title">Institut d'Art de Grenoble</span>
-      <span class="navbar-version">{{ version }}</span>
+      <!--      <span class="navbar-version">{{ version }}</span>-->
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -82,18 +82,18 @@
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-            <li>
-              <a
-                class="dropdown-item"
-                routerLink="/acheteur"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="collapseNavbar()"
-              >
-                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.acheteur">Acheteur</span>
-              </a>
-            </li>
+            <!--            <li>-->
+            <!--              <a-->
+            <!--                class="dropdown-item"-->
+            <!--                routerLink="/acheteur"-->
+            <!--                routerLinkActive="active"-->
+            <!--                [routerLinkActiveOptions]="{ exact: true }"-->
+            <!--                (click)="collapseNavbar()"-->
+            <!--              >-->
+            <!--                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+            <!--                <span jhiTranslate="global.menu.entities.acheteur">Acheteur</span>-->
+            <!--              </a>-->
+            <!--            </li>-->
             <li>
               <a
                 class="dropdown-item"
