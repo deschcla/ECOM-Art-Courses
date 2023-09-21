@@ -48,15 +48,15 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       complete: () => this.getProducts(),
     });
   }
-  async updateCourses(courses) {
-    this.getURL(courses);
+  async updateCourse(course) {
+    this.getURL(course);
   }
 
   getProducts(): void {
     if (this.courses?.length === 0) {
       this.produitService.query().subscribe({
         next: value => {
-          this.updateCourses(value.body!);
+          this.updateCourse(value.body!);
           this.cartService.fillCourses(value.body!);
         },
         error: error => console.log(error),

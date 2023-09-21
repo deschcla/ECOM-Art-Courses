@@ -9,6 +9,7 @@ import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { LoginService } from '../login/login.service';
 import { Title } from '@angular/platform-browser';
 import { FormGroup } from '@angular/forms';
+import { S3Service } from '../S3/s3.service';
 
 @Component({
   selector: 'jhi-course-details',
@@ -18,6 +19,7 @@ import { FormGroup } from '@angular/forms';
 export class CourseDetailsComponent implements OnInit, OnDestroy {
   idProduit: number;
   course: IProduit | null = null;
+  courseUpdated: IProduit | null = null;
   account: Account | null = null;
   selectedAmount: number = 1;
   display = 'none';
@@ -33,7 +35,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private produitService: ProduitService,
     private router: Router,
     private loginService: LoginService,
-    private titleService: Title
+    private titleService: Title,
+    private s3Service: S3Service
   ) {}
 
   ngOnInit(): void {
@@ -46,10 +49,20 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       this.idProduit = params['id'];
       this.produitService.find(this.idProduit).subscribe({
         next: value => {
+          this.updateCourse(value.body).then();
           this.course = value.body;
           this.titleService.setTitle(this.course?.nomProduit ? this.course.nomProduit : 'global.title');
         },
       });
+    });
+  }
+  async updateCourse(course) {
+    this.getURL(course);
+  }
+
+  async getURL(produit: IProduit) {
+    (await this.s3Service.getImageFromS3(produit.lienImg!)).subscribe(res => {
+      produit.lienImg = res.body;
     });
   }
 
