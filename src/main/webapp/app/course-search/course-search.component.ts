@@ -19,11 +19,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class CourseSearchComponent implements OnInit, OnDestroy {
   courses: IProduit[] | null = [];
-  coursesUpdated: IProduit[] | null = [];
   account: Account | null = null;
   display = 'none';
   private readonly destroy$ = new Subject<void>();
-  key?: string;
+
   constructor(
     private accountService: AccountService,
     private router: Router,
@@ -44,19 +43,25 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
 
     this.getProducts();
     this.cartService.courseChange.subscribe({
-      next: value => (this.courses = value),
-      complete: () => this.getProducts(),
+      next: value => {
+        console.log(this.courses);
+        this.courses = value;
+        this.getProducts();
+      },
     });
-  }
-  async updateCourses(courses) {
-    this.getURL(courses);
   }
 
   getProducts(): void {
     if (this.courses?.length === 0) {
       this.produitService.query().subscribe({
         next: value => {
-          this.updateCourses(value.body!);
+          value.body?.forEach(val => {
+            this.s3Service.getImageFromS3(val.lienImg!).then(res => {
+              res.subscribe(obj => {
+                val.lienImg = obj.body;
+              });
+            });
+          });
           this.cartService.fillCourses(value.body!);
         },
         error: error => this.ntfService.notifyBanner('Error', error),
@@ -71,28 +76,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   viewDetails(course: IProduit): void {
     this.router.navigateByUrl('/course-details/' + course.id.toString());
   }
-  async getURL(objects: IProduit[]) {
-    for (const obj of objects) {
-      (await this.s3Service.getImageFromS3(obj.lienImg!)).subscribe(res => {
-        obj.lienImg = res.body;
-        this.coursesUpdated?.push({
-          ...obj,
-          lienImg: obj.lienImg || '',
-        });
-      });
-    }
-  }
 
-  async getImageURL(key: string) {
-    (await this.s3Service.getImageFromS3(key)).subscribe(
-      response => {
-        this.key = response.key;
-      },
-      error => {
-        console.error('Error:', error);
-      }
-    );
-  }
   addToCart(course: IProduit, event: Event): void {
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1, this.account);

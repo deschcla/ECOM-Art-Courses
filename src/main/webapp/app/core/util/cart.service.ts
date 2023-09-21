@@ -6,6 +6,7 @@ import { ILigneCommande } from 'app/entities/ligne-commande/ligne-commande.model
 import { Account } from '../auth/account.model';
 import dayjs from 'dayjs/esm';
 import { NotificationService } from './notification.service';
+import { S3Service } from 'app/S3/s3.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class CartService {
   searchChange: Subject<string> = new Subject<string>();
   accountChange: Subject<Account | null> = new Subject<Account | null>();
 
-  constructor(private ligneCommandeService: LigneCommandeService, private ntfService: NotificationService) {}
+  constructor(private ligneCommandeService: LigneCommandeService, private ntfService: NotificationService, private s3Service: S3Service) {}
 
   addToCart(course: IProduit, num: number, account: Account): void {
     const newLigneCommande = {

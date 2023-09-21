@@ -9,6 +9,7 @@ import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { LoginService } from '../login/login.service';
 import { Title } from '@angular/platform-browser';
 import { FormGroup } from '@angular/forms';
+import { S3Service } from 'app/S3/s3.service';
 
 @Component({
   selector: 'jhi-course-details',
@@ -33,7 +34,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private produitService: ProduitService,
     private router: Router,
     private loginService: LoginService,
-    private titleService: Title
+    private titleService: Title,
+    private s3Service: S3Service
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +49,11 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       this.produitService.find(this.idProduit).subscribe({
         next: value => {
           this.course = value.body;
+          this.s3Service.getImageFromS3(this.course!.lienImg!).then(res => {
+            res.subscribe(obj => {
+              this.course!.lienImg = obj.body;
+            });
+          });
           this.titleService.setTitle(this.course?.nomProduit ? this.course.nomProduit : 'global.title');
         },
       });
