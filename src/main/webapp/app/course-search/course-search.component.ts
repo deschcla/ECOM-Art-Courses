@@ -19,12 +19,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class CourseSearchComponent implements OnInit, OnDestroy {
   courses: IProduit[] | null = [];
+  coursesUpdated: IProduit[] | null = [];
   account: Account | null = null;
   display = 'none';
   private readonly destroy$ = new Subject<void>();
-  //selectedFile?: string;
-  imageURL: string = '';
-  imageKey: string = 'images/1695246743711.jpg';
   key?: string;
   constructor(
     private accountService: AccountService,
@@ -50,18 +48,21 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
       complete: () => this.getProducts(),
     });
   }
+  async updateCourses(courses) {
+    this.getURL(courses);
+  }
 
   getProducts(): void {
     if (this.courses?.length === 0) {
       this.produitService.query().subscribe({
         next: value => {
+          this.updateCourses(value.body!);
           this.cartService.fillCourses(value.body!);
         },
         error: error => console.log(error),
       });
     }
   }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -70,44 +71,29 @@ export class CourseSearchComponent implements OnInit, OnDestroy {
   viewDetails(course: IProduit): void {
     this.router.navigateByUrl('/course-details/' + course.id.toString());
   }
+  async getURL(objects: IProduit[]) {
+    for (const obj of objects) {
+      (await this.s3Service.getImageFromS3(obj.lienImg!)).subscribe(res => {
+        obj.lienImg = res.body;
+        this.coursesUpdated?.push({
+          ...obj,
+          lienImg: obj.lienImg || '',
+        });
+      });
+    }
+  }
 
-  // ***** example of how to implement s3Service ********
-  // async uploadImage(event){
-  //     if (!event) return;
-  //     let file = event.target.files[0];
-  //     if (file) {
-  //       (await this.s3Service.uploadToS3(file, this.selectedFile!)).subscribe(response => {
-  //           this.key = response.key
-  //         },
-  //         error => {
-  //           console.error('Error:', error);
-  //         })
-  //     } else {
-  //       console.log('No image selected.');
-  //     }
-  // }
-
-  // async getURL(){
-  //   (await this.s3Service.getImageFromS3(this.imageKey)).subscribe(res=>{
-  //     this.imageURL = res.body;
-  //   })
-  // }
-
-  // async getImageURL(key:string){
-  //   (await this.s3Service.getImageFromS3(key)).subscribe(response => {
-  //       this.key = response.key
-  //     },
-  //     error => {
-  //       console.error('Error:', error);
-  //     })
-  //
-  // }
-
-  //  end
-
+  async getImageURL(key: string) {
+    (await this.s3Service.getImageFromS3(key)).subscribe(
+      response => {
+        this.key = response.key;
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
+  }
   addToCart(course: IProduit, event: Event): void {
-    console.log(event);
-
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
       this.cartService.addToCart(course, 1);
       course.clicked = true;
