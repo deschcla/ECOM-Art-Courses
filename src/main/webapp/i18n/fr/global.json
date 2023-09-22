@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "ECOM-Art-Courses",
+    "title": "Institut d'Art de Grenoble",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
     "menu": {
       "home": "Accueil",
@@ -50,13 +50,21 @@
       "confirmpassword.label": "Confirmation du nouveau mot de passe",
       "confirmpassword.placeholder": "Confirmation du nouveau mot de passe",
       "email.label": "Email",
-      "email.placeholder": "Votre email"
+      "email.placeholder": "Votre email",
+      "phone.label": "Téléphone portable",
+      "phone.placeholder": "Numéro de téléphone actuel",
+      "birthday.label": "Date de naissance",
+      "birthday.placeholder": "Votre anniversaire",
+      "first_name.label": "Prénom",
+      "first_name.placeholder": "Votre prénom",
+      "last_name.label": "Nom",
+      "last_name.placeholder": "Votre nom"
     },
     "messages": {
       "info": {
         "authenticated": {
-          "prefix": "Si vous voulez vous ",
-          "link": "connecter",
+          "prefix": "Vous avez déjà un compte ?",
+          "link": "Se connecter",
           "suffix": ", vous pouvez utiliser les comptes par défaut : <br/> - Administrateur (nom d'utilisateur=\"admin\" et mot de passe =\"admin\") <br/> - Utilisateur (nom d'utilisateur=\"user\" et mot de passe =\"user\")."
         },
         "register": {
@@ -69,21 +77,40 @@
       },
       "validate": {
         "newpassword": {
-          "required": "Votre mot de passe est requis.",
-          "minlength": "Votre mot de passe doit comporter au moins 4 caractères.",
+          "pattern": "Votre mot de passe est requis, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
+          "minlength": "Votre mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
           "maxlength": "Votre mot de passe ne doit pas comporter plus de 50 caractères.",
           "strength": "Robustesse du mot de passe :"
         },
         "confirmpassword": {
-          "required": "Votre confirmation du mot de passe est requise.",
-          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères.",
-          "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères."
+          "required": "Votre confirmation du mot de passe est requise, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
+          "minlength": "Votre confirmation du mot de passe doit comporter au moins 4 caractères, au moins 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial.",
+          "maxlength": "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères.",
+          "validation": "Les mots de passe ne sont pas identiques."
         },
         "email": {
           "required": "Votre email est requis.",
           "minlength": "Votre email doit comporter au moins 5 caractères.",
           "maxlength": "Votre email ne doit pas comporter plus de 50 caractères.",
-          "invalid": "Votre email n'est pas valide."
+          "invalid": "Format d'email non valide."
+        },
+        "phone": {
+          "required": "Votre numéro de téléphone est requis.",
+          "invalid": "Votre numéro de téléphone n'est pas valide."
+        },
+        "birthday": {
+          "required": "Votre date de naissance est requis.",
+          "invalid": "Votre date de naissance n'est pas valide."
+        },
+        "first_name": {
+          "required": "Votre prénom est requis.",
+          "minlength": "Votre prénom doit comporter au moins 1 caractères.",
+          "maxlength": "Votre prénom ne doit pas comporter plus de 50 caractères."
+        },
+        "last_name": {
+          "required": "Votre nom est requis.",
+          "minlength": "Votre nom doit comporter au moins 1 caractères.",
+          "maxlength": "Votre nom ne doit pas comporter plus de 50 caractères."
         }
       }
     },
@@ -150,6 +177,15 @@
       "could.not.extract": "Impossible d'extraire le fichier",
       "not.image": "Le fichier doit être une image et non du type \"{{ fileType }}\""
     }
+  },
+  "course-search": {
+    "title": "Page d'Accueil"
+  },
+  "payment": {
+    "title": "Page de Paiement"
+  },
+  "cart": {
+    "title": "Panier"
   },
   "footer": "Ceci est votre pied de page"
 }

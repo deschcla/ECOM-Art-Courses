@@ -42,7 +42,7 @@ Generic styles
 
 .jh-card {
   padding: 1.5%;
-  // margin-top: 20px;
+  margin-top: 10px;
   border: none;
 }
 
@@ -208,3 +208,21 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+//footer
+html,
+body {
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+.divBody {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer {
+  margin-top: auto;
+}

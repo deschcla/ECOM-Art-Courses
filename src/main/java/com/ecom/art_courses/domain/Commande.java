@@ -22,8 +22,8 @@ public class Commande implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    //    @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
 
@@ -45,7 +45,7 @@ public class Commande implements Serializable {
     private Set<CarteBancaire> carteBancaires = new HashSet<>();
 
     @ManyToMany
-    @NotNull
+    //    @NotNull
     @JoinTable(
         name = "rel_commande__produit",
         joinColumns = @JoinColumn(name = "commande_id"),
@@ -55,17 +55,17 @@ public class Commande implements Serializable {
     @JsonIgnoreProperties(value = { "souscategorie", "ligneCommandes", "commandes" }, allowSetters = true)
     private Set<Produit> produits = new HashSet<>();
 
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties(value = { "commandes", "acheteur" }, allowSetters = true)
+    @ManyToOne(optional = true)
+    //    @NotNull
+    @JsonIgnoreProperties(value = { "commandes", "user" }, allowSetters = true)
     private ReleveFacture releveFacture;
 
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "internalUser", "releveFactures", "commandes" }, allowSetters = true)
-    private Acheteur acheteur;
+    private User user;
 
-    @OneToMany(mappedBy = "commande")
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "produit", "commande" }, allowSetters = true)
     private Set<LigneCommande> ligneCommandes = new HashSet<>();
@@ -206,16 +206,28 @@ public class Commande implements Serializable {
         return this;
     }
 
-    public Acheteur getAcheteur() {
-        return this.acheteur;
+    //    public Acheteur getAcheteur() {
+    //        return this.acheteur;
+    //    }
+    //
+    //    public void setAcheteur(Acheteur acheteur) {
+    //        this.acheteur = acheteur;
+    //    }
+    //
+    //    public Commande acheteur(Acheteur acheteur) {
+    //        this.setAcheteur(acheteur);
+    //        return this;
+    //    }
+    public User getUser() {
+        return this.user;
     }
 
-    public void setAcheteur(Acheteur acheteur) {
-        this.acheteur = acheteur;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Commande acheteur(Acheteur acheteur) {
-        this.setAcheteur(acheteur);
+    public Commande user(User user) {
+        this.setUser(user);
         return this;
     }
 

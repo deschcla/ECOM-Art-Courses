@@ -1,16 +1,19 @@
 package com.ecom.art_courses.web.rest;
 
 import com.ecom.art_courses.domain.Produit;
+import com.ecom.art_courses.domain.S3Resource;
 import com.ecom.art_courses.repository.ProduitRepository;
 import com.ecom.art_courses.service.ProduitService;
+import com.ecom.art_courses.service.impl.S3ServiceImpl;
 import com.ecom.art_courses.web.rest.errors.BadRequestAlertException;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +32,7 @@ public class ProduitResource {
     private final Logger log = LoggerFactory.getLogger(ProduitResource.class);
 
     private static final String ENTITY_NAME = "produit";
+    private final S3ServiceImpl s3Service;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -37,9 +41,10 @@ public class ProduitResource {
 
     private final ProduitRepository produitRepository;
 
-    public ProduitResource(ProduitService produitService, ProduitRepository produitRepository) {
+    public ProduitResource(ProduitService produitService, ProduitRepository produitRepository, S3ServiceImpl s3ImageUploadService) {
         this.produitService = produitService;
         this.produitRepository = produitRepository;
+        this.s3Service = s3ImageUploadService;
     }
 
     /**
@@ -170,5 +175,38 @@ public class ProduitResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    public String generateFileName() {
+        return new Date().getTime() + ".jpg"; // You can use a consistent file extension like ".jpg" for base64 images.
+    }
+
+    public File convertBase64StringToFile(String base64Image) throws IOException {
+        byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
+        File file = new File(generateFileName());
+        FileUtils.writeByteArrayToFile(file, decodedBytes);
+        return file;
+    }
+
+    @PostMapping("/produits/upload")
+    public ResponseEntity<S3Resource> uploadImage(@RequestBody String fileBase64) {
+        String fileUrl;
+        Optional<S3Resource> response = null;
+        try {
+            File file = this.convertBase64StringToFile(fileBase64);
+            s3Service.uploadImage(file);
+            fileUrl = "images/" + file.getName();
+            file.delete();
+            response = Optional.of(new S3Resource(fileUrl));
+        } catch (IOException e) {}
+        return ResponseUtil.wrapOrNotFound(response);
+    }
+
+    @PostMapping("/produits/images")
+    public ResponseEntity<S3Resource> getImage(@RequestBody String key) {
+        Optional<S3Resource> response = null;
+        String url = s3Service.getPresignedURL(key);
+        response = Optional.of(new S3Resource(key, url));
+        return ResponseUtil.wrapOrNotFound(response);
     }
 }

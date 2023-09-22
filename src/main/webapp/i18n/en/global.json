@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "ECOM-Art-Courses",
+    "title": "Institut d'Art de Grenoble",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
@@ -50,12 +50,20 @@
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
-      "email.placeholder": "Your email"
+      "email.placeholder": "Your email",
+      "phone.label": "Phone",
+      "phone.placeholder": "Your telephone number",
+      "birthday.label": "Birth Date",
+      "birthday.placeholder": "Your own birth date",
+      "first_name.label": "First name",
+      "first_name.placeholder": "Your first name",
+      "last_name.label": "Last name",
+      "last_name.placeholder": "Your last name"
     },
     "messages": {
       "info": {
         "authenticated": {
-          "prefix": "If you want to ",
+          "prefix": "Already have an account?",
           "link": "sign in",
           "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
         },
@@ -69,21 +77,40 @@
       },
       "validate": {
         "newpassword": {
-          "required": "Your password is required.",
-          "minlength": "Your password is required to be at least 4 characters.",
+          "pattern": "Your password is required, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
+          "minlength": "Your password is required to be at least 4 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
           "maxlength": "Your password cannot be longer than 50 characters.",
           "strength": "Password strength:"
         },
         "confirmpassword": {
-          "required": "Your confirmation password is required.",
-          "minlength": "Your confirmation password is required to be at least 4 characters.",
-          "maxlength": "Your confirmation password cannot be longer than 50 characters."
+          "required": "Your confirmation password is required, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
+          "minlength": "Your confirmation password is required to be at least 4 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.",
+          "maxlength": "Your confirmation password cannot be longer than 50 characters.",
+          "validation": "The passwords are not identical."
         },
         "email": {
           "required": "Your email is required.",
-          "invalid": "Your email is invalid.",
+          "invalid": "Invalid email format.",
           "minlength": "Your email is required to be at least 5 characters.",
           "maxlength": "Your email cannot be longer than 50 characters."
+        },
+        "phone": {
+          "required": "Your telephone number is required.",
+          "invalid": "Your telephone number is invalid."
+        },
+        "birthday": {
+          "required": "Your own birthday is required.",
+          "invalid": "Your birthday is invalid."
+        },
+        "first_name": {
+          "required": "Your first name is required.",
+          "minlength": "Your first name is required to be at least 1 characters.",
+          "maxlength": "Your first name cannot be longer than 50 characters."
+        },
+        "last_name": {
+          "required": "Your last name is required.",
+          "minlength": "Your last name is required to be at least 1 characters.",
+          "maxlength": "Your last name cannot be longer than 50 characters."
         }
       }
     },
@@ -150,6 +177,15 @@
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
+  },
+  "course-search": {
+    "title": "Home Page"
+  },
+  "payment": {
+    "title": "Payment Page"
+  },
+  "cart": {
+    "title": "Basket"
   },
   "footer": "This is your footer"
 }

@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { SharedModule } from 'app/shared/shared.module';
-import { HasAnyAuthorityDirective } from 'app/shared/auth/has-any-authority.directive';
 import { VERSION } from 'app/app.constants';
 import { LANGUAGES } from 'app/config/language.constants';
 import { ActiveMenuDirective } from './active-menu.directive';
@@ -16,13 +15,16 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import NavbarItem from './navbar-item.model';
 import { CartService } from 'app/core/util/cart.service';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IProduit } from '../../entities/produit/produit.model';
+import { ProduitService } from '../../entities/produit/service/produit.service';
+import { NotificationService } from 'app/core/util/notification.service';
 
 @Component({
   standalone: true,
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [RouterModule, SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, SharedModule, FormsModule, ReactiveFormsModule, ActiveMenuDirective],
 })
 export default class NavbarComponent implements OnInit {
   inProduction?: boolean;
@@ -33,6 +35,7 @@ export default class NavbarComponent implements OnInit {
   account: Account | null = null;
   entitiesNavbarItems: NavbarItem[] = [];
   counter: number = 0;
+  courses: IProduit[] | null = [];
 
   searchForm = new FormGroup({
     search: new FormControl(''),
@@ -45,7 +48,9 @@ export default class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private profileService: ProfileService,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private produitService: ProduitService,
+    private ntfService: NotificationService
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -64,6 +69,21 @@ export default class NavbarComponent implements OnInit {
     });
     this.cartService.counterChange.subscribe(value => {
       this.counter = value;
+    });
+    this.cartService.searchChange.subscribe(value => {
+      this.searchForm.controls.search.setValue(value);
+    });
+
+    this.produitService.query().subscribe({
+      next: value => (this.courses = value.body),
+      error: error => this.ntfService.notifyBanner('Error', error),
+      complete: () => {
+        this.router.events.subscribe(() => {
+          if (this.searchForm.value.search !== '') {
+            this.onKeyUp();
+          }
+        });
+      },
     });
   }
 
@@ -89,7 +109,13 @@ export default class NavbarComponent implements OnInit {
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
+
   search(): void {
-    console.log(this.searchForm.value.search);
+    this.router.navigate(['']);
+  }
+
+  onKeyUp(): void {
+    const res = this.courses?.filter(course => course.nomProduit?.toLowerCase()?.includes(this.searchForm.value.search!.toLowerCase()));
+    this.cartService.fillCourses(res!);
   }
 }

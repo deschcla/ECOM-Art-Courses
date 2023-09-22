@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -7,6 +7,9 @@ import { CartService } from 'app/core/util/cart.service';
 import { IProduit } from 'app/entities/produit/produit.model';
 import { ProduitService } from 'app/entities/produit/service/produit.service';
 import { LoginService } from '../login/login.service';
+import { Title } from '@angular/platform-browser';
+import { FormGroup } from '@angular/forms';
+import { S3Service } from 'app/S3/s3.service';
 
 @Component({
   selector: 'jhi-course-details',
@@ -20,6 +23,8 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
   selectedAmount: number = 1;
   display = 'none';
 
+  @Input() searchForm: FormGroup;
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(
@@ -28,7 +33,9 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private produitService: ProduitService,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private titleService: Title,
+    private s3Service: S3Service
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +47,15 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.idProduit = params['id'];
       this.produitService.find(this.idProduit).subscribe({
-        next: value => (this.course = value.body),
+        next: value => {
+          this.course = value.body;
+          this.s3Service.getImageFromS3(this.course!.lienImg!).then(res => {
+            res.subscribe(obj => {
+              this.course!.lienImg = obj.body;
+            });
+          });
+          this.titleService.setTitle(this.course?.nomProduit ? this.course.nomProduit : 'global.title');
+        },
       });
     });
   }
@@ -60,7 +75,7 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
 
   addToCart(course: IProduit, amount: number): void {
     if (this.account?.authorities.includes('ROLE_USER') && !this.account.authorities.includes('ROLE_ADMIN')) {
-      this.cartService.addToCart(course, amount);
+      this.cartService.addToCart(course, amount, this.account);
     } else {
       this.display = 'block';
     }
@@ -73,5 +88,9 @@ export class CourseDetailsComponent implements OnInit, OnDestroy {
       this.loginService.logout();
     }
     this.router.navigateByUrl('/login');
+  }
+
+  searchCategory(cat: string): void {
+    this.cartService.setSearchValue(cat);
   }
 }

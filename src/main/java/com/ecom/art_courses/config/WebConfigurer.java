@@ -2,12 +2,19 @@ package com.ecom.art_courses.config;
 
 import static java.net.URLDecoder.decode;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import javax.servlet.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.*;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -29,6 +36,12 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
     private final Environment env;
+
+    @Value("${aws.accessKey}")
+    private String accessKey;
+
+    @Value("${aws.secretKey}")
+    private String secretKey;
 
     private final JHipsterProperties jHipsterProperties;
 
@@ -93,5 +106,15 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
             source.registerCorsConfiguration("/swagger-ui/**", config);
         }
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public AmazonS3 s3client() {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+        return AmazonS3Client
+            .builder()
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+            .withRegion(Regions.EU_WEST_1)
+            .build();
     }
 }

@@ -1,14 +1,24 @@
 package com.ecom.art_courses.web.rest;
 
 import com.ecom.art_courses.domain.Commande;
+import com.ecom.art_courses.domain.LigneCommande;
+import com.ecom.art_courses.domain.Produit;
+import com.ecom.art_courses.domain.ReleveFacture;
 import com.ecom.art_courses.repository.CommandeRepository;
 import com.ecom.art_courses.service.CommandeService;
+import com.ecom.art_courses.service.LigneCommandeService;
+import com.ecom.art_courses.service.ProduitService;
+import com.ecom.art_courses.service.ReleveFactureService;
 import com.ecom.art_courses.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -35,11 +45,26 @@ public class CommandeResource {
 
     private final CommandeService commandeService;
 
+    private final LigneCommandeService ligneCommandeService;
+
+    private final ProduitService produitService;
+
+    private final ReleveFactureService releveFactureService;
+
     private final CommandeRepository commandeRepository;
 
-    public CommandeResource(CommandeService commandeService, CommandeRepository commandeRepository) {
+    public CommandeResource(
+        CommandeService commandeService,
+        CommandeRepository commandeRepository,
+        LigneCommandeService ligneCommandeService,
+        ProduitService produitService,
+        ReleveFactureService releveFactureService
+    ) {
         this.commandeService = commandeService;
         this.commandeRepository = commandeRepository;
+        this.ligneCommandeService = ligneCommandeService;
+        this.produitService = produitService;
+        this.releveFactureService = releveFactureService;
     }
 
     /**
@@ -171,5 +196,61 @@ public class CommandeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/commandes/{id}/ligne-commandes/unvalidated")
+    public ResponseEntity<List<LigneCommande>> getUnvalidatedLigneCommandesForCommande(@PathVariable Long id) {
+        log.debug("REST request to get unvalidated LigneCommande for Commande : {}", id);
+
+        Optional<Commande> commande = commandeService.findOne(id);
+
+        Set<LigneCommande> ligneCommandes = commande.get().getLigneCommandes();
+
+        List<LigneCommande> nonVerifieesLigneCommandes = ligneCommandes
+            .stream()
+            .filter(lc -> lc.getValidated() == 0)
+            .filter(lc -> lc.getQuantite() > 0)
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(nonVerifieesLigneCommandes);
+    }
+
+    @PutMapping("/commandes/validate/{id}")
+    public ResponseEntity<Commande> updateAll(@PathVariable Long id) {
+        log.debug("REST request to update all the things after validation Commande : {}", id);
+
+        Optional<Commande> commande = commandeService.findOne(id);
+
+        Set<LigneCommande> ligneCommandes = commande.get().getLigneCommandes();
+        Float montantTotal = 0F;
+        for (LigneCommande ligne : ligneCommandes) {
+            ligne.setValidated(1);
+            ligneCommandeService.update(ligne);
+
+            Produit produit = ligne.getProduit();
+            produit.setQuantiteDispo(produit.getQuantiteDispo() - ligne.getQuantite());
+            produitService.update(produit);
+
+            montantTotal += ligne.getMontant();
+        }
+
+        // if(commande.isPresent()){
+        Commande validatedCommande = commande.get();
+        ReleveFacture releveFacture = new ReleveFacture();
+        releveFacture.addCommande(validatedCommande);
+        releveFacture.montant(montantTotal);
+        releveFacture.createdAt(Instant.now());
+        releveFacture.updateAt(Instant.now());
+        releveFacture.user(validatedCommande.getUser());
+        releveFactureService.save(releveFacture);
+        //  }
+
+        //        List<LigneCommande> nonVerifieesLigneCommandes = ligneCommandes
+        //            .stream()
+        //            .filter(lc -> lc.getValidated() == 0)
+        //            .collect(Collectors.toList());
+
+        Commande result = commandeService.update(validatedCommande);
+        return ResponseEntity.ok().body(result);
     }
 }

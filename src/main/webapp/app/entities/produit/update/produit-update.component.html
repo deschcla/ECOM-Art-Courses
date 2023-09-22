@@ -54,12 +54,6 @@
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.duree" for="field_duree">Duree</label>
           <input type="text" class="form-control" name="duree" id="field_duree" data-cy="duree" formControlName="duree" />
         </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.lienImg" for="field_lienImg">Lien Img</label>
-          <input type="text" class="form-control" name="lienImg" id="field_lienImg" data-cy="lienImg" formControlName="lienImg" />
-        </div>
-
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.quantiteTotale" for="field_quantiteTotale"
             >Quantite Totale</label
@@ -160,6 +154,11 @@
             This field is required.
           </small>
         </div>
+      </div>
+      <div class="row mb-3">
+        <label class="form-label" jhiTranslate="ecomArtCoursesApp.produit.lienImg" for="field_lienImg">Lien Img</label>
+        <input type="text" class="form-control" name="lienImg" id="field_lienImg" data-cy="lienImg" formControlName="lienImg" />
+        <!--        <input id="field_lienImg" name="lienImg" type="file" class="form-control" (change)="uploadImage($event)" />-->
       </div>
 
       <div>

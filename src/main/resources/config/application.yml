@@ -211,3 +211,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+aws:
+  accessKey: 'AKIARJKMEHI5ZISOR65N'
+  secretKey: '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'

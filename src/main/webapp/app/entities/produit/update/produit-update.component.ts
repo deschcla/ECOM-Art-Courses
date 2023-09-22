@@ -9,7 +9,7 @@ import { IProduit } from '../produit.model';
 import { ProduitService } from '../service/produit.service';
 import { ISousCategorie } from 'app/entities/sous-categorie/sous-categorie.model';
 import { SousCategorieService } from 'app/entities/sous-categorie/service/sous-categorie.service';
-
+import { S3Service } from '../../../S3/s3.service';
 @Component({
   selector: 'jhi-produit-update',
   templateUrl: './produit-update.component.html',
@@ -21,12 +21,15 @@ export class ProduitUpdateComponent implements OnInit {
   sousCategoriesSharedCollection: ISousCategorie[] = [];
 
   editForm: ProduitFormGroup = this.produitFormService.createProduitFormGroup();
+  selectedFileBase64: string = '';
+  imageKey: string = '';
 
   constructor(
     protected produitService: ProduitService,
     protected produitFormService: ProduitFormService,
     protected sousCategorieService: SousCategorieService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected s3Service: S3Service
   ) {}
 
   compareSousCategorie = (o1: ISousCategorie | null, o2: ISousCategorie | null): boolean =>
@@ -96,5 +99,22 @@ export class ProduitUpdateComponent implements OnInit {
         )
       )
       .subscribe((sousCategories: ISousCategorie[]) => (this.sousCategoriesSharedCollection = sousCategories));
+  }
+
+  async uploadImage(event) {
+    if (!event) return;
+    let file = event.target.files[0];
+    if (file) {
+      (await this.s3Service.uploadToS3(file, this.selectedFileBase64!)).subscribe(
+        response => {
+          this.imageKey = response.key;
+        },
+        error => {
+          console.error('Error:', error);
+        }
+      );
+    } else {
+      console.log('No image selected.');
+    }
   }
 }

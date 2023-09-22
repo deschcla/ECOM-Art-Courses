@@ -1,9 +1,9 @@
-<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md bg-light">
+<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md bg-light d-print-none">
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
       <span jhiTranslate="global.title" class="navbar-title">Institut d'Art de Grenoble</span>
-      <span class="navbar-version">{{ version }}</span>
+      <!--      <span class="navbar-version">{{ version }}</span>-->
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -21,7 +21,15 @@
       <div class="mt-3 inputs">
         <fa-icon icon="search" class="searchIcon"></fa-icon>
         <form [formGroup]="searchForm" (ngSubmit)="search()">
-          <input type="text" class="form-control" placeholder="Rechercher..." formControlName="search" />
+          <input
+            (keyup)="onKeyUp()"
+            type="text"
+            class="form-control"
+            placeholder="Rechercher..."
+            formControlName="search"
+            value=""
+            id="searchInput"
+          />
         </form>
       </div>
       <ul class="navbar-nav ms-auto">
@@ -31,7 +39,7 @@
           [routerLinkActiveOptions]="{ exact: true }"
           *ngSwitchCase="account?.authorities?.includes('ROLE_USER') && !account?.authorities?.includes('ROLE_ADMIN')"
         >
-          <a class="nav-link" routerLink="/payment" (click)="collapseNavbar()" [class.disabled]="counter == 0">
+          <a class="nav-link" routerLink="/cart" (click)="collapseNavbar()" [class.disabled]="counter == 0">
             <span>
               <fa-icon icon="cart-shopping"></fa-icon>
               <span class="badge bg-danger cartCounter">{{ counter }}</span>
@@ -39,6 +47,25 @@
             </span>
           </a>
         </li>
+        <!-- <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
+            <span>
+              <fa-icon icon="language"></fa-icon>
+              <span jhiTranslate="global.menu.language">Language</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
+            <li *ngFor="let language of languages">
+              <a
+                class="dropdown-item"
+                [jhiActiveMenu]="language"
+                href="javascript:void(0);"
+                (click)="changeLanguage(language); collapseNavbar()"
+                >{{ language | findLanguageFromKey }}</a
+              >
+            </li>
+          </ul>
+        </li> -->
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
@@ -55,18 +82,18 @@
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-            <li>
-              <a
-                class="dropdown-item"
-                routerLink="/acheteur"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                (click)="collapseNavbar()"
-              >
-                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.entities.acheteur">Acheteur</span>
-              </a>
-            </li>
+            <!--            <li>-->
+            <!--              <a-->
+            <!--                class="dropdown-item"-->
+            <!--                routerLink="/acheteur"-->
+            <!--                routerLinkActive="active"-->
+            <!--                [routerLinkActiveOptions]="{ exact: true }"-->
+            <!--                (click)="collapseNavbar()"-->
+            <!--              >-->
+            <!--                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+            <!--                <span jhiTranslate="global.menu.entities.acheteur">Acheteur</span>-->
+            <!--              </a>-->
+            <!--            </li>-->
             <li>
               <a
                 class="dropdown-item"
@@ -208,25 +235,6 @@
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
-        <!-- <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
-            <span>
-              <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Language</span>
-            </span>
-          </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
-            <li *ngFor="let language of languages">
-              <a
-                class="dropdown-item"
-                [jhiActiveMenu]="language"
-                href="javascript:void(0);"
-                (click)="changeLanguage(language); collapseNavbar()"
-                >{{ language | findLanguageFromKey }}</a
-              >
-            </li>
-          </ul>
-        </li> -->
         <li
           ngbDropdown
           class="nav-item dropdown pointer"
