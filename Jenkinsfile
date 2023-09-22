@@ -46,7 +46,7 @@ node {
             sh "npm run build"
         }
         stage('Deploy to dockerhub') {
-            sh "./mvnw -Pprod clean package verify -DskipTests jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
+            sh "./mvnw -P dev clean package verify -DskipTests jib:build -Djib.to.image=rocdaana27/ecom-art-courses"
         }
 
     }
